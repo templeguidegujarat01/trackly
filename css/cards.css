@@ -224,6 +224,48 @@ a.card:hover,
   font-size: var(--text-sm);
 }
 
+/* Large variant of the same number badge, used by the homepage timeline
+   below — reused rather than redefined. */
+.step__number--lg {
+  width: 56px;
+  height: 56px;
+  font-size: var(--text-xl);
+}
+
+/* ==========================================================================
+   TIMELINE (homepage "How Trackly Works")
+   A different presentation of the same step concept as .steps/.step
+   (bordered list, used on the How It Works page): larger, centered, and
+   connected by a line at wider viewports. The 3-column grid and connecting
+   line only apply from the md breakpoint up — see responsive.css.
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-10);
+}
+
+.timeline__item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.timeline__title {
+  font-size: var(--text-lg);
+}
+
+.timeline__desc {
+  font-size: var(--text-sm);
+  max-width: 260px;
+}
+
 /* ==========================================================================
    FAQ ACCORDION
    Built on native <details>/<summary> so it's keyboard- and

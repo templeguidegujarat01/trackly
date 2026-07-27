@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trackly — Track Official Updates. We'll Notify You.</title>
-  <meta name="description" content="Trackly tracks official exam updates for ICAI, ICSI, UPSC, SSC, and IBPS so you never have to search for them twice.">
+  <title>Trackly — Never Search Twice. We'll Notify You of Official Updates.</title>
+  <meta name="description" content="Track official updates from ICAI, ICSI, UPSC, SSC, and IBPS in one place. Subscribe once and Trackly notifies you the moment new official information is released.">
   <link rel="canonical" href="https://www.tracklyapp.com/">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#1D4ED8">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Trackly">
-  <meta property="og:title" content="Trackly — Track Official Updates. We'll Notify You.">
-  <meta property="og:description" content="Trackly tracks official exam updates for ICAI, ICSI, UPSC, SSC, and IBPS so you never have to search for them twice.">
+  <meta property="og:title" content="Trackly — Never Search Twice. We'll Notify You of Official Updates.">
+  <meta property="og:description" content="Track official updates from ICAI, ICSI, UPSC, SSC, and IBPS in one place. Subscribe once and Trackly notifies you the moment new official information is released.">
   <meta property="og:url" content="https://www.tracklyapp.com/">
   <meta property="og:locale" content="en_IN">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Trackly — Track Official Updates. We'll Notify You.">
-  <meta name="twitter:description" content="Trackly tracks official exam updates for ICAI, ICSI, UPSC, SSC, and IBPS so you never have to search for them twice.">
+  <meta name="twitter:title" content="Trackly — Never Search Twice. We'll Notify You of Official Updates.">
+  <meta name="twitter:description" content="Track official updates from ICAI, ICSI, UPSC, SSC, and IBPS in one place. Subscribe once and Trackly notifies you the moment new official information is released.">
 
   <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
@@ -36,6 +36,94 @@
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Trackly",
+      "url": "https://www.tracklyapp.com/",
+      "logo": "https://www.tracklyapp.com/assets/logos/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "name": "Trackly",
+      "url": "https://www.tracklyapp.com/",
+      "description": "Track official updates from ICAI, ICSI, UPSC, SSC, and IBPS in one place. Subscribe once and Trackly notifies you the moment new official information is released."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Trackly official?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Trackly is an independent tracking tool. It is not affiliated with ICAI, ICSI, UPSC, SSC, IBPS, or any government body."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Trackly replace official websites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Trackly points you back to the official source for every update \u2014 always verify anything critical there directly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Tracking updates is free in Version 1."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are updates tracked?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trackly is built to watch each official source and mark every update as Tracking, Pending, or Released. The tracking engine is rolling out in an upcoming phase."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I track multiple institutes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You'll be able to track topics across ICAI, ICSI, UPSC, SSC, and IBPS at once, from a single subscription list."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not to browse. An account will be needed once subscriptions and notifications launch, so Trackly knows where to send them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will Trackly send spam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You'll only be notified about updates you specifically subscribed to \u2014 nothing else, ever."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which institutes are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ICAI, ICSI, UPSC, SSC, and IBPS in Version 1. More may be added later."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="page">
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -83,75 +171,117 @@
   </header>
 
   <main id="main" class="page-main">
-    <section class="section">
-      <div class="container text-center">
-        <p class="text-eyebrow">Official Update Tracking</p>
-        <h1>Stop searching the same official update twice.</h1>
-        <p class="text-lead mt-4" style="max-width: 560px; margin-inline: auto;">
-          Subscribe once to an exam, result, or notification. Trackly watches
-          the official source and tells you the moment it changes.
-        </p>
-        <div class="flex flex-center gap-3 flex-wrap mt-8">
-          <a class="btn btn-primary btn-lg" href="institutes.html">Browse Institutes</a>
-          <a class="btn btn-outline btn-lg" href="how-it-works.html">How It Works</a>
+    <!-- 1. Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__inner text-center">
+          <div class="hero__content">
+            <p class="text-eyebrow">Official Update Tracking</p>
+            <h1>Never Search Twice.</h1>
+            <p class="text-lead mt-4">
+              Track official updates from trusted organizations. We'll
+              notify you when new official information is released.
+            </p>
+            <div class="hero__ctas">
+              <a class="btn btn-primary btn-lg" href="institutes.html">Browse Institutes</a>
+              <a class="btn btn-outline btn-lg" href="how-it-works.html">How It Works</a>
+            </div>
+          </div>
+          <div class="hero__art">
+        <svg class="hero__illustration" viewBox="0 0 460 380" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="heroShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.12"/>
+            </filter>
+          </defs>
+
+          <rect x="10" y="20" width="440" height="340" rx="28" fill="var(--color-mist)"/>
+
+          <g>
+            <rect x="255" y="55" width="150" height="110" rx="16" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1.5" transform="rotate(8 330 110)"/>
+            <rect x="45" y="230" width="150" height="100" rx="16" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1.5" transform="rotate(-6 120 280)"/>
+          </g>
+
+          <g filter="url(#heroShadow)">
+            <rect x="90" y="95" width="280" height="200" rx="20" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1.5"/>
+          </g>
+
+          <rect x="116" y="121" width="34" height="34" rx="10" fill="var(--color-primary-light)"/>
+          <circle cx="133" cy="138" r="6" fill="var(--color-primary)"/>
+
+          <rect x="162" y="123" width="110" height="9" rx="4.5" fill="var(--color-line-strong)"/>
+          <rect x="162" y="140" width="70" height="8" rx="4" fill="var(--color-line)"/>
+
+          <rect x="116" y="172" width="238" height="7" rx="3.5" fill="var(--color-line)"/>
+          <rect x="116" y="187" width="200" height="7" rx="3.5" fill="var(--color-line)"/>
+          <rect x="116" y="202" width="160" height="7" rx="3.5" fill="var(--color-line)"/>
+
+          <circle class="hero-pulse-dot" cx="126" cy="248" r="5" fill="var(--color-accent)"/>
+          <rect x="140" y="243" width="90" height="9" rx="4.5" fill="var(--color-line-strong)"/>
+
+          <rect x="288" y="234" width="70" height="26" rx="13" fill="var(--color-success-light)"/>
+          <path d="M300 247l4 4 8-8" stroke="#166534" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="317" y="251" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Released</text>
+        </svg>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Institutes placeholder — Phase 1 shell only, per current phase scope -->
-    <section class="section section-alt">
+    <!-- 2. Supported Institutes -->
+    <section class="section section-alt" aria-labelledby="institutes-heading">
       <div class="container">
         <div class="section-header text-center">
           <p class="text-eyebrow">Supported Institutes</p>
-          <h2>Built for the exams students actually track</h2>
+          <h2 id="institutes-heading">Built for the exams students actually track</h2>
           <p class="mt-4">Version 1 covers five official bodies. More are added through configuration, not a redesign.</p>
         </div>
         <div class="grid grid-3">
-    <div class="card card-institute">
-      <div class="card-institute__mark" aria-hidden="true">CA</div>
-      <h3 class="card-title">ICAI</h3>
-      <p class="text-small text-muted">Foundation, Intermediate, and Final course updates.</p>
-      <div class="card-footer">
-        <span class="text-caption">Institute of Chartered Accountants of India</span>
-        <span class="badge badge-coming-soon">Detail page coming soon</span>
-      </div>
-    </div>
-    <div class="card card-institute">
-      <div class="card-institute__mark" aria-hidden="true">CS</div>
-      <h3 class="card-title">ICSI</h3>
-      <p class="text-small text-muted">CSEET, Executive, and Professional course updates.</p>
-      <div class="card-footer">
-        <span class="text-caption">Institute of Company Secretaries of India</span>
-        <span class="badge badge-coming-soon">Detail page coming soon</span>
-      </div>
-    </div>
-    <div class="card card-institute">
-      <div class="card-institute__mark" aria-hidden="true">UP</div>
-      <h3 class="card-title">UPSC</h3>
-      <p class="text-small text-muted">Civil Services, NDA, CDS, CAPF, EPFO and more.</p>
-      <div class="card-footer">
-        <span class="text-caption">Union Public Service Commission</span>
-        <span class="badge badge-coming-soon">Detail page coming soon</span>
-      </div>
-    </div>
-    <div class="card card-institute">
-      <div class="card-institute__mark" aria-hidden="true">SS</div>
-      <h3 class="card-title">SSC</h3>
-      <p class="text-small text-muted">CGL, CHSL, MTS, JE, CPO, GD and more.</p>
-      <div class="card-footer">
-        <span class="text-caption">Staff Selection Commission</span>
-        <span class="badge badge-coming-soon">Detail page coming soon</span>
-      </div>
-    </div>
-    <div class="card card-institute">
-      <div class="card-institute__mark" aria-hidden="true">IB</div>
-      <h3 class="card-title">IBPS</h3>
-      <p class="text-small text-muted">PO, Clerk, SO, and RRB exam updates.</p>
-      <div class="card-footer">
-        <span class="text-caption">Institute of Banking Personnel Selection</span>
-        <span class="badge badge-coming-soon">Detail page coming soon</span>
-      </div>
-    </div>
+          <a class="card card-institute" href="institutes.html">
+            <div class="card-institute__mark" aria-hidden="true">CA</div>
+            <h3 class="card-title">ICAI</h3>
+            <p class="text-small text-muted">Foundation, Intermediate, and Final course updates.</p>
+            <div class="card-footer">
+              <span class="text-caption">Institute of Chartered Accountants of India</span>
+              <span class="badge badge-tracked">Tracking Ready</span>
+            </div>
+          </a>
+          <a class="card card-institute" href="institutes.html">
+            <div class="card-institute__mark" aria-hidden="true">CS</div>
+            <h3 class="card-title">ICSI</h3>
+            <p class="text-small text-muted">CSEET, Executive, and Professional course updates.</p>
+            <div class="card-footer">
+              <span class="text-caption">Institute of Company Secretaries of India</span>
+              <span class="badge badge-tracked">Tracking Ready</span>
+            </div>
+          </a>
+          <a class="card card-institute" href="institutes.html">
+            <div class="card-institute__mark" aria-hidden="true">UP</div>
+            <h3 class="card-title">UPSC</h3>
+            <p class="text-small text-muted">Civil Services, NDA, CDS, CAPF, EPFO and more.</p>
+            <div class="card-footer">
+              <span class="text-caption">Union Public Service Commission</span>
+              <span class="badge badge-tracked">Tracking Ready</span>
+            </div>
+          </a>
+          <a class="card card-institute" href="institutes.html">
+            <div class="card-institute__mark" aria-hidden="true">SS</div>
+            <h3 class="card-title">SSC</h3>
+            <p class="text-small text-muted">CGL, CHSL, MTS, JE, CPO, GD and more.</p>
+            <div class="card-footer">
+              <span class="text-caption">Staff Selection Commission</span>
+              <span class="badge badge-tracked">Tracking Ready</span>
+            </div>
+          </a>
+          <a class="card card-institute" href="institutes.html">
+            <div class="card-institute__mark" aria-hidden="true">IB</div>
+            <h3 class="card-title">IBPS</h3>
+            <p class="text-small text-muted">PO, Clerk, SO, and RRB exam updates.</p>
+            <div class="card-footer">
+              <span class="text-caption">Institute of Banking Personnel Selection</span>
+              <span class="badge badge-tracked">Tracking Ready</span>
+            </div>
+          </a>
         </div>
         <div class="text-center mt-8">
           <a class="btn btn-secondary" href="institutes.html">View All Institutes</a>
@@ -159,43 +289,282 @@
       </div>
     </section>
 
-    <!-- Features placeholder — Phase 1 shell only -->
-    <section class="section">
+    <!-- 3. How Trackly Works -->
+    <section class="section" aria-labelledby="how-heading">
       <div class="container">
         <div class="section-header text-center">
-          <p class="text-eyebrow">Why Trackly</p>
-          <h2>Only official information. Nothing invented.</h2>
+          <p class="text-eyebrow">How Trackly Works</p>
+          <h2 id="how-heading">Three steps. Then you stop checking.</h2>
         </div>
-        <div class="grid grid-4">
-    <div class="card card-feature">
-      <div class="card-feature__icon" aria-hidden="true">
-        <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
-      </div>
-      <h3 class="card-title">Official sources only</h3>
-      <p class="text-small text-muted">Every update traces back to the institute's own notification, never a guess.</p>
-    </div>
-    <div class="card card-feature">
-      <div class="card-feature__icon" aria-hidden="true">
-        <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-check-circle"></use></svg>
-      </div>
-      <h3 class="card-title">No predictions, ever</h3>
-      <p class="text-small text-muted">If it hasn't been officially released, Trackly says so instead of estimating a date.</p>
-    </div>
-    <div class="card card-feature">
-      <div class="card-feature__icon" aria-hidden="true">
-        <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-zap"></use></svg>
-      </div>
-      <h3 class="card-title">Notified the moment it's official</h3>
-      <p class="text-small text-muted">The instant an update is released, you'll know — no more refreshing a results page.</p>
-    </div>
-    <div class="card card-feature">
-      <div class="card-feature__icon" aria-hidden="true">
-        <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-tag"></use></svg>
-      </div>
-      <h3 class="card-title">Free in Version 1</h3>
-      <p class="text-small text-muted">No account required to browse. Tracking a topic will always start free.</p>
-    </div>
+        <div class="timeline">
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">1</div>
+          <h3 class="timeline__title">Choose your institute</h3>
+          <p class="timeline__desc">Start with ICAI, ICSI, UPSC, SSC, or IBPS.</p>
         </div>
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">2</div>
+          <h3 class="timeline__title">Choose what to track</h3>
+          <p class="timeline__desc">Pick the exact update you're waiting on — a result, an admit card, a notification.</p>
+        </div>
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">3</div>
+          <h3 class="timeline__title">Get notified</h3>
+          <p class="timeline__desc">The moment it's officially released, Trackly lets you know.</p>
+        </div>
+        </div>
+        <p class="text-center text-small mt-8"><a class="link" href="how-it-works.html">See the full walkthrough</a></p>
+      </div>
+    </section>
+
+    <!-- 4. Popular Trackers -->
+    <section class="section section-alt" aria-labelledby="trackers-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Popular Trackers</p>
+          <h2 id="trackers-heading">The updates students track most</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-calendar"></use></svg>
+            </div>
+            <h3 class="card-title">Exam Timetable</h3>
+            <p class="text-small text-muted">When the official schedule for your exam is released.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-clipboard-check"></use></svg>
+            </div>
+            <h3 class="card-title">Results</h3>
+            <p class="text-small text-muted">The moment your result is officially declared.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-bell"></use></svg>
+            </div>
+            <h3 class="card-title">Notifications</h3>
+            <p class="text-small text-muted">General official notifications as soon as they're posted.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-id-card"></use></svg>
+            </div>
+            <h3 class="card-title">Admit Card</h3>
+            <p class="text-small text-muted">When your admit card or hall ticket becomes available.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-key"></use></svg>
+            </div>
+            <h3 class="card-title">Answer Key</h3>
+            <p class="text-small text-muted">When the official answer key is published.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-user-plus"></use></svg>
+            </div>
+            <h3 class="card-title">Registration</h3>
+            <p class="text-small text-muted">When registration opens for your exam.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-file-text"></use></svg>
+            </div>
+            <h3 class="card-title">MTP</h3>
+            <p class="text-small text-muted">New Mock Test Papers released by ICAI.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-file-text"></use></svg>
+            </div>
+            <h3 class="card-title">RTP</h3>
+            <p class="text-small text-muted">New Revision Test Papers released by ICAI.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-megaphone"></use></svg>
+            </div>
+            <h3 class="card-title">Important Circulars</h3>
+            <p class="text-small text-muted">Official circulars and announcements as they're issued.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Why Students Use Trackly -->
+    <section class="section" aria-labelledby="why-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Why Students Use Trackly</p>
+          <h2 id="why-heading">Built around one habit: stop checking manually</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-check-circle"></use></svg>
+            </div>
+            <h3 class="card-title">No repeated searching</h3>
+            <p class="text-small text-muted">Subscribe once. We'll do the checking from here.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
+            </div>
+            <h3 class="card-title">Official sources only</h3>
+            <p class="text-small text-muted">Every update traces back to the institute's own notification.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-list"></use></svg>
+            </div>
+            <h3 class="card-title">Simple tracking</h3>
+            <p class="text-small text-muted">Pick an institute, a course, and an update type. That's it.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-layout"></use></svg>
+            </div>
+            <h3 class="card-title">Clean interface</h3>
+            <p class="text-small text-muted">No clutter, no ads, no confusing dashboards.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-zap"></use></svg>
+            </div>
+            <h3 class="card-title">Fast updates</h3>
+            <p class="text-small text-muted">The instant something changes officially, you'll know.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-lock"></use></svg>
+            </div>
+            <h3 class="card-title">Privacy-first</h3>
+            <p class="text-small text-muted">Your information is only ever used to send the updates you asked for.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Frequently Asked Questions -->
+    <section class="section section-alt" aria-labelledby="faq-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Frequently Asked Questions</p>
+          <h2 id="faq-heading">Common questions about Trackly</h2>
+        </div>
+        <div class="accordion">
+        <details class="accordion-item" id="faq-official">
+          <summary class="accordion-item__summary">
+            Is Trackly official?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. Trackly is an independent tracking tool. It is not affiliated with ICAI, ICSI, UPSC, SSC, IBPS, or any government body.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-replace">
+          <summary class="accordion-item__summary">
+            Does Trackly replace official websites?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. Trackly points you back to the official source for every update — always verify anything critical there directly.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-free">
+          <summary class="accordion-item__summary">
+            Is it free?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Yes. Tracking updates is free in Version 1.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-how-tracked">
+          <summary class="accordion-item__summary">
+            How are updates tracked?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Trackly is built to watch each official source and mark every update as Tracking, Pending, or Released. The tracking engine is rolling out in an upcoming phase.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-multiple">
+          <summary class="accordion-item__summary">
+            Can I track multiple institutes?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Yes. You'll be able to track topics across ICAI, ICSI, UPSC, SSC, and IBPS at once, from a single subscription list.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-account">
+          <summary class="accordion-item__summary">
+            Do I need an account?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Not to browse. An account will be needed once subscriptions and notifications launch, so Trackly knows where to send them.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-spam">
+          <summary class="accordion-item__summary">
+            Will Trackly send spam?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. You'll only be notified about updates you specifically subscribed to — nothing else, ever.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-institutes">
+          <summary class="accordion-item__summary">
+            Which institutes are supported?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>ICAI, ICSI, UPSC, SSC, and IBPS in Version 1. More may be added later.</p>
+          </div>
+        </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Call To Action -->
+    <section class="section section-cta">
+      <div class="container">
+        <h2>Ready to stop searching repeatedly?</h2>
+        <p class="text-lead mt-4" style="max-width: 480px; margin-inline: auto;">
+          Choose your institute and start tracking the updates that matter to you.
+        </p>
+        <a class="btn btn-primary btn-lg mt-8" href="institutes.html">Browse Institutes</a>
       </div>
     </section>
   </main>

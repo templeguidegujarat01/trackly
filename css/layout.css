@@ -145,6 +145,91 @@
   color: var(--color-line-strong);
 }
 
+/* ==========================================================================
+   HERO
+   Two-column on larger screens (copy + SVG illustration), stacked and
+   centered on mobile. Column split happens in responsive.css, per the
+   convention that structural breakpoint changes live there.
+   ========================================================================== */
+
+.hero {
+  padding-block: var(--space-16) var(--space-10);
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-10);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+
+.hero__ctas {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-8);
+}
+
+.hero__art {
+  display: flex;
+  justify-content: center;
+}
+
+.hero__illustration {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+/* The illustration's live-status dot — a decorative echo of the .status
+   component's meaning, using its own minimal keyframe (opacity, not
+   box-shadow) since it's drawn in SVG rather than composed from the
+   .status/.status__dot classes. Respects prefers-reduced-motion via the
+   global rule in global.css. */
+.hero-pulse-dot {
+  animation: hero-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hero-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ==========================================================================
+   CTA SECTION
+   The one place on the homepage that breaks from white/mist backgrounds —
+   used once, deliberately, for the final call to action before the footer.
+   ========================================================================== */
+
+.section-cta {
+  background-color: var(--color-primary);
+  text-align: center;
+}
+
+.section-cta h2 {
+  color: var(--color-paper);
+}
+
+.section-cta p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.section-cta .btn-primary {
+  background-color: var(--color-paper);
+  color: var(--color-primary);
+  border-color: var(--color-paper);
+}
+
+.section-cta .btn-primary:hover {
+  background-color: var(--color-mist);
+}
+
 /* ---- Page shell (used by 404 and any single-focus page) ---- */
 .shell-centered {
   min-height: 60vh;
