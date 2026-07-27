@@ -79,6 +79,42 @@ a.card:hover,
   color: var(--color-slate-light);
 }
 
+/* ---- Institute directory card (Phase 3: institutes.html grid) ----
+   A variant of .card-institute, scoped with its own modifier rather than
+   changed on .card-institute itself — the homepage (Phase 2) already
+   uses plain .card-institute with a horizontal caption+badge footer, and
+   this must not silently restyle it. This variant's footer holds only
+   the Explore button and sticks to the bottom of the card regardless of
+   how much description/tag content sits above it, so a row of cards
+   lines up with equal heights and aligned buttons. */
+.card-institute--directory .card-footer {
+  margin-top: auto;
+}
+
+/* ---- Tag list ----
+   Distinct from .badge on purpose: badges carry status meaning (Released,
+   Pending, Tracked) per the design system's color-means-something rule.
+   Tags are plain, neutral category labels — e.g. "Results", "Admit Card"
+   on an institute card — and never take a status color. */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-mist);
+  border: 1px solid var(--color-line);
+  color: var(--color-slate);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
 /* ---- Feature card ---- */
 .card-feature {
   text-align: left;

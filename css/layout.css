@@ -146,6 +146,56 @@
 }
 
 /* ==========================================================================
+   COMPARISON TABLE
+   Used by the Phase 3 institutes comparison section. Wrapped in a
+   horizontally-scrolling container rather than reflowed into stacked
+   cards on mobile — a comparison table's value is the side-by-side
+   reading, which stacking would destroy. A min-width forces a clean
+   horizontal scroll instead of an unreadably squeezed table.
+   ========================================================================== */
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-paper);
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-size: var(--text-sm);
+  border-bottom: 1px solid var(--color-line);
+  transition: background-color var(--transition-fast);
+}
+
+.table th {
+  background-color: var(--color-mist);
+  font-weight: 700;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.table td {
+  color: var(--color-slate);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background-color: var(--color-mist);
+}
+
+/* ==========================================================================
    HERO
    Two-column on larger screens (copy + SVG illustration), stacked and
    centered on mobile. Column split happens in responsive.css, per the

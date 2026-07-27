@@ -93,6 +93,13 @@ body {
   height: 100%;
 }
 
+/* Used by in-page anchor links (e.g. the Phase 3 CTA linking back to the
+   institute grid). The global prefers-reduced-motion rule below already
+   forces this back to `auto`, so it's safe by default. */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background-color: var(--color-paper);
