@@ -1,0 +1,103 @@
+/* ==========================================================================
+   RESPONSIVE.CSS
+   Trackly is built mobile-first: every base rule in the other CSS files
+   already targets a phone screen. This file only holds the min-width
+   overrides that change layout structure at larger sizes — new grid
+   columns, the desktop nav swap, and the type scale step-up. Small
+   cosmetic tweaks stay inline in their own component file; only
+   structural, page-wide changes belong here.
+
+   Breakpoints:
+     sm  – 640px  (large phone / small tablet)
+     md  – 768px  (tablet)
+     lg  – 1024px (laptop)
+     xl  – 1280px (desktop)
+   ========================================================================== */
+
+/* ---- sm: 640px ---- */
+@media (min-width: 640px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- md: 768px ---- */
+@media (min-width: 768px) {
+  :root {
+    --text-3xl: 2.5rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+  }
+
+  /* Swap hamburger nav for the horizontal desktop nav */
+  .nav-primary {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-mobile {
+    display: none !important;
+  }
+}
+
+/* ---- lg: 1024px ---- */
+@media (min-width: 1024px) {
+  :root {
+    --text-3xl: 2.75rem;
+    --text-4xl: 3rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .section {
+    padding-block: var(--space-24);
+  }
+}
+
+/* ---- xl: 1280px ---- */
+@media (min-width: 1280px) {
+  .container,
+  .container-prose {
+    padding-inline: var(--space-8);
+  }
+}
+
+/* ---- Utility: hide/show helpers per breakpoint ---- */
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .visually-hidden-mobile {
+    display: revert;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}

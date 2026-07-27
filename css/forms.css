@@ -1,0 +1,113 @@
+/* ==========================================================================
+   FORMS.CSS
+   Every input on the site shares this styling. Password and textarea are
+   included now, ready for Contact and future account forms, even though
+   Phase 1 doesn't wire up any submission logic.
+   ========================================================================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.field-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.field-label .required {
+  color: var(--color-error);
+  margin-left: var(--space-1);
+}
+
+.field-hint {
+  font-size: var(--text-xs);
+  color: var(--color-slate-light);
+}
+
+.field-error {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  display: none;
+}
+
+.field.has-error .field-error {
+  display: block;
+}
+
+.field.has-error .input {
+  border-color: var(--color-error);
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  font-family: var(--font-family-base);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  min-height: 44px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--color-slate-light);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  background-color: var(--color-mist);
+  color: var(--color-slate-light);
+  cursor: not-allowed;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='%23475569' d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: var(--space-8);
+}
+
+/* ---- Checkbox / radio ---- */
+.check-field {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.check-field input[type="checkbox"],
+.check-field input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  margin-top: 2px;
+}
+
+.check-field label {
+  font-size: var(--text-sm);
+  color: var(--color-slate);
+}

@@ -1,0 +1,27 @@
+{
+  "trackerTypes": [
+    { "id": "exam-schedule", "label": "Exam Schedule" },
+    { "id": "result", "label": "Result" },
+    { "id": "result-date", "label": "Result Date" },
+    { "id": "registration", "label": "Registration" },
+    { "id": "exam-form", "label": "Exam Form" },
+    { "id": "correction-window", "label": "Correction Window" },
+    { "id": "admit-card", "label": "Admit Card" },
+    { "id": "official-notification", "label": "Official Notification" },
+    { "id": "circular", "label": "Circular" },
+    { "id": "important-announcement", "label": "Important Announcement" },
+    { "id": "guidelines", "label": "Guidelines" },
+    { "id": "press-release", "label": "Press Release" },
+    { "id": "rtp", "label": "RTP" },
+    { "id": "mtp", "label": "MTP" },
+    { "id": "mock-test", "label": "Mock Test Papers" },
+    { "id": "syllabus", "label": "Syllabus" },
+    { "id": "important-dates", "label": "Important Dates" }
+  ],
+  "statuses": [
+    { "id": "watching", "label": "Tracking", "badge": "badge-tracked" },
+    { "id": "pending", "label": "Pending", "badge": "badge-pending" },
+    { "id": "released", "label": "Released", "badge": "badge-released" }
+  ],
+  "_notes": "No live tracker records exist yet — this file only defines the shared taxonomy. Actual tracker instances (which institute + course + type + current status) will be added once the tracking engine phase ships. Every tracker page must render 'Not officially released yet' rather than guessing a status when real data isn't present."
+}

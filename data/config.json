@@ -1,0 +1,18 @@
+{
+  "site": {
+    "name": "Trackly",
+    "tagline": "Track official updates. We'll notify you.",
+    "url": "https://www.tracklyapp.com",
+    "language": "en",
+    "themeColor": "#1d4ed8"
+  },
+  "features": {
+    "search": false,
+    "login": false,
+    "dashboard": false,
+    "notifications": false,
+    "darkMode": false
+  },
+  "supportedInstitutes": ["icai", "icsi", "upsc", "ssc", "ibps"],
+  "_notes": "Feature flags are all false in Phase 1 by design — they exist so future phases toggle capabilities on without touching HTML/CSS. site.url is a placeholder domain; replace it with the real production domain before go-live, since it feeds canonical URLs and Open Graph tags."
+}

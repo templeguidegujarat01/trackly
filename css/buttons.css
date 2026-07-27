@@ -1,0 +1,151 @@
+/* ==========================================================================
+   BUTTONS.CSS
+   One button component, every variant built as a modifier class.
+   Never write a one-off button style on a page — extend this file instead.
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1.25rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px; /* comfortable touch target */
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast), color var(--transition-fast),
+    transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* ---- Variants ---- */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-paper);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-mist);
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-mist-strong);
+  border-color: var(--color-line-strong);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-light);
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: var(--color-paper);
+  border-color: var(--color-error);
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+/* ---- Sizes ---- */
+.btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: var(--text-xs);
+  min-height: 36px;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.75rem;
+  font-size: var(--text-base);
+  min-height: 52px;
+}
+
+/* ---- Icon-only button (e.g. mobile menu, close) ---- */
+.btn-icon {
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-ink);
+}
+
+.btn-icon:hover {
+  background-color: var(--color-mist);
+}
+
+.btn-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---- Full-width (mobile forms / cards) ---- */
+.btn-block {
+  width: 100%;
+}
+
+/* ---- Disabled state — applies to any variant ---- */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- Loading state ----
+   Toggle by adding data-loading="true" from ui.js. The label text stays in
+   the DOM (for accessibility) but is visually hidden while the spinner shows. */
+.btn[data-loading="true"] {
+  color: transparent;
+  pointer-events: none;
+  position: relative;
+}
+
+.btn[data-loading="true"]::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  color: var(--color-paper);
+  animation: btn-spin 700ms linear infinite;
+}
+
+.btn-secondary[data-loading="true"]::after,
+.btn-outline[data-loading="true"]::after {
+  color: var(--color-primary);
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

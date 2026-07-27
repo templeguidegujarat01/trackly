@@ -1,0 +1,163 @@
+/* ==========================================================================
+   NAVIGATION.CSS
+   The header markup is duplicated at the top of every HTML page (this is a
+   static site with no templating layer), so its appearance and behaviour
+   must live entirely in shared files — never adjust header styling for a
+   single page. Behaviour (menu open/close, scroll shadow) is in
+   js/navigation.js.
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  background-color: var(--color-paper);
+  border-bottom: 1px solid var(--color-line);
+  transition: box-shadow var(--transition-base);
+}
+
+/* Added by navigation.js once the page scrolls past a small threshold */
+.site-header--scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+.site-header__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-ink);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  flex-shrink: 0;
+}
+
+.brand__mark {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+/* ---- Primary nav (desktop) ---- */
+.nav-primary {
+  display: none; /* revealed at the md breakpoint in responsive.css */
+}
+
+.nav-primary__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-primary__link {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-slate);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-primary__link:hover {
+  color: var(--color-ink);
+  background-color: var(--color-mist);
+}
+
+.nav-primary__link[aria-current="page"] {
+  color: var(--color-primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Placeholder for future Login control — hidden until auth ships (Phase-ready,
+   not built now, per the permanent rules) */
+.nav-actions__login {
+  display: none;
+}
+
+/* ---- Mobile menu trigger ---- */
+.nav-toggle {
+  display: inline-flex;
+}
+
+/* ---- Mobile menu panel ----
+   A full-height off-canvas panel, shown/hidden via the [hidden] attribute
+   and the .nav-mobile--open class (transition target) from navigation.js */
+.nav-mobile {
+  position: fixed;
+  inset: var(--header-height) 0 0 0;
+  z-index: calc(var(--z-header) - 1);
+  background-color: var(--color-paper);
+  overflow-y: auto;
+  padding: var(--space-6) var(--container-padding) var(--space-10);
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.nav-mobile[hidden] {
+  display: none;
+}
+
+.nav-mobile--open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.nav-mobile__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.nav-mobile__link {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.nav-mobile__link:hover {
+  background-color: var(--color-mist);
+}
+
+.nav-mobile__link[aria-current="page"] {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.nav-mobile__footer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-line);
+}

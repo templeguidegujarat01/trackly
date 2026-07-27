@@ -1,0 +1,156 @@
+/* ==========================================================================
+   LAYOUT.CSS
+   Page shell, containers, and section rhythm shared by every page.
+   Header/footer visual styling lives in navigation.css / footer.css —
+   this file only owns structural layout (widths, grid, page flow).
+   ========================================================================== */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.page-main {
+  flex: 1 0 auto;
+}
+
+/* Standard content container — used on every page */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* Narrow container for long-form reading: About, Privacy, Terms, Disclaimer */
+.container-prose {
+  width: 100%;
+  max-width: var(--container-prose);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* Vertical rhythm between page sections */
+.section {
+  padding-block: var(--space-16);
+}
+
+.section-tight {
+  padding-block: var(--space-10);
+}
+
+.section-header {
+  max-width: 640px;
+  margin-bottom: var(--space-10);
+}
+
+.section-header.text-center {
+  margin-inline: auto;
+}
+
+/* A section on the mist background, used to break up long pages visually
+   without introducing new colors */
+.section-alt {
+  background-color: var(--color-mist);
+}
+
+/* ---- Simple grid helpers (mobile-first: 1 column by default) ---- */
+.grid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr;
+}
+
+.grid-3 {
+  grid-template-columns: 1fr;
+}
+
+.grid-4 {
+  grid-template-columns: 1fr;
+}
+
+/* Column counts open up at larger breakpoints — see responsive.css */
+
+/* ---- Flex helpers ---- */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+
+/* ---- Breadcrumb ----
+   Not used on any Phase 1 page yet — built now so the institute and
+   tracker page phases (Home > ICAI > Intermediate > Result) can drop it
+   in without inventing new markup or styling later. */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  font-size: var(--text-sm);
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-slate-light);
+}
+
+.breadcrumb a {
+  color: var(--color-slate);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.breadcrumb li[aria-current="page"] {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.breadcrumb .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-line-strong);
+}
+
+/* ---- Page shell (used by 404 and any single-focus page) ---- */
+.shell-centered {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-16) var(--container-padding);
+}

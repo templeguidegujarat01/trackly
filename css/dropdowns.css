@@ -1,0 +1,108 @@
+/* ==========================================================================
+   DROPDOWNS.CSS
+   Custom dropdown component (distinct from the plain <select> in forms.css).
+   Behaviour — open/close, keyboard nav, outside-click — is handled by
+   js/components.js. This file only owns appearance and state classes.
+   Markup contract:
+   <div class="dropdown">
+     <button class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">…</button>
+     <ul class="dropdown__menu" role="listbox" hidden>
+       <li class="dropdown__item" role="option">…</li>
+     </ul>
+   </div>
+   ========================================================================== */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  min-height: 44px;
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dropdown__trigger:hover {
+  border-color: var(--color-slate-light);
+}
+
+.dropdown[data-open="true"] .dropdown__trigger {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.dropdown__trigger-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-slate);
+  transition: transform var(--transition-fast);
+}
+
+.dropdown[data-open="true"] .dropdown__trigger-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown__menu {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + var(--space-2));
+  left: 0;
+  right: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-2);
+  list-style: none;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.dropdown__menu[hidden] {
+  display: none;
+}
+
+.dropdown__item {
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  cursor: pointer;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown__item:hover,
+.dropdown__item[data-active="true"] {
+  background-color: var(--color-mist);
+}
+
+.dropdown__item[aria-selected="true"] {
+  color: var(--color-primary);
+  font-weight: 600;
+  background-color: var(--color-primary-light);
+}
+
+/* On small screens the menu can be as wide as its viewport padding allows,
+   the max-height keeps it from ever needing to scroll off-screen */
+@media (max-width: 480px) {
+  .dropdown__menu {
+    max-height: 240px;
+  }
+}
