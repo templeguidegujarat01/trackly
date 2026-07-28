@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automation Architecture | How Trackly Will Monitor Official Sources</title>
+  <meta name="description" content="How Trackly's future automation engine will monitor official sources, detect real changes, verify them, and eventually deliver notifications — the complete architecture, explained.">
+  <link rel="canonical" href="https://www.tracklyapp.com/automation.html">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1D4ED8">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trackly">
+  <meta property="og:title" content="Automation Architecture | How Trackly Will Monitor Official Sources">
+  <meta property="og:description" content="How Trackly's future automation engine will monitor official sources, detect real changes, verify them, and eventually deliver notifications — the complete architecture, explained.">
+  <meta property="og:url" content="https://www.tracklyapp.com/automation.html">
+  <meta property="og:locale" content="en_IN">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Automation Architecture | How Trackly Will Monitor Official Sources">
+  <meta name="twitter:description" content="How Trackly's future automation engine will monitor official sources, detect real changes, verify them, and eventually deliver notifications — the complete architecture, explained.">
+
+  <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dropdowns.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Trackly already monitoring official websites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This page describes the architecture Trackly is building toward \u2014 monitoring isn't live yet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How will Trackly check for updates without an official API?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By combining official notification pages, sitemaps where available, and direct page comparison \u2014 the same general approach a careful human checker would use, just automated."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will Trackly ever use unofficial sources like news sites or social media?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Only the institute's own official page can trigger a notification, regardless of how reliable a third-party source seems."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if an official website changes its page structure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Monitoring for that source may temporarily need updating. Trackly is built to fail safely \u2014 it won't report a fake update just because a page layout changed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often will official sources be checked?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "That depends on the final scheduler configuration, and will likely vary by institute and update type. No exact frequency exists yet \u2014 this page won't promise one before it's actually built."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a \"false positive\" here, and how does Trackly avoid it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A false positive is a detected \"change\" that isn't a real official update \u2014 for example, a timestamp or ad refreshing. The verification layer exists specifically to filter these out before anything reaches the notification queue."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will notifications go out immediately after a change is detected?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A detected change enters the notification queue only after verification confirms it's a genuine official update."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which notification channels will be supported first?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "That decision hasn't been made yet. Email is the most likely starting point, but nothing is finalized."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is any of this automation running right now?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything on this page \u2014 scheduler, content check, change detection, verification, notification queue \u2014 is architecture, not a live system."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will Trackly ever charge for automated tracking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tracking is free in Version 1. Pricing for any future advanced automation hasn't been decided."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <img class="brand__mark" src="assets/logos/logo.svg" alt="" width="32" height="32">
+        Trackly
+      </a>
+
+      <nav class="nav-primary" aria-label="Primary">
+        <ul class="nav-primary__list">
+          <li><a class="nav-primary__link" data-nav-link href="index.html">Home</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="institutes.html">Institutes</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="how-it-works.html">How It Works</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="about.html">About</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
+        <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
+        <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
+          <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
+          <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav-mobile" id="nav-mobile" data-nav-mobile aria-label="Mobile" hidden>
+      <ul class="nav-mobile__list">
+        <li><a class="nav-mobile__link" data-nav-link href="index.html">Home</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="institutes.html">Institutes</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="how-it-works.html">How It Works</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="about.html">About</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-mobile__footer">
+        <a class="btn btn-primary btn-block" href="institutes.html">Start Tracking</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="page-main">
+    <!-- Hero -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-header">
+          <p class="text-eyebrow">Automation Architecture</p>
+          <h1>How Trackly Will Actually Watch Official Sources</h1>
+          <p class="text-lead mt-4">
+            This page explains the complete monitoring pipeline Trackly is
+            building toward — how official sources will be checked, how real
+            changes will be verified, and how notifications will eventually
+            reach you. None of this is live yet; this is the architecture,
+            not the product.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Why Automation -->
+    <section class="section section-alt" aria-labelledby="why-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Why Automation</p>
+          <h2 id="why-heading">Checking five websites by hand is exactly the problem</h2>
+        </div>
+        <p class="text-lead text-center">
+          "Checking automatically" isn't one feature — it's a small pipeline.
+          Something has to decide when to check, fetch the page, notice what
+          changed, confirm the change is real, and only then tell you. This
+          page walks through each piece of that pipeline honestly, including
+          the parts that don't exist yet.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Official Sources -->
+    <section class="section" aria-labelledby="sources-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Official Sources</p>
+          <h2 id="sources-heading">What monitoring will actually watch, institute by institute</h2>
+          <p class="mt-4">The same official pages already linked throughout the site — nothing new, nothing unverified.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-institute__mark" aria-hidden="true">CA</div>
+            <h3 class="card-title">ICAI</h3>
+            <p class="text-small text-muted">A dedicated notifications listing page — well suited to sitemap and page-comparison monitoring.</p>
+            <div class="card-footer">
+              <a class="link text-small" href="https://www.icai.org/category/notifications" target="_blank" rel="noopener noreferrer">
+                icai.org/category/notifications
+                <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-institute__mark" aria-hidden="true">CS</div>
+            <h3 class="card-title">ICSI</h3>
+            <p class="text-small text-muted">Notices appear directly on the student updates page — no distinct RSS feed currently exists.</p>
+            <div class="card-footer">
+              <a class="link text-small" href="https://www.icsi.edu/student_rpn/" target="_blank" rel="noopener noreferrer">
+                icsi.edu/student_rpn
+                <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-institute__mark" aria-hidden="true">UP</div>
+            <h3 class="card-title">UPSC</h3>
+            <p class="text-small text-muted">An active-examinations listing page that changes as new exams are announced — a strong candidate for direct page comparison.</p>
+            <div class="card-footer">
+              <a class="link text-small" href="https://upsc.gov.in/examinations/active-exams" target="_blank" rel="noopener noreferrer">
+                upsc.gov.in/examinations/active-exams
+                <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-institute__mark" aria-hidden="true">SS</div>
+            <h3 class="card-title">SSC</h3>
+            <p class="text-small text-muted">Notices are posted directly on the homepage — monitoring will need to watch the page as a whole, not a dedicated sub-page.</p>
+            <div class="card-footer">
+              <a class="link text-small" href="https://ssc.gov.in" target="_blank" rel="noopener noreferrer">
+                ssc.gov.in
+                <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-institute__mark" aria-hidden="true">IB</div>
+            <h3 class="card-title">IBPS</h3>
+            <p class="text-small text-muted">Notices are posted directly on the homepage, the same general shape as SSC's site.</p>
+            <div class="card-footer">
+              <a class="link text-small" href="https://www.ibps.in" target="_blank" rel="noopener noreferrer">
+                ibps.in
+                <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Monitoring Flow -->
+    <section class="section section-alt" aria-labelledby="flow-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Monitoring Flow</p>
+          <h2 id="flow-heading">The full pipeline, end to end</h2>
+        </div>
+
+        <ol class="sr-only">
+          <li>Official Website — the institute's real, official page.</li>
+          <li>Scheduler — decides when to check next. Part of the future automation engine.</li>
+          <li>Content Check — fetches the current page content. Part of the future automation engine.</li>
+          <li>Change Detection — compares it to the last known version. Part of the future automation engine.</li>
+          <li>Verification — confirms the change is real and official. Part of the future automation engine.</li>
+          <li>Notification Queue — holds the update, ready to send. Part of the future automation engine.</li>
+          <li>User — gets notified the moment it's official.</li>
+        </ol>
+
+      <svg viewBox="0 0 380 792" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width:100%;max-width:380px;height:auto;margin-inline:auto;display:block;">
+  <rect x="40" y="96" width="300" height="580" rx="20" fill="none" stroke="var(--color-line-strong)" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <text x="190" y="114" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1" fill="var(--color-slate-light)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">FUTURE AUTOMATION ENGINE</text>
+  <g transform="translate(60,24)">
+    <rect width="260" height="72" rx="16" fill="var(--color-mist)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-shield-check" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Official Website</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">The institute's real, official page</text>
+  </g>
+  <line x1="190" y1="96" x2="190" y2="130" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,136 185,126 195,126" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,136)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-layout" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Scheduler</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Decides when to check next</text>
+  </g>
+  <line x1="190" y1="208" x2="190" y2="242" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,248 185,238 195,238" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,248)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-external-link" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Content Check</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Fetches the current page content</text>
+  </g>
+  <line x1="190" y1="320" x2="190" y2="354" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,360 185,350 195,350" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,360)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-zap" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Change Detection</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Compares it to the last known version</text>
+  </g>
+  <line x1="190" y1="432" x2="190" y2="466" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,472 185,462 195,462" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,472)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-check-circle" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Verification</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Confirms the change is real and official</text>
+  </g>
+  <line x1="190" y1="544" x2="190" y2="578" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,584 185,574 195,574" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,584)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-bell" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Notification Queue</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Holds the update, ready to send</text>
+  </g>
+  <line x1="190" y1="656" x2="190" y2="690" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,696 185,686 195,686" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,696)">
+    <rect width="260" height="72" rx="16" fill="var(--color-mist)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-user-plus" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">User</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Gets notified the moment it's official</text>
+  </g>
+      </svg>
+      </div>
+    </section>
+
+    <!-- 4. Monitoring Methods -->
+    <section class="section" aria-labelledby="methods-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Monitoring Methods</p>
+          <h2 id="methods-heading">How a change could actually be noticed</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-bell"></use></svg>
+            </div>
+            <h3 class="card-title">RSS Feeds</h3>
+            <p class="text-small text-muted"><strong>Advantage:</strong> Lightweight, standardized, and easy to poll on a schedule without fetching a whole page.</p>
+            <p class="text-small text-muted mt-2"><strong>Limitation:</strong> Most official Indian government and institute sites don't publish an RSS feed, so this method has limited coverage for the institutes Trackly supports today.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-file-text"></use></svg>
+            </div>
+            <h3 class="card-title">Official Notification Pages</h3>
+            <p class="text-small text-muted"><strong>Advantage:</strong> Directly authoritative — it's the institute's own listing of its own announcements.</p>
+            <p class="text-small text-muted mt-2"><strong>Limitation:</strong> Page structure can change without notice, so parsing logic built for one layout can break and needs maintenance.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-layout"></use></svg>
+            </div>
+            <h3 class="card-title">Sitemaps</h3>
+            <p class="text-small text-muted"><strong>Advantage:</strong> A standardized file that can reveal new or updated URLs efficiently, without scanning a whole site.</p>
+            <p class="text-small text-muted mt-2"><strong>Limitation:</strong> A sitemap shows that a page changed, not what changed on it — and not every official site keeps its sitemap accurate or current.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-zap"></use></svg>
+            </div>
+            <h3 class="card-title">Page Comparison</h3>
+            <p class="text-small text-muted"><strong>Advantage:</strong> Works even when no feed, sitemap, or API exists — it just needs the page itself.</p>
+            <p class="text-small text-muted mt-2"><strong>Limitation:</strong> Sensitive to irrelevant changes (ads, timestamps, view counters), so it needs careful scoping to the relevant part of a page to avoid false positives.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
+            </div>
+            <h3 class="card-title">Future APIs</h3>
+            <p class="text-small text-muted"><strong>Advantage:</strong> The most reliable and efficient option, if it ever exists — structured data with no parsing guesswork.</p>
+            <p class="text-small text-muted mt-2"><strong>Limitation:</strong> None of ICAI, ICSI, UPSC, SSC, or IBPS currently offer a public API for this purpose. This row is aspirational, not a current plan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Future Scheduler -->
+    <section class="section section-alt" aria-labelledby="scheduler-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Future Scheduler</p>
+          <h2 id="scheduler-heading">What could actually run the checks</h2>
+          <p class="mt-4">Options being considered — nothing here is implemented or decided.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-layout"></use></svg>
+            </div>
+            <h3 class="card-title">GitHub Actions</h3>
+            <p class="text-small text-muted">Scheduled workflows (cron syntax) that can run a check script on a timer, inside GitHub's own infrastructure, within its free usage limits.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-zap"></use></svg>
+            </div>
+            <h3 class="card-title">Cloudflare Cron Triggers</h3>
+            <p class="text-small text-muted">Cloudflare Workers support scheduled triggers that run a serverless function on a cron schedule — a natural fit for a site already compatible with Cloudflare Pages.</p>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-calendar"></use></svg>
+            </div>
+            <h3 class="card-title">External Cron</h3>
+            <p class="text-small text-muted">A traditional cron job on a server, or a third-party scheduling service that pings an endpoint on a timer. The simplest option, and the easiest to move away from later.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Verification Layer -->
+    <section class="section" aria-labelledby="verification-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Verification Layer</p>
+          <h2 id="verification-heading">Why Trackly never trusts random news</h2>
+        </div>
+        <div class="card card-info">
+          <p>
+            A news article can be first, fast, and still wrong. Trackly's
+            verification layer exists so that speed never comes at the cost
+            of accuracy:
+          </p>
+          <ul class="mt-4">
+            <li>Only the institute's own official page counts as a source of truth.</li>
+            <li>News articles, social posts, and aggregator sites never trigger a notification, no matter how reliable they usually are.</li>
+            <li>A detected change only becomes a notification after verification confirms it came from the official source itself.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Future Notification Channels -->
+    <section class="section section-alt" aria-labelledby="channels-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Future Notification Channels</p>
+          <h2 id="channels-heading">How an update could eventually reach you</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-mail"></use></svg>
+            </div>
+            <h3 class="card-title">Email</h3>
+            <p class="text-small text-muted">The most likely first channel — a direct notification when your tracked update is released.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Future Feature</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-bell"></use></svg>
+            </div>
+            <h3 class="card-title">Browser Push</h3>
+            <p class="text-small text-muted">A notification in your browser, without needing to have Trackly open.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Future Feature</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-message"></use></svg>
+            </div>
+            <h3 class="card-title">Telegram</h3>
+            <p class="text-small text-muted">A message to a Trackly bot or channel, for anyone who prefers Telegram over email.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Future Feature</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-message"></use></svg>
+            </div>
+            <h3 class="card-title">WhatsApp</h3>
+            <p class="text-small text-muted">A message through WhatsApp, for the same reason — reaching you wherever you already check things.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Future Feature</span>
+            </div>
+          </div>
+          <div class="card card-feature">
+            <div class="card-feature__icon" aria-hidden="true">
+              <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-smartphone"></use></svg>
+            </div>
+            <h3 class="card-title">Mobile App</h3>
+            <p class="text-small text-muted">A native notification, if and when a dedicated Trackly app exists.</p>
+            <div class="card-footer">
+              <span class="badge badge-coming-soon">Future Feature</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Frequently Asked Questions -->
+    <section class="section" aria-labelledby="faq-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Frequently Asked Questions</p>
+          <h2 id="faq-heading">Common questions about the automation architecture</h2>
+        </div>
+        <div class="accordion">
+        <details class="accordion-item" id="faq-live">
+          <summary class="accordion-item__summary">
+            Is Trackly already monitoring official websites?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. This page describes the architecture Trackly is building toward — monitoring isn't live yet.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-no-api">
+          <summary class="accordion-item__summary">
+            How will Trackly check for updates without an official API?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>By combining official notification pages, sitemaps where available, and direct page comparison — the same general approach a careful human checker would use, just automated.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-unofficial">
+          <summary class="accordion-item__summary">
+            Will Trackly ever use unofficial sources like news sites or social media?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. Only the institute's own official page can trigger a notification, regardless of how reliable a third-party source seems.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-site-change">
+          <summary class="accordion-item__summary">
+            What happens if an official website changes its page structure?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Monitoring for that source may temporarily need updating. Trackly is built to fail safely — it won't report a fake update just because a page layout changed.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-frequency">
+          <summary class="accordion-item__summary">
+            How often will official sources be checked?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>That depends on the final scheduler configuration, and will likely vary by institute and update type. No exact frequency exists yet — this page won't promise one before it's actually built.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-false-positive">
+          <summary class="accordion-item__summary">
+            What is a "false positive" here, and how does Trackly avoid it?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>A false positive is a detected "change" that isn't a real official update — for example, a timestamp or ad refreshing. The verification layer exists specifically to filter these out before anything reaches the notification queue.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-immediate">
+          <summary class="accordion-item__summary">
+            Will notifications go out immediately after a change is detected?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. A detected change enters the notification queue only after verification confirms it's a genuine official update.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-channels-first">
+          <summary class="accordion-item__summary">
+            Which notification channels will be supported first?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>That decision hasn't been made yet. Email is the most likely starting point, but nothing is finalized.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-running">
+          <summary class="accordion-item__summary">
+            Is any of this automation running right now?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. Everything on this page — scheduler, content check, change detection, verification, notification queue — is architecture, not a live system.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-cost">
+          <summary class="accordion-item__summary">
+            Will Trackly ever charge for automated tracking?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Tracking is free in Version 1. Pricing for any future advanced automation hasn't been decided.</p>
+          </div>
+        </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="footer-brand" href="index.html">
+            <img class="footer-brand__mark" src="assets/logos/logo.svg" alt="" width="28" height="28">
+            Trackly
+          </a>
+          <p class="footer-tagline">Track official updates. We'll notify you.</p>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Platform</h2>
+          <ul class="footer-links">
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="institutes.html">Supported Institutes</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Legal</h2>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Contact</h2>
+          <ul class="footer-links">
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom__row">
+          <p>&copy; <span data-current-year>2026</span> Trackly. All rights reserved.</p>
+          <div class="footer-social" data-footer-social aria-hidden="true"><!-- Reserved for future social links --></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
