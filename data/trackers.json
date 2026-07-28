@@ -1,27 +1,24 @@
 {
   "trackerTypes": [
-    { "id": "exam-schedule", "label": "Exam Schedule" },
-    { "id": "result", "label": "Result" },
-    { "id": "result-date", "label": "Result Date" },
-    { "id": "registration", "label": "Registration" },
-    { "id": "exam-form", "label": "Exam Form" },
-    { "id": "correction-window", "label": "Correction Window" },
-    { "id": "admit-card", "label": "Admit Card" },
-    { "id": "official-notification", "label": "Official Notification" },
-    { "id": "circular", "label": "Circular" },
-    { "id": "important-announcement", "label": "Important Announcement" },
-    { "id": "guidelines", "label": "Guidelines" },
-    { "id": "press-release", "label": "Press Release" },
-    { "id": "rtp", "label": "RTP" },
-    { "id": "mtp", "label": "MTP" },
-    { "id": "mock-test", "label": "Mock Test Papers" },
-    { "id": "syllabus", "label": "Syllabus" },
-    { "id": "important-dates", "label": "Important Dates" }
+    { "id": "results", "label": "Results", "icon": "icon-clipboard-check", "description": "The moment your result is officially declared." },
+    { "id": "exam-timetable", "label": "Exam Timetable", "icon": "icon-calendar", "description": "When the official exam schedule is released." },
+    { "id": "exam-dates", "label": "Exam Dates", "icon": "icon-calendar", "description": "When official exam dates are announced." },
+    { "id": "exam-calendar", "label": "Exam Calendar", "icon": "icon-calendar", "description": "The full official calendar for the year's exams." },
+    { "id": "mtp", "label": "MTP", "icon": "icon-file-text", "description": "New Mock Test Papers released by ICAI." },
+    { "id": "rtp", "label": "RTP", "icon": "icon-file-text", "description": "New Revision Test Papers released by ICAI." },
+    { "id": "notifications", "label": "Notifications", "icon": "icon-bell", "description": "General official notifications as soon as they're posted." },
+    { "id": "important-circulars", "label": "Important Circulars", "icon": "icon-megaphone", "description": "Official circulars and announcements as they're issued." },
+    { "id": "circulars", "label": "Circulars", "icon": "icon-megaphone", "description": "Official circulars and announcements as they're issued." },
+    { "id": "training-updates", "label": "Training Updates", "icon": "icon-file-text", "description": "Updates on mandatory training programmes and schedules." },
+    { "id": "admit-cards", "label": "Admit Cards", "icon": "icon-id-card", "description": "When your admit card or hall ticket becomes available." },
+    { "id": "answer-keys", "label": "Answer Keys", "icon": "icon-key", "description": "When the official answer key is published." },
+    { "id": "recruitments", "label": "Recruitments", "icon": "icon-user-plus", "description": "New recruitment notifications as they're released." },
+    { "id": "interview-updates", "label": "Interview Updates", "icon": "icon-mail", "description": "Interview schedules and status updates." }
   ],
   "statuses": [
     { "id": "watching", "label": "Tracking", "badge": "badge-tracked" },
     { "id": "pending", "label": "Pending", "badge": "badge-pending" },
     { "id": "released", "label": "Released", "badge": "badge-released" }
   ],
-  "_notes": "No live tracker records exist yet — this file only defines the shared taxonomy. Actual tracker instances (which institute + course + type + current status) will be added once the tracking engine phase ships. Every tracker page must render 'Not officially released yet' rather than guessing a status when real data isn't present."
+  "_notes": "trackerTypes was rewritten in Phase 5 to match the labels actually shipped on the institute pages (Phase 3/4) rather than the original generic Phase 1 placeholder list, which had drifted out of sync with real usage. Each type's id is the URL-safe slug used in track.html?org=X&tracker=Y. No live tracker instances (specific institute+type+status records) exist yet — that's the tracking engine, still a future phase. Every tracker page must render 'Not officially released yet' rather than guessing a status when real data isn't present."
 }

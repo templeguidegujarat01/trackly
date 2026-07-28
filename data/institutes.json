@@ -2,49 +2,89 @@
   "institutes": [
     {
       "id": "icai",
+      "mark": "CA",
       "name": "ICAI",
       "fullName": "Institute of Chartered Accountants of India",
       "shortDescription": "Foundation, Intermediate, and Final course updates.",
-      "url": "/pages/icai/",
+      "heroDescription": "Track Foundation, Intermediate, and Final updates from India's professional accounting body — results, timetables, and official notifications, all in one place.",
+      "url": "pages/icai/",
       "courses": ["Foundation", "Intermediate", "Final"],
+      "trackers": ["results", "exam-timetable", "mtp", "rtp", "notifications", "important-circulars"],
+      "official": {
+        "website": { "url": "https://www.icai.org", "label": "icai.org" },
+        "notifications": { "url": "https://www.icai.org/category/notifications", "label": "icai.org/category/notifications" },
+        "portal": { "url": "https://eservices.icai.org", "label": "eservices.icai.org (SSP)" }
+      },
       "trackableTopicCount": null
     },
     {
       "id": "icsi",
+      "mark": "CS",
       "name": "ICSI",
       "fullName": "Institute of Company Secretaries of India",
       "shortDescription": "CSEET, Executive, and Professional course updates.",
-      "url": "/pages/icsi/",
+      "heroDescription": "Track CSEET, Executive, and Professional updates from India's company secretary regulator — exam dates, results, and circulars, all in one place.",
+      "url": "pages/icsi/",
       "courses": ["CSEET", "Executive", "Professional"],
+      "trackers": ["exam-dates", "results", "notifications", "training-updates", "circulars"],
+      "official": {
+        "website": { "url": "https://www.icsi.edu", "label": "icsi.edu" },
+        "notifications": { "url": "https://www.icsi.edu/student_rpn/", "label": "icsi.edu/student_rpn" },
+        "portal": { "url": "https://smash.icsi.edu", "label": "smash.icsi.edu (SMASH)" }
+      },
       "trackableTopicCount": null
     },
     {
       "id": "upsc",
+      "mark": "UP",
       "name": "UPSC",
       "fullName": "Union Public Service Commission",
       "shortDescription": "Civil Services, NDA, CDS, CAPF, EPFO and more.",
-      "url": "/pages/upsc/",
+      "heroDescription": "Track Civil Services, NDA, CDS, and other UPSC updates — notifications, admit cards, and results, all in one place.",
+      "url": "pages/upsc/",
       "courses": ["Civil Services", "NDA", "CDS", "CAPF", "EPFO"],
+      "trackers": ["notifications", "exam-calendar", "admit-cards", "results", "recruitments"],
+      "official": {
+        "website": { "url": "https://www.upsc.gov.in", "label": "upsc.gov.in" },
+        "notifications": { "url": "https://upsc.gov.in/examinations/active-exams", "label": "upsc.gov.in/examinations/active-exams" },
+        "portal": null
+      },
       "trackableTopicCount": null
     },
     {
       "id": "ssc",
+      "mark": "SS",
       "name": "SSC",
       "fullName": "Staff Selection Commission",
       "shortDescription": "CGL, CHSL, MTS, JE, CPO, GD and more.",
-      "url": "/pages/ssc/",
+      "heroDescription": "Track CGL, CHSL, and other SSC updates — recruitments, exam dates, and results, all in one place.",
+      "url": "pages/ssc/",
       "courses": ["CGL", "CHSL", "MTS", "JE", "CPO", "GD"],
+      "trackers": ["recruitments", "exam-dates", "admit-cards", "answer-keys", "results"],
+      "official": {
+        "website": { "url": "https://ssc.gov.in", "label": "ssc.gov.in" },
+        "notifications": { "url": "https://ssc.gov.in", "label": "ssc.gov.in", "note": "Notices are posted directly on the official homepage." },
+        "portal": null
+      },
       "trackableTopicCount": null
     },
     {
       "id": "ibps",
+      "mark": "IB",
       "name": "IBPS",
       "fullName": "Institute of Banking Personnel Selection",
       "shortDescription": "PO, Clerk, SO, and RRB exam updates.",
-      "url": "/pages/ibps/",
+      "heroDescription": "Track PO, Clerk, SO, and RRB updates from India's banking recruitment body — notifications, results, and interview updates, all in one place.",
+      "url": "pages/ibps/",
       "courses": ["PO", "Clerk", "SO", "RRB"],
+      "trackers": ["notifications", "exam-calendar", "results", "interview-updates", "recruitments"],
+      "official": {
+        "website": { "url": "https://www.ibps.in", "label": "ibps.in" },
+        "notifications": { "url": "https://www.ibps.in", "label": "ibps.in", "note": "Notices are posted directly on the official homepage." },
+        "portal": null
+      },
       "trackableTopicCount": null
     }
   ],
-  "_notes": "trackableTopicCount is intentionally null in Phase 1 — no backend exists yet to count real trackers. Populate it once the tracking engine phase ships; never hardcode a fake number in the meantime."
+  "_notes": "trackableTopicCount is intentionally null — no backend exists yet to count real trackers. Populate it once the tracking engine phase ships; never hardcode a fake number in the meantime. As of Phase 5, this file is the single source of truth for institute data: track.html's JS fetches it directly. Phase 3/4's static HTML pages were generated from an equivalent data table before this file existed as the canonical version; if institute content changes going forward, update it here."
 }
