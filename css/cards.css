@@ -180,6 +180,31 @@ a.card:hover,
   margin-top: var(--space-1);
 }
 
+/* ==========================================================================
+   CODE BLOCK (Phase 8: data-architecture.html JSON examples)
+   The one CSS addition this phase — no page before this needed to show
+   literal code. Reuses existing color tokens only (mist/line/ink); the
+   only new value is the monospace font stack added in typography.css.
+   ========================================================================== */
+
+.code-block {
+  background-color: var(--color-mist);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  margin-top: var(--space-4);
+}
+
+.code-block code {
+  display: block;
+  font-family: var(--font-family-mono);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  color: var(--color-ink);
+  white-space: pre;
+}
+
 /* ---- Feature card ---- */
 .card-feature {
   text-align: left;

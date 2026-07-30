@@ -12,6 +12,14 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
 
+  /* Needed for the first time in Phase 8: displaying JSON schema examples
+     legibly. Not a color addition — just the standard system monospace
+     stack, matching --font-family-base's approach of using native fonts
+     rather than loading anything. */
+  --font-family-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
   /* Type scale (mobile-first; scaled up in responsive.css at larger breakpoints) */
   --text-xs: 0.75rem;    /* 12px — captions, meta */
   --text-sm: 0.875rem;   /* 14px — secondary text, labels */
