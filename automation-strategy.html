@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Automation Strategy | How Trackly Stays Free to Run</title>
+  <meta name="description" content="The complete free-tier automation strategy behind Trackly: which official sources to monitor, how, on what free scheduler, and what will eventually require a real backend.">
+  <link rel="canonical" href="https://www.tracklyapp.com/automation-strategy.html">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1D4ED8">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trackly">
+  <meta property="og:title" content="Free Automation Strategy | How Trackly Stays Free to Run">
+  <meta property="og:description" content="The complete free-tier automation strategy behind Trackly: which official sources to monitor, how, on what free scheduler, and what will eventually require a real backend.">
+  <meta property="og:url" content="https://www.tracklyapp.com/automation-strategy.html">
+  <meta property="og:locale" content="en_IN">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Free Automation Strategy | How Trackly Stays Free to Run">
+  <meta name="twitter:description" content="The complete free-tier automation strategy behind Trackly: which official sources to monitor, how, on what free scheduler, and what will eventually require a real backend.">
+
+  <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dropdowns.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is any of this free automation strategy implemented yet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This page is architecture and planning only \u2014 nothing on it is running."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not just pay for a server from day one?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trackly's Version 1 philosophy is free-first: prove the product works before taking on hosting costs. A static site plus scheduled free-tier jobs can genuinely handle five institutes today."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is GitHub Actions really free forever?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For public repositories, yes \u2014 GitHub's hosted runners are free and unmetered on public repos. Private repositories get a monthly minute allowance instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if GitHub disables a scheduled workflow?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GitHub automatically disables scheduled workflows after 60 days without repository activity. Any real deployment needs a way to notice and re-enable this."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Cloudflare Cron Triggers free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The trigger itself carries no separate charge, but each invocation counts against the Workers Free plan's 100,000 requests/day and 10ms CPU-time limit, and the free plan allows only 5 cron triggers per account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do Cloudflare Cron Triggers retry if they fail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A failed scheduled run isn't retried automatically \u2014 the next attempt happens at the next scheduled time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not use RSS for everything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because none of ICAI, ICSI, UPSC, SSC, or IBPS currently publish a public RSS feed for their official notifications, as far as this research could confirm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How will a PDF change be detected if its URL doesn't change?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By comparing the file's size or a content hash, not just checking whether the link still exists \u2014 a same-URL replacement would otherwise be missed entirely."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will a removed notification link ever trigger an alert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Trackly only reports newly official information. A link disappearing usually just means the page was reorganized, not that anything was retracted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens when Trackly needs to support 100 institutes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The frontend architecture \u2014 config-driven pages, reusable components \u2014 stays the same. Reliable scheduling, change history, and failure monitoring at that scale will likely need a small persistent backend instead of pure scheduled scripts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this page describe a guaranteed roadmap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It describes a technically realistic strategy given free-tier constraints. The actual implementation may still change once real usage is observed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will monitoring ever cost users money?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tracking itself is free in Version 1. Nothing about this automation strategy changes that."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <img class="brand__mark" src="assets/logos/logo.svg" alt="" width="32" height="32">
+        Trackly
+      </a>
+
+      <nav class="nav-primary" aria-label="Primary">
+        <ul class="nav-primary__list">
+          <li><a class="nav-primary__link" data-nav-link href="index.html">Home</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="institutes.html">Institutes</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="how-it-works.html">How It Works</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="about.html">About</a></li>
+          <li><a class="nav-primary__link" data-nav-link href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
+        <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
+        <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
+          <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
+          <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav-mobile" id="nav-mobile" data-nav-mobile aria-label="Mobile" hidden>
+      <ul class="nav-mobile__list">
+        <li><a class="nav-mobile__link" data-nav-link href="index.html">Home</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="institutes.html">Institutes</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="how-it-works.html">How It Works</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="about.html">About</a></li>
+        <li><a class="nav-mobile__link" data-nav-link href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-mobile__footer">
+        <a class="btn btn-primary btn-block" href="institutes.html">Start Tracking</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="page-main">
+    <!-- Hero -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-header">
+          <p class="text-eyebrow">Free Automation Strategy</p>
+          <h1>How Trackly Will Automate Everything Without Paying for Servers</h1>
+          <p class="text-lead mt-4">
+            Trackly's Version 1 hosting is a static site on GitHub Pages —
+            no server, no database, no paid infrastructure. This page is the
+            complete, technically honest plan for how monitoring can still
+            run on free-tier schedulers within those constraints, and where
+            those constraints eventually stop being enough. It builds on the
+            general pipeline described on the
+            <a class="link" href="automation.html">Automation Architecture</a> page.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Which Official Websites Should Be Monitored -->
+    <section class="section section-alt" aria-labelledby="which-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Which Official Websites</p>
+          <h2 id="which-heading">The same five institutes, nothing added</h2>
+        </div>
+        <p class="text-lead text-center">
+          ICAI, ICSI, UPSC, SSC, and IBPS — the exact five institutes Trackly
+          already supports. This strategy doesn't expand scope on its own;
+          see the
+          <a class="link" href="automation.html#sources-heading">Official Sources</a>
+          section of the Automation Architecture page for each institute's
+          verified official links.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Per-Institute Feasibility -->
+    <section class="section" aria-labelledby="feasibility-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Monitoring Feasibility</p>
+          <h2 id="feasibility-heading">What's realistic, institute by institute</h2>
+          <p class="mt-4">Based on each site's current structure — not assumptions.</p>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <caption class="sr-only">Monitoring feasibility by institute and method</caption>
+            <thead>
+              <tr>
+                <th scope="col">Institute</th>
+                <th scope="col">Notification Page</th>
+                <th scope="col">RSS</th>
+                <th scope="col">Sitemap</th>
+                <th scope="col">HTML Comparison</th>
+                <th scope="col">PDF Monitoring</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>ICAI</td>
+              <td>icai.org/category/notifications</td>
+              <td>No public feed identified</td>
+              <td>Low signal — a general sitemap would need filtering</td>
+              <td>High — a focused, dedicated listing page</td>
+              <td>High — circulars, MTP, and RTP are usually released as PDFs</td>
+            </tr>
+            <tr>
+              <td>ICSI</td>
+              <td>icsi.edu/student_rpn</td>
+              <td>No public feed identified</td>
+              <td>Low signal — same filtering concern</td>
+              <td>High — a focused student updates page</td>
+              <td>High — circulars are frequently PDF-based</td>
+            </tr>
+            <tr>
+              <td>UPSC</td>
+              <td>upsc.gov.in/examinations/active-exams</td>
+              <td>No public feed identified</td>
+              <td>Low signal for this specific need</td>
+              <td>High — a focused active-exams listing</td>
+              <td>High — notifications and admit cards are typically PDFs</td>
+            </tr>
+            <tr>
+              <td>SSC</td>
+              <td>ssc.gov.in (homepage)</td>
+              <td>No public feed identified</td>
+              <td>Low signal for this specific need</td>
+              <td>Moderate — whole homepage, more surrounding noise to filter</td>
+              <td>High — results and answer keys are typically PDFs</td>
+            </tr>
+            <tr>
+              <td>IBPS</td>
+              <td>ibps.in (homepage)</td>
+              <td>No public feed identified</td>
+              <td>Low signal for this specific need</td>
+              <td>Moderate — whole homepage, same challenge as SSC</td>
+              <td>High — recruitment notices are typically PDFs</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Recommended Monitoring Strategy -->
+    <section class="section section-alt" aria-labelledby="strategy-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Recommended Strategy</p>
+          <h2 id="strategy-heading">What each institute's monitoring would actually combine</h2>
+        </div>
+        <div class="card card-info">
+          <div class="info-list">
+            <div class="info-row">
+              <dt>ICAI</dt>
+              <dd>HTML comparison on the notifications page, plus PDF-link detection for new circulars, MTP, and RTP releases.</dd>
+            </div>
+            <div class="info-row">
+              <dt>ICSI</dt>
+              <dd>HTML comparison on the student updates page, plus PDF-link detection for circulars.</dd>
+            </div>
+            <div class="info-row">
+              <dt>UPSC</dt>
+              <dd>HTML comparison on the active-exams page, plus PDF-link detection for notifications and admit cards.</dd>
+            </div>
+            <div class="info-row">
+              <dt>SSC</dt>
+              <dd>Homepage HTML comparison scoped to the notices region, plus PDF-link detection for results and answer keys.</dd>
+            </div>
+            <div class="info-row">
+              <dt>IBPS</dt>
+              <dd>Homepage HTML comparison scoped to the notices region, plus PDF-link detection for recruitment notifications.</dd>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Free Scheduler Comparison -->
+    <section class="section" aria-labelledby="scheduler-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Free Scheduler Comparison</p>
+          <h2 id="scheduler-heading">What could actually run the checks, for free</h2>
+          <p class="mt-4">Nothing here is implemented — this compares options, not a decision.</p>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <caption class="sr-only">Free scheduler comparison</caption>
+            <thead>
+              <tr>
+                <th scope="col">Scheduler</th>
+                <th scope="col">Free Tier Limit</th>
+                <th scope="col">Reliability Note</th>
+                <th scope="col">Best Fit</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>GitHub Actions</td>
+              <td>Unlimited minutes on public repositories; private repos get 2,000 free minutes/month</td>
+              <td>Scheduled workflows can be delayed under high platform load, and are automatically disabled after 60 days of repository inactivity</td>
+              <td>Best default choice, given the project is already a public GitHub Pages repository</td>
+            </tr>
+            <tr>
+              <td>Cloudflare Cron Triggers</td>
+              <td>100,000 requests/day account-wide (Workers Free plan), 10ms CPU time per invocation, 5 cron triggers per account</td>
+              <td>No automatic retries — a failed run simply waits for its next scheduled tick</td>
+              <td>Good for lightweight checks that fit comfortably inside the CPU-time limit</td>
+            </tr>
+            <tr>
+              <td>External Cron Services</td>
+              <td>Varies by provider (e.g. cron-job.org); typically free for pinging a URL on a schedule</td>
+              <td>Depends entirely on a third-party service staying operational — an external dependency outside Trackly's own infrastructure</td>
+              <td>Useful as a trigger that calls a lightweight endpoint, rather than doing the work itself</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Change Detection Flow -->
+    <section class="section section-alt" aria-labelledby="flow-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Change Detection Flow</p>
+          <h2 id="flow-heading">From official page to notification queue</h2>
+        </div>
+
+        <ol class="sr-only">
+          <li>Official Page — the institute's real, official page.</li>
+          <li>Download — fetches the current page or file. Part of the future automation engine.</li>
+          <li>Compare — checks it against the last known version. Part of the future automation engine.</li>
+          <li>Verify — confirms the change is real and official. Part of the future automation engine.</li>
+          <li>Queue — holds the verified update, ready to send. Part of the future automation engine.</li>
+          <li>Future Notification — not built yet, the eventual last step.</li>
+        </ol>
+
+      <svg viewBox="0 0 380 680" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width:100%;max-width:380px;height:auto;margin-inline:auto;display:block;">
+  <rect x="40" y="96" width="300" height="580" rx="20" fill="none" stroke="var(--color-line-strong)" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <text x="190" y="114" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1" fill="var(--color-slate-light)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">FUTURE AUTOMATION ENGINE</text>
+  <g transform="translate(60,24)">
+    <rect width="260" height="72" rx="16" fill="var(--color-mist)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-shield-check" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Official Page</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">The institute's real, official page</text>
+  </g>
+  <line x1="190" y1="96" x2="190" y2="130" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,136 185,126 195,126" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,136)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-external-link" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Download</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Fetches the current page or file</text>
+  </g>
+  <line x1="190" y1="208" x2="190" y2="242" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,248 185,238 195,238" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,248)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-zap" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Compare</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Checks it against the last known version</text>
+  </g>
+  <line x1="190" y1="320" x2="190" y2="354" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,360 185,350 195,350" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,360)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-check-circle" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Verify</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Confirms the change is real and official</text>
+  </g>
+  <line x1="190" y1="432" x2="190" y2="466" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,472 185,462 195,462" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,472)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-list" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Queue</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Holds the verified update, ready to send</text>
+  </g>
+  <line x1="190" y1="544" x2="190" y2="578" stroke="var(--color-line-strong)" stroke-width="2"/>
+  <polygon points="190,584 185,574 195,574" fill="var(--color-line-strong)"/>
+  <g transform="translate(60,584)">
+    <rect width="260" height="72" rx="16" fill="var(--color-primary-light)" stroke="var(--color-line)" stroke-width="1.5"/>
+    <rect x="16" y="22" width="28" height="28" rx="8" fill="var(--color-paper)" stroke="var(--color-line)" stroke-width="1"/>
+    <use href="assets/icons/icons.svg#icon-bell" x="20" y="26" width="20" height="20" style="color:var(--color-primary)"/>
+    <text x="56" y="40" font-size="14" font-weight="700" fill="var(--color-ink)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Future Notification</text>
+    <text x="56" y="58" font-size="11" fill="var(--color-slate)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Not built yet — the eventual last step</text>
+  </g>
+      </svg>
+      </div>
+    </section>
+
+    <!-- 6. What Should Happen When -->
+    <section class="section" aria-labelledby="scenarios-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Handling Edge Cases</p>
+          <h2 id="scenarios-heading">What should happen when...</h2>
+        </div>
+        <div class="grid grid-2">
+          <div class="card card-feature">
+            <h3 class="card-title">New PDF appears</h3>
+            <p class="text-small text-muted">Treated as a genuine update candidate. The PDF's link, filename, and surrounding text enter the verification layer before anything is queued.</p>
+          </div>
+          <div class="card card-feature">
+            <h3 class="card-title">Existing PDF changes at the same URL</h3>
+            <p class="text-small text-muted">The easiest case to miss: if a PDF is replaced without its URL changing, a check that only looks at links would see nothing different. Detection also has to compare file size or a content hash, not just the URL.</p>
+          </div>
+          <div class="card card-feature">
+            <h3 class="card-title">Surrounding HTML changes</h3>
+            <p class="text-small text-muted">Compared against the last known version of the page's relevant section. Cosmetic changes — styling, unrelated banners — are filtered out; only meaningful content changes proceed to verification.</p>
+          </div>
+          <div class="card card-feature">
+            <h3 class="card-title">An old notification is removed</h3>
+            <p class="text-small text-muted">Never treated as notification-worthy on its own. Trackly reports what's newly official, not what disappeared — a removed link usually means reorganization, not a retraction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Future Scalability -->
+    <section class="section section-alt" aria-labelledby="scale-heading">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Future Scalability</p>
+          <h2 id="scale-heading">From 5 institutes to 100</h2>
+        </div>
+        <div class="timeline">
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">1</div>
+          <h3 class="timeline__title">5 Institutes</h3>
+          <p class="text-caption mt-1">Today</p>
+          <p class="timeline__desc mt-2">One JSON config file, one generator script, one GitHub Actions workflow checking all five sources — comfortably within every free-tier limit.</p>
+        </div>
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">2</div>
+          <h3 class="timeline__title">20 Institutes</h3>
+          <p class="text-caption mt-1">Config still, more of it</p>
+          <p class="timeline__desc mt-2">Still entirely config-driven — new entries in the same JSON structure. Scheduling likely needs to stagger checks across the day, and a few sites may need bespoke parsing logic for unusual page structures.</p>
+        </div>
+        <div class="timeline__item">
+          <div class="step__number step__number--lg" aria-hidden="true">3</div>
+          <h3 class="timeline__title">100 Institutes</h3>
+          <p class="text-caption mt-1">Where free-tier limits start to bind</p>
+          <p class="timeline__desc mt-2">The frontend architecture doesn't change, but reliable change history, per-source scheduling, and failure monitoring at this scale likely need a small persistent backend — even a free-tier one — rather than pure scheduled scripts.</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. What Will Require Backend -->
+    <section class="section" aria-labelledby="backend-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Where Free-First Ends</p>
+          <h2 id="backend-heading">What will eventually require a real backend</h2>
+        </div>
+        <div class="card card-info">
+          <p>Free-tier schedulers can run a check. They can't, on their own, remember state, manage users, or deliver a notification. Those needs mark the actual boundary of the free-first approach:</p>
+          <ul class="mt-4">
+            <li>User accounts and authentication — to know who to notify, and for what.</li>
+            <li>A database — to store subscriptions, the last known snapshot of each monitored page (for comparison), and notification history.</li>
+            <li>Task queue and worker orchestration — once scheduling needs to run reliably across dozens or hundreds of sources instead of a handful.</li>
+            <li>Notification delivery infrastructure — an email sending service, browser push service, and any Telegram/WhatsApp API integration.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Frequently Asked Questions -->
+    <section class="section section-alt" aria-labelledby="faq-heading">
+      <div class="container-prose">
+        <div class="section-header text-center">
+          <p class="text-eyebrow">Frequently Asked Questions</p>
+          <h2 id="faq-heading">Common questions about the free automation strategy</h2>
+        </div>
+        <div class="accordion">
+        <details class="accordion-item" id="faq-live">
+          <summary class="accordion-item__summary">
+            Is any of this free automation strategy implemented yet?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. This page is architecture and planning only — nothing on it is running.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-why-free">
+          <summary class="accordion-item__summary">
+            Why not just pay for a server from day one?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Trackly's Version 1 philosophy is free-first: prove the product works before taking on hosting costs. A static site plus scheduled free-tier jobs can genuinely handle five institutes today.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-gha-free">
+          <summary class="accordion-item__summary">
+            Is GitHub Actions really free forever?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>For public repositories, yes — GitHub's hosted runners are free and unmetered on public repos. Private repositories get a monthly minute allowance instead.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-gha-disable">
+          <summary class="accordion-item__summary">
+            What happens if GitHub disables a scheduled workflow?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>GitHub automatically disables scheduled workflows after 60 days without repository activity. Any real deployment needs a way to notice and re-enable this.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-cf-free">
+          <summary class="accordion-item__summary">
+            Is Cloudflare Cron Triggers free?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>The trigger itself carries no separate charge, but each invocation counts against the Workers Free plan's 100,000 requests/day and 10ms CPU-time limit, and the free plan allows only 5 cron triggers per account.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-cf-retry">
+          <summary class="accordion-item__summary">
+            Do Cloudflare Cron Triggers retry if they fail?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. A failed scheduled run isn't retried automatically — the next attempt happens at the next scheduled time.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-rss">
+          <summary class="accordion-item__summary">
+            Why not use RSS for everything?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Because none of ICAI, ICSI, UPSC, SSC, or IBPS currently publish a public RSS feed for their official notifications, as far as this research could confirm.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-pdf-detect">
+          <summary class="accordion-item__summary">
+            How will a PDF change be detected if its URL doesn't change?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>By comparing the file's size or a content hash, not just checking whether the link still exists — a same-URL replacement would otherwise be missed entirely.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-removed">
+          <summary class="accordion-item__summary">
+            Will a removed notification link ever trigger an alert?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. Trackly only reports newly official information. A link disappearing usually just means the page was reorganized, not that anything was retracted.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-scale-100">
+          <summary class="accordion-item__summary">
+            What happens when Trackly needs to support 100 institutes?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>The frontend architecture — config-driven pages, reusable components — stays the same. Reliable scheduling, change history, and failure monitoring at that scale will likely need a small persistent backend instead of pure scheduled scripts.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-roadmap">
+          <summary class="accordion-item__summary">
+            Does this page describe a guaranteed roadmap?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>No. It describes a technically realistic strategy given free-tier constraints. The actual implementation may still change once real usage is observed.</p>
+          </div>
+        </details>
+        <details class="accordion-item" id="faq-cost-users">
+          <summary class="accordion-item__summary">
+            Will monitoring ever cost users money?
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
+          </summary>
+          <div class="accordion-item__content">
+            <p>Tracking itself is free in Version 1. Nothing about this automation strategy changes that.</p>
+          </div>
+        </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="footer-brand" href="index.html">
+            <img class="footer-brand__mark" src="assets/logos/logo.svg" alt="" width="28" height="28">
+            Trackly
+          </a>
+          <p class="footer-tagline">Track official updates. We'll notify you.</p>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Platform</h2>
+          <ul class="footer-links">
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="institutes.html">Supported Institutes</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Legal</h2>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Contact</h2>
+          <ul class="footer-links">
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom__row">
+          <p>&copy; <span data-current-year>2026</span> Trackly. All rights reserved.</p>
+          <div class="footer-social" data-footer-social aria-hidden="true"><!-- Reserved for future social links --></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
