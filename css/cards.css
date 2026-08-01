@@ -205,6 +205,78 @@ a.card:hover,
   white-space: pre;
 }
 
+/* ==========================================================================
+   DEMO DATA NOTICE (Phase 9/10: Results, Notifications, Important Dates)
+   No live monitoring engine exists yet — these pages are genuinely
+   functional (real search, real filtering) but run on illustrative data.
+   This banner says so plainly, the same way a product's own "test mode"
+   or "sample data" banner would. Reuses badge-pending's exact palette.
+   ========================================================================== */
+
+.demo-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background-color: var(--color-warning-light);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.demo-notice .icon {
+  color: #92400e;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.demo-notice p {
+  color: #92400e;
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.demo-notice strong {
+  color: #92400e;
+}
+
+/* ==========================================================================
+   SKELETON LOADING STATE
+   Shown briefly while a page's data fetch is in flight (track.html,
+   results.html, notifications.html, important-dates.html). Reuses
+   --color-line as the block color; the only new value is the pulse
+   keyframe itself, which — like every other animation on the site —
+   is automatically disabled by the prefers-reduced-motion rule in
+   global.css.
+   ========================================================================== */
+
+.skeleton {
+  background-color: var(--color-line);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: var(--space-2);
+}
+
+.skeleton-title {
+  height: 22px;
+  width: 60%;
+  margin-bottom: var(--space-3);
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
 /* ---- Feature card ---- */
 .card-feature {
   text-align: left;

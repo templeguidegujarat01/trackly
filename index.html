@@ -146,6 +146,9 @@
       </nav>
 
       <div class="nav-actions">
+        <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
+        </button>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -169,6 +172,20 @@
       </div>
     </nav>
   </header>
+
+  <div class="search-overlay" data-search-overlay hidden>
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Site search">
+      <div class="search-modal__input-row">
+        <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
+        <input class="search-modal__input" type="text" data-search-input-global placeholder="Search institutes, tracker types, or pages…" aria-label="Search">
+      </div>
+      <div class="search-modal__results" data-search-results role="listbox"></div>
+      <div class="search-modal__footer">
+        <span><span class="search-modal__kbd">&uarr;</span> <span class="search-modal__kbd">&darr;</span> to navigate, <span class="search-modal__kbd">&crarr;</span> to select</span>
+        <span><span class="search-modal__kbd">esc</span> to close</span>
+      </div>
+    </div>
+  </div>
 
   <main id="main" class="page-main">
     <!-- 1. Hero -->
@@ -325,96 +342,96 @@
           <h2 id="trackers-heading">The updates students track most</h2>
         </div>
         <div class="grid grid-3">
-          <div class="card card-feature">
+          <a class="card card-feature card--interactive" href="important-dates.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-calendar"></use></svg>
             </div>
             <h3 class="card-title">Exam Timetable</h3>
             <p class="text-small text-muted">When the official schedule for your exam is released.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="results.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-clipboard-check"></use></svg>
             </div>
             <h3 class="card-title">Results</h3>
             <p class="text-small text-muted">The moment your result is officially declared.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-bell"></use></svg>
             </div>
             <h3 class="card-title">Notifications</h3>
             <p class="text-small text-muted">General official notifications as soon as they're posted.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="important-dates.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-id-card"></use></svg>
             </div>
             <h3 class="card-title">Admit Card</h3>
             <p class="text-small text-muted">When your admit card or hall ticket becomes available.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-key"></use></svg>
             </div>
             <h3 class="card-title">Answer Key</h3>
             <p class="text-small text-muted">When the official answer key is published.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-user-plus"></use></svg>
             </div>
             <h3 class="card-title">Registration</h3>
             <p class="text-small text-muted">When registration opens for your exam.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-file-text"></use></svg>
             </div>
             <h3 class="card-title">MTP</h3>
             <p class="text-small text-muted">New Mock Test Papers released by ICAI.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-file-text"></use></svg>
             </div>
             <h3 class="card-title">RTP</h3>
             <p class="text-small text-muted">New Revision Test Papers released by ICAI.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
-          <div class="card card-feature">
+          </a>
+          <a class="card card-feature card--interactive" href="notifications.html">
             <div class="card-feature__icon" aria-hidden="true">
               <svg class="icon icon-lg"><use href="assets/icons/icons.svg#icon-megaphone"></use></svg>
             </div>
             <h3 class="card-title">Important Circulars</h3>
             <p class="text-small text-muted">Official circulars and announcements as they're issued.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Browse</span>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -557,6 +574,48 @@
       </div>
     </section>
 
+    <!-- 7a. Latest Notifications preview (new, Phase 9/10) -->
+    <section class="section" aria-labelledby="latest-notifications-heading">
+      <div class="container">
+        <div class="flex flex-between mb-8" style="align-items: flex-end;">
+          <div>
+            <p class="text-eyebrow">Latest Notifications</p>
+            <h2 id="latest-notifications-heading">What's been posted recently</h2>
+          </div>
+          <a class="link hide-mobile" href="notifications.html">View all</a>
+        </div>
+        <div class="grid grid-3" data-home-notifications>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+        </div>
+        <div class="text-center mt-8 hide-desktop">
+          <a class="btn btn-secondary" href="notifications.html">View All Notifications</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7b. Upcoming Dates preview (new, Phase 9/10) -->
+    <section class="section section-alt" aria-labelledby="upcoming-dates-heading">
+      <div class="container">
+        <div class="flex flex-between mb-8" style="align-items: flex-end;">
+          <div>
+            <p class="text-eyebrow">Important Dates</p>
+            <h2 id="upcoming-dates-heading">What's coming up</h2>
+          </div>
+          <a class="link hide-mobile" href="important-dates.html">View all</a>
+        </div>
+        <div class="grid grid-3" data-home-dates>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+        </div>
+        <div class="text-center mt-8 hide-desktop">
+          <a class="btn btn-secondary" href="important-dates.html">View All Important Dates</a>
+        </div>
+      </div>
+    </section>
+
     <!-- 7. Call To Action -->
     <section class="section section-cta">
       <div class="container">
@@ -585,6 +644,9 @@
           <ul class="footer-links">
             <li><a href="how-it-works.html">How It Works</a></li>
             <li><a href="institutes.html">Supported Institutes</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="important-dates.html">Important Dates</a></li>
             <li><a href="about.html">About</a></li>
           </ul>
         </div>
@@ -616,5 +678,7 @@
   </footer>
 
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/search.js"></script>
+  <script type="module" src="js/home.js"></script>
 </body>
 </html>

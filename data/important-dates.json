@@ -1,0 +1,133 @@
+{
+  "_notes": "DEMO DATA \u2014 illustrates the Important Dates page's real filtering. No live monitoring engine exists yet. Unlike results.json/notifications.json, this file deliberately has NO status field: the page classifies each entry into Upcoming / Today / Completed at render time by comparing 'date' to the real current date \u2014 genuine logic, not a hardcoded label that would go stale.",
+  "dates": [
+    {
+      "id": "dt_icai_1",
+      "instituteId": "icai",
+      "trackerId": "exam-timetable",
+      "title": "CA Final Exam \u2014 Group I",
+      "date": "2026-11-03",
+      "officialUrl": "https://www.icai.org/category/notifications"
+    },
+    {
+      "id": "dt_icai_2",
+      "instituteId": "icai",
+      "trackerId": "exam-timetable",
+      "title": "CA Foundation Exam",
+      "date": "2026-12-15",
+      "officialUrl": "https://www.icai.org/category/notifications"
+    },
+    {
+      "id": "dt_icai_3",
+      "instituteId": "icai",
+      "trackerId": "rtp",
+      "title": "RTP Release \u2014 November 2026 Session",
+      "date": "2026-08-01",
+      "officialUrl": "https://www.icai.org/category/notifications"
+    },
+    {
+      "id": "dt_icai_4",
+      "instituteId": "icai",
+      "trackerId": "results",
+      "title": "CA Intermediate Result \u2014 May 2026",
+      "date": "2026-07-05",
+      "officialUrl": "https://www.icai.org/category/notifications"
+    },
+    {
+      "id": "dt_icsi_1",
+      "instituteId": "icsi",
+      "trackerId": "exam-dates",
+      "title": "CSEET \u2014 Session 4",
+      "date": "2026-09-13",
+      "officialUrl": "https://www.icsi.edu/student_rpn/"
+    },
+    {
+      "id": "dt_icsi_2",
+      "instituteId": "icsi",
+      "trackerId": "circulars",
+      "title": "Executive Programme Registration Deadline",
+      "date": "2026-08-14",
+      "officialUrl": "https://www.icsi.edu/student_rpn/"
+    },
+    {
+      "id": "dt_icsi_3",
+      "instituteId": "icsi",
+      "trackerId": "results",
+      "title": "Professional Programme Result \u2014 December 2025",
+      "date": "2026-02-10",
+      "officialUrl": "https://www.icsi.edu/student_rpn/"
+    },
+    {
+      "id": "dt_upsc_1",
+      "instituteId": "upsc",
+      "trackerId": "exam-calendar",
+      "title": "Civil Services Preliminary Examination \u2014 2027",
+      "date": "2027-05-30",
+      "officialUrl": "https://upsc.gov.in/examinations/active-exams"
+    },
+    {
+      "id": "dt_upsc_2",
+      "instituteId": "upsc",
+      "trackerId": "admit-cards",
+      "title": "CDS Admit Card Release",
+      "date": "2026-08-20",
+      "officialUrl": "https://upsc.gov.in/examinations/active-exams"
+    },
+    {
+      "id": "dt_upsc_3",
+      "instituteId": "upsc",
+      "trackerId": "results",
+      "title": "Civil Services Main Result \u2014 2025",
+      "date": "2026-03-22",
+      "officialUrl": "https://upsc.gov.in/examinations/active-exams"
+    },
+    {
+      "id": "dt_ssc_1",
+      "instituteId": "ssc",
+      "trackerId": "exam-dates",
+      "title": "CGL Tier-I Examination \u2014 2026",
+      "date": "2026-10-11",
+      "officialUrl": "https://ssc.gov.in"
+    },
+    {
+      "id": "dt_ssc_2",
+      "instituteId": "ssc",
+      "trackerId": "admit-cards",
+      "title": "CHSL Tier-II Admit Card",
+      "date": "2026-08-05",
+      "officialUrl": "https://ssc.gov.in"
+    },
+    {
+      "id": "dt_ssc_3",
+      "instituteId": "ssc",
+      "trackerId": "answer-keys",
+      "title": "CHSL Tier-I Objection Window Closes",
+      "date": "2026-08-01",
+      "officialUrl": "https://ssc.gov.in"
+    },
+    {
+      "id": "dt_ibps_1",
+      "instituteId": "ibps",
+      "trackerId": "exam-calendar",
+      "title": "PO Prelims \u2014 CRP XVI",
+      "date": "2026-10-18",
+      "officialUrl": "https://www.ibps.in"
+    },
+    {
+      "id": "dt_ibps_2",
+      "instituteId": "ibps",
+      "trackerId": "recruitments",
+      "title": "Clerk CRP XVI Registration Opens",
+      "date": "2026-08-25",
+      "officialUrl": "https://www.ibps.in"
+    },
+    {
+      "id": "dt_ibps_3",
+      "instituteId": "ibps",
+      "trackerId": "interview-updates",
+      "title": "RRB Officer Scale I Interviews",
+      "date": "2026-07-15",
+      "officialUrl": "https://www.ibps.in"
+    }
+  ]
+}

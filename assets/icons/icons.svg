@@ -144,4 +144,9 @@
     <rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/>
     <line x1="10.5" y1="18" x2="13.5" y2="18"/>
   </symbol>
+
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="10.5" cy="10.5" r="6.5"/>
+    <line x1="15.3" y1="15.3" x2="20.5" y2="20.5"/>
+  </symbol>
 </svg>

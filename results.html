@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Trackly</title>
-  <meta name="description" content="Get in touch with the Trackly team.">
-  <link rel="canonical" href="https://www.tracklyapp.com/contact.html">
+  <title>Official Results | Trackly</title>
+  <meta name="description" content="Browse result trackers across ICAI, ICSI, UPSC, SSC, and IBPS. Filter by institute, tracker, or year.">
+  <link rel="canonical" href="https://www.tracklyapp.com/results.html">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#1D4ED8">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Trackly">
-  <meta property="og:title" content="Contact Trackly">
-  <meta property="og:description" content="Get in touch with the Trackly team.">
-  <meta property="og:url" content="https://www.tracklyapp.com/contact.html">
+  <meta property="og:title" content="Official Results | Trackly">
+  <meta property="og:description" content="Browse result trackers across ICAI, ICSI, UPSC, SSC, and IBPS. Filter by institute, tracker, or year.">
+  <meta property="og:url" content="https://www.tracklyapp.com/results.html">
   <meta property="og:locale" content="en_IN">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Contact Trackly">
-  <meta name="twitter:description" content="Get in touch with the Trackly team.">
+  <meta name="twitter:title" content="Official Results | Trackly">
+  <meta name="twitter:description" content="Browse result trackers across ICAI, ICSI, UPSC, SSC, and IBPS. Filter by institute, tracker, or year.">
 
   <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
@@ -100,19 +100,80 @@
   </div>
 
   <main id="main" class="page-main">
-    <div class="section container-prose text-center">
-      <p class="text-eyebrow">Contact</p>
-      <h1>Get in touch</h1>
-      <p class="text-lead mt-4">Trackly doesn't have an in-page contact form yet — email us directly and we'll get back to you.</p>
-
-      <div class="card card-info mt-8" style="max-width: 420px; margin-inline: auto;">
-        <svg class="icon icon-lg" style="margin-inline: auto; color: var(--color-primary);" aria-hidden="true"><use href="assets/icons/icons.svg#icon-mail"></use></svg>
-        <p class="card-title mt-4">support@tracklyapp.com</p>
-        <a class="btn btn-primary mt-4" href="mailto:support@tracklyapp.com">Email Us</a>
+    <section class="section-tight">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li aria-current="page">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-right"></use></svg>
+              Results
+            </li>
+          </ol>
+        </nav>
+        <div class="section-header">
+          <p class="text-eyebrow">Results</p>
+          <h1>Official Results</h1>
+          <p class="text-lead mt-4">Browse result trackers across every supported institute. Filter by institute, tracker, or year.</p>
+        </div>
+        <div class="demo-notice" role="status">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
+          <p><strong>Demo data.</strong> These entries illustrate how this page will work once real monitoring launches — always verify any result on the official source linked with each entry.</p>
+        </div>
       </div>
+    </section>
 
-      <p class="text-small text-muted mt-8">An in-page contact form will be added once Trackly's backend is live.</p>
-    </div>
+    <section class="section">
+      <div class="container">
+      <div data-loading>
+        <div class="grid" style="gap: var(--space-4);">
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
+        </div>
+      </div>
+        <div data-results-content hidden>
+          <div class="card card-info mb-8">
+            <div class="flex flex-wrap gap-4" style="align-items: flex-end;">
+              <div class="field" style="margin-bottom: 0; flex: 1; min-width: 160px;">
+                <label class="field-label" for="filter-institute">Institute</label>
+                <select class="select" id="filter-institute" data-filter-institute>
+                  <option value="">All institutes</option>
+                </select>
+              </div>
+              <div class="field" style="margin-bottom: 0; flex: 1; min-width: 160px;">
+                <label class="field-label" for="filter-tracker">Tracker</label>
+                <select class="select" id="filter-tracker" data-filter-tracker>
+                  <option value="">All trackers</option>
+                  <option value="results">Results</option>
+                </select>
+              </div>
+              <div class="field" style="margin-bottom: 0; flex: 1; min-width: 120px;">
+                <label class="field-label" for="filter-year">Year</label>
+                <select class="select" id="filter-year" data-filter-year>
+                  <option value="">All years</option>
+                </select>
+              </div>
+              <button class="btn btn-secondary" type="button" data-filter-reset>Reset</button>
+            </div>
+          </div>
+
+          <p class="text-small text-muted mb-4" data-results-count>0 results</p>
+          <div class="grid" style="gap: var(--space-4);" data-results-list></div>
+
+          <div class="card card-info text-center" data-results-empty hidden>
+            <p class="card-title mt-2">No results match these filters</p>
+            <p class="text-small text-muted mt-2">Try clearing a filter or choosing a different institute.</p>
+          </div>
+        </div>
+
+        <div class="card card-info text-center" data-load-error hidden role="alert">
+          <p class="card-title">Something went wrong loading results</p>
+          <p class="text-small text-muted mt-2">Please refresh the page. If this keeps happening, the data file may be temporarily unavailable.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -166,5 +227,6 @@
 
   <script type="module" src="js/app.js"></script>
   <script type="module" src="js/search.js"></script>
+  <script type="module" src="js/results.js"></script>
 </body>
 </html>

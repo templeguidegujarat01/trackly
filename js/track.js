@@ -43,6 +43,8 @@ async function initTrackPage() {
  *  If the institute itself was recognized, the error still offers a
  *  specific way back rather than only a generic one. */
 function showError(institute) {
+  qs("[data-loading]")?.setAttribute("hidden", "");
+
   const errorEl = qs("[data-track-error]");
   if (errorEl) errorEl.hidden = false;
 
@@ -63,7 +65,9 @@ function populatePage(institute, tracker) {
   updateHero(institute, tracker);
   updateSummaryCard(institute, tracker);
   updateCta(institute);
+  updateCrossLinks(institute, tracker);
 
+  qs("[data-loading]")?.setAttribute("hidden", "");
   qsa("[data-track-content]").forEach((el) => {
     el.hidden = false;
   });
@@ -135,6 +139,20 @@ function updateCta(institute) {
     returnLink.href = institute.url;
     returnLink.textContent = `Return to ${institute.name}`;
   }
+}
+
+/** Links this specific institute+tracker combination out to the real,
+ *  functional Results/Notifications/Important Dates pages — the concrete
+ *  "see it for real" next step from what is otherwise an explainer page. */
+function updateCrossLinks(institute, tracker) {
+  const container = qs("[data-track-cross-links]");
+  if (!container) return;
+
+  container.innerHTML = `
+    <a class="btn btn-secondary btn-sm" href="results.html?org=${institute.id}&tracker=${tracker.id}">See results</a>
+    <a class="btn btn-secondary btn-sm" href="notifications.html?org=${institute.id}">See notifications</a>
+    <a class="btn btn-secondary btn-sm" href="important-dates.html?org=${institute.id}&tracker=${tracker.id}">See important dates</a>
+  `;
 }
 
 onReady(() => {

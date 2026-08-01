@@ -58,6 +58,9 @@
       </nav>
 
       <div class="nav-actions">
+        <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
+        </button>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -81,6 +84,20 @@
       </div>
     </nav>
   </header>
+
+  <div class="search-overlay" data-search-overlay hidden>
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Site search">
+      <div class="search-modal__input-row">
+        <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
+        <input class="search-modal__input" type="text" data-search-input-global placeholder="Search institutes, tracker types, or pages…" aria-label="Search">
+      </div>
+      <div class="search-modal__results" data-search-results role="listbox"></div>
+      <div class="search-modal__footer">
+        <span><span class="search-modal__kbd">&uarr;</span> <span class="search-modal__kbd">&darr;</span> to navigate, <span class="search-modal__kbd">&crarr;</span> to select</span>
+        <span><span class="search-modal__kbd">esc</span> to close</span>
+      </div>
+    </div>
+  </div>
 
   <main id="main" class="page-main">
     <div class="section container-prose">
@@ -163,6 +180,9 @@
           <ul class="footer-links">
             <li><a href="how-it-works.html">How It Works</a></li>
             <li><a href="institutes.html">Supported Institutes</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="important-dates.html">Important Dates</a></li>
             <li><a href="about.html">About</a></li>
           </ul>
         </div>
@@ -194,5 +214,6 @@
   </footer>
 
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/search.js"></script>
 </body>
 </html>

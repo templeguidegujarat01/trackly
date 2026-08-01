@@ -1,0 +1,21 @@
+{
+  "_notes": "DEMO DATA — illustrates the Results page's real filtering/search functionality. No live monitoring engine exists yet (see automation.html), so nothing here is a verified claim about an actual result. Every entry is clearly surfaced with a demo-data banner on the page itself. Structure matches the Change Record shape from data-architecture.html so this file can be replaced by real automation output later without any frontend change.",
+  "results": [
+    { "id": "res_icai_final_nov25", "instituteId": "icai", "trackerId": "results", "title": "CA Final Result — November 2025", "year": 2025, "status": "released", "releasedDate": "2026-01-12", "officialUrl": "https://www.icai.org/category/notifications" },
+    { "id": "res_icai_inter_nov25", "instituteId": "icai", "trackerId": "results", "title": "CA Intermediate Result — November 2025", "year": 2025, "status": "released", "releasedDate": "2026-01-12", "officialUrl": "https://www.icai.org/category/notifications" },
+    { "id": "res_icai_found_dec25", "instituteId": "icai", "trackerId": "results", "title": "CA Foundation Result — December 2025", "year": 2025, "status": "released", "releasedDate": "2026-01-20", "officialUrl": "https://www.icai.org/category/notifications" },
+    { "id": "res_icai_final_may26", "instituteId": "icai", "trackerId": "results", "title": "CA Final Result — May 2026", "year": 2026, "status": "pending", "releasedDate": null, "officialUrl": "https://www.icai.org/category/notifications" },
+    { "id": "res_icsi_cseet_may26", "instituteId": "icsi", "trackerId": "results", "title": "CSEET Result — May 2026 Session", "year": 2026, "status": "released", "releasedDate": "2026-06-05", "officialUrl": "https://www.icsi.edu/student_rpn/" },
+    { "id": "res_icsi_exec_dec25", "instituteId": "icsi", "trackerId": "results", "title": "Executive Programme Result — December 2025", "year": 2025, "status": "released", "releasedDate": "2026-02-10", "officialUrl": "https://www.icsi.edu/student_rpn/" },
+    { "id": "res_icsi_prof_jun26", "instituteId": "icsi", "trackerId": "results", "title": "Professional Programme Result — June 2026", "year": 2026, "status": "pending", "releasedDate": null, "officialUrl": "https://www.icsi.edu/student_rpn/" },
+    { "id": "res_upsc_cse_pre25", "instituteId": "upsc", "trackerId": "results", "title": "Civil Services Preliminary Result — 2025", "year": 2025, "status": "released", "releasedDate": "2025-07-15", "officialUrl": "https://upsc.gov.in/examinations/active-exams" },
+    { "id": "res_upsc_cse_main25", "instituteId": "upsc", "trackerId": "results", "title": "Civil Services Main Result — 2025", "year": 2025, "status": "released", "releasedDate": "2026-03-22", "officialUrl": "https://upsc.gov.in/examinations/active-exams" },
+    { "id": "res_upsc_cse_final26", "instituteId": "upsc", "trackerId": "results", "title": "Civil Services Final Result — 2026", "year": 2026, "status": "pending", "releasedDate": null, "officialUrl": "https://upsc.gov.in/examinations/active-exams" },
+    { "id": "res_ssc_cgl_tier1_25", "instituteId": "ssc", "trackerId": "results", "title": "CGL Tier-I Result — 2025", "year": 2025, "status": "released", "releasedDate": "2025-11-04", "officialUrl": "https://ssc.gov.in" },
+    { "id": "res_ssc_chsl_25", "instituteId": "ssc", "trackerId": "results", "title": "CHSL Final Result — 2025", "year": 2025, "status": "released", "releasedDate": "2026-02-18", "officialUrl": "https://ssc.gov.in" },
+    { "id": "res_ssc_cgl_26", "instituteId": "ssc", "trackerId": "results", "title": "CGL Tier-I Result — 2026", "year": 2026, "status": "pending", "releasedDate": null, "officialUrl": "https://ssc.gov.in" },
+    { "id": "res_ibps_po_prelim25", "instituteId": "ibps", "trackerId": "results", "title": "PO Prelims Result — CRP XV", "year": 2025, "status": "released", "releasedDate": "2025-09-10", "officialUrl": "https://www.ibps.in" },
+    { "id": "res_ibps_clerk_final25", "instituteId": "ibps", "trackerId": "results", "title": "Clerk Final Result — CRP XV", "year": 2025, "status": "released", "releasedDate": "2026-01-05", "officialUrl": "https://www.ibps.in" },
+    { "id": "res_ibps_po_26", "instituteId": "ibps", "trackerId": "results", "title": "PO Prelims Result — CRP XVI", "year": 2026, "status": "pending", "releasedDate": null, "officialUrl": "https://www.ibps.in" }
+  ]
+}
