@@ -1,18 +1,29 @@
 /**
  * important-dates.js
  * Loaded only on important-dates.html. Classifies each date into
- * Upcoming / Today / Completed by comparing data/important-dates.json's
- * "date" field against the real current date at render time — this is
- * deliberately computed, not a stored status field, so the page is
- * still correct on the day after you load it without any data change.
+ * Upcoming / Today / Completed / Monthly by comparing against the real
+ * current date at render time. Adds a countdown per item and a
+ * per-event .ics download — both genuine, computed client-side.
  */
 
 import { qs, qsa, onReady, loadJSON } from "./utils.js";
+import { makeLookup, daysUntil, formatCountdown } from "./data-helpers.js";
+import { actionButtonsHtml, bindItemActions } from "./item-actions.js";
 
-let STATE = { dates: [], institutes: [], trackers: [] };
-const TABS = ["upcoming", "today", "completed"];
+const STORAGE_KEY = "trackly:filters:dates";
+
+let STATE = { dates: [], lookup: null };
 
 async function init() {
+  bindRetry();
+  await loadAndRender();
+}
+
+async function loadAndRender() {
+  qs("[data-load-error]")?.setAttribute("hidden", "");
+  qs("[data-loading]")?.removeAttribute("hidden");
+  qs("[data-dates-content]")?.setAttribute("hidden", "");
+
   const [datesData, institutesData, trackersData] = await Promise.all([
     loadJSON("data/important-dates.json"),
     loadJSON("data/institutes.json"),
@@ -20,47 +31,31 @@ async function init() {
   ]);
 
   if (!datesData || !institutesData || !trackersData) {
-    showLoadError();
+    qs("[data-loading]")?.setAttribute("hidden", "");
+    qs("[data-load-error]")?.removeAttribute("hidden");
     return;
   }
 
   STATE.dates = datesData.dates;
-  STATE.institutes = institutesData.institutes;
-  STATE.trackers = trackersData.trackerTypes;
+  STATE.lookup = makeLookup(institutesData.institutes, trackersData.trackerTypes);
 
-  populateInstituteFilter();
+  populateInstituteFilter(institutesData.institutes);
   populateTrackerFilter();
-  applyFiltersFromUrl();
+  restoreFilters();
   bindEvents();
+  bindItemActions(qs("[data-dates-list]"));
   render();
 
   qs("[data-loading]")?.setAttribute("hidden", "");
   qs("[data-dates-content]")?.removeAttribute("hidden");
 }
 
-function applyFiltersFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const org = params.get("org");
-  const tracker = params.get("tracker");
-
-  if (org) {
-    const el = qs("[data-filter-institute]");
-    if (el) el.value = org;
-  }
-  if (tracker) {
-    const el = qs("[data-filter-tracker]");
-    if (el) el.value = tracker;
-  }
-}
-
-function showLoadError() {
-  qs("[data-loading]")?.setAttribute("hidden", "");
-  qs("[data-load-error]")?.removeAttribute("hidden");
+function bindRetry() {
+  qs("[data-retry]")?.addEventListener("click", loadAndRender);
 }
 
 function todayISO() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
+  return new Date().toISOString().slice(0, 10);
 }
 
 function classify(dateStr) {
@@ -69,18 +64,10 @@ function classify(dateStr) {
   return dateStr > today ? "upcoming" : "completed";
 }
 
-function instituteName(id) {
-  return STATE.institutes.find((i) => i.id === id)?.name || id;
-}
-
-function trackerLabel(id) {
-  return STATE.trackers.find((t) => t.id === id)?.label || id;
-}
-
-function populateInstituteFilter() {
+function populateInstituteFilter(institutes) {
   const select = qs("[data-filter-institute]");
   if (!select) return;
-  STATE.institutes.forEach((inst) => {
+  institutes.forEach((inst) => {
     const opt = document.createElement("option");
     opt.value = inst.id;
     opt.textContent = inst.name;
@@ -91,15 +78,57 @@ function populateInstituteFilter() {
 function populateTrackerFilter() {
   const select = qs("[data-filter-tracker]");
   if (!select) return;
-  const usedTrackerIds = [...new Set(STATE.dates.map((d) => d.trackerId))];
-  STATE.trackers
-    .filter((t) => usedTrackerIds.includes(t.id))
-    .forEach((t) => {
-      const opt = document.createElement("option");
-      opt.value = t.id;
-      opt.textContent = t.label;
-      select.appendChild(opt);
+  const usedIds = [...new Set(STATE.dates.map((d) => d.trackerId))];
+  STATE.lookup && usedIds.forEach((id) => {
+    const opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = STATE.lookup.trackerLabel(id);
+    select.appendChild(opt);
+  });
+}
+
+function restoreFilters() {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = { institute: params.get("org"), tracker: params.get("tracker"), tab: params.get("view") };
+  const hasUrlFilters = Object.values(fromUrl).some(Boolean);
+
+  let filters = {};
+  if (hasUrlFilters) {
+    filters = fromUrl;
+  } else {
+    try {
+      filters = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    } catch {
+      filters = {};
+    }
+  }
+  if (filters.institute) qs("[data-filter-institute]").value = filters.institute;
+  if (filters.tracker) qs("[data-filter-tracker]").value = filters.tracker;
+  if (filters.tab) {
+    qsa("[data-tab]").forEach((b) => {
+      const active = b.dataset.tab === filters.tab;
+      b.setAttribute("aria-selected", String(active));
+      b.classList.toggle("btn-primary", active);
+      b.classList.toggle("btn-secondary", !active);
     });
+  }
+}
+
+function persistFilters() {
+  const institute = qs("[data-filter-institute]")?.value || "";
+  const tracker = qs("[data-filter-tracker]")?.value || "";
+  const tab = activeTab();
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ institute, tracker, tab }));
+  } catch {
+    /* ignore */
+  }
+  const params = new URLSearchParams();
+  if (institute) params.set("org", institute);
+  if (tracker) params.set("tracker", tracker);
+  if (tab !== "upcoming") params.set("view", tab);
+  const query = params.toString();
+  window.history.replaceState({}, "", window.location.pathname + (query ? `?${query}` : ""));
 }
 
 function bindEvents() {
@@ -113,15 +142,23 @@ function bindEvents() {
       tabBtn.setAttribute("aria-selected", "true");
       tabBtn.classList.remove("btn-secondary");
       tabBtn.classList.add("btn-primary");
+      persistFilters();
       render();
     });
   });
 
-  qs("[data-filter-institute]")?.addEventListener("change", render);
-  qs("[data-filter-tracker]")?.addEventListener("change", render);
+  qs("[data-filter-institute]")?.addEventListener("change", () => {
+    persistFilters();
+    render();
+  });
+  qs("[data-filter-tracker]")?.addEventListener("change", () => {
+    persistFilters();
+    render();
+  });
 
   qs("[data-filter-reset]")?.addEventListener("click", () => {
     qsa("[data-filter-institute], [data-filter-tracker]").forEach((el) => (el.value = ""));
+    persistFilters();
     render();
   });
 }
@@ -130,35 +167,73 @@ function activeTab() {
   return qs('[data-tab][aria-selected="true"]')?.dataset.tab || "upcoming";
 }
 
-function getFiltered() {
+function getFilteredBase() {
   const institute = qs("[data-filter-institute]")?.value || "";
   const tracker = qs("[data-filter-tracker]")?.value || "";
-  const tab = activeTab();
-
   return STATE.dates.filter((d) => {
-    if (classify(d.date) !== tab) return false;
     if (institute && d.instituteId !== institute) return false;
     if (tracker && d.trackerId !== tracker) return false;
     return true;
   });
 }
 
+function icsFor(d) {
+  const dateCompact = d.date.replace(/-/g, "");
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  return [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Trackly//Important Dates//EN",
+    "BEGIN:VEVENT", `UID:${d.id}@trackly.app`, `DTSTAMP:${stamp}`,
+    `DTSTART;VALUE=DATE:${dateCompact}`, `SUMMARY:${d.title}`,
+    `DESCRIPTION:${STATE.lookup.instituteName(d.instituteId)} - ${STATE.lookup.trackerLabel(d.trackerId)}`,
+    `URL:${d.officialUrl}`, "END:VEVENT", "END:VCALENDAR",
+  ].join("\r\n");
+}
+
+function downloadIcs(d) {
+  const blob = new Blob([icsFor(d)], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${d.id}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function dateCard(d) {
   const bucket = classify(d.date);
   const badgeClass = bucket === "today" ? "badge-updated" : bucket === "upcoming" ? "badge-tracked" : "badge-archived";
   const badgeText = bucket === "today" ? "Today" : bucket === "upcoming" ? "Upcoming" : "Completed";
+  const countdown = formatCountdown(daysUntil(d.date));
+
+  const item = {
+    id: `date:${d.id}`, type: "important-date", title: d.title,
+    meta: `${STATE.lookup.instituteName(d.instituteId)} · ${d.date}`,
+    url: `important-dates.html?org=${d.instituteId}&tracker=${d.trackerId}`,
+  };
 
   return `
     <div class="card card-status">
       <div>
         <h3 class="card-title">${d.title}</h3>
-        <p class="text-caption mt-1">${instituteName(d.instituteId)} · ${trackerLabel(d.trackerId)} · ${d.date}</p>
+        <p class="text-caption mt-1">${STATE.lookup.instituteName(d.instituteId)} · ${STATE.lookup.trackerLabel(d.trackerId)} · ${d.date}</p>
       </div>
       <div class="flex flex-wrap gap-3" style="align-items:center;">
         <span class="badge ${badgeClass}">${badgeText}</span>
+        <span class="text-small text-muted">${countdown}</span>
         <a class="link text-small" href="${d.officialUrl}" target="_blank" rel="noopener noreferrer">Official source</a>
+        <button class="btn-icon card-actions__btn" type="button" data-ics="${d.id}" aria-label="Add to calendar (.ics)">
+          <svg class="icon"><use href="assets/icons/icons.svg#icon-calendar"></use></svg>
+        </button>
+        ${actionButtonsHtml(item)}
       </div>
     </div>`;
+}
+
+function monthLabel(dateStr) {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
 }
 
 function render() {
@@ -167,20 +242,45 @@ function render() {
   const countEl = qs("[data-dates-count]");
   if (!list) return;
 
-  const filtered = getFiltered().sort((a, b) => a.date.localeCompare(b.date));
+  const tab = activeTab();
+  const base = getFilteredBase();
+  let html;
+  let count;
 
-  if (countEl) {
-    countEl.textContent = `${filtered.length} date${filtered.length === 1 ? "" : "s"}`;
+  if (tab === "monthly") {
+    const sorted = [...base].sort((a, b) => a.date.localeCompare(b.date));
+    count = sorted.length;
+    let currentMonth = null;
+    html = sorted
+      .map((d) => {
+        const month = monthLabel(d.date);
+        const heading = month !== currentMonth ? `<h3 class="month-group-heading">${month}</h3>` : "";
+        currentMonth = month;
+        return heading + dateCard(d);
+      })
+      .join("");
+  } else {
+    const filtered = base.filter((d) => classify(d.date) === tab).sort((a, b) => a.date.localeCompare(b.date));
+    count = filtered.length;
+    html = filtered.map(dateCard).join("");
   }
 
-  if (filtered.length === 0) {
+  if (countEl) countEl.textContent = `${count} date${count === 1 ? "" : "s"}`;
+
+  if (count === 0) {
     list.innerHTML = "";
     emptyState?.removeAttribute("hidden");
     return;
   }
-
   emptyState?.setAttribute("hidden", "");
-  list.innerHTML = filtered.map(dateCard).join("");
+  list.innerHTML = html;
+
+  qsa("[data-ics]", list).forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const d = STATE.dates.find((x) => x.id === btn.dataset.ics);
+      if (d) downloadIcs(d);
+    });
+  });
 }
 
 onReady(init);

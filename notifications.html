@@ -61,6 +61,9 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
         </button>
+        <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+        </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -146,7 +149,12 @@
                   <option value="">All institutes</option>
                 </select>
               </div>
+              <div class="check-field" style="margin-bottom: 0;">
+                <input type="checkbox" id="filter-unread" data-filter-unread>
+                <label for="filter-unread">Unread only</label>
+              </div>
               <button class="btn btn-secondary" type="button" data-filter-reset>Reset</button>
+              <button class="btn btn-outline" type="button" data-mark-all-read>Mark all read</button>
             </div>
           </div>
 
@@ -162,6 +170,7 @@
         <div class="card card-info text-center" data-load-error hidden role="alert">
           <p class="card-title">Something went wrong loading notifications</p>
           <p class="text-small text-muted mt-2">Please refresh the page. If this keeps happening, the data file may be temporarily unavailable.</p>
+          <button class="btn btn-secondary mt-4" type="button" data-retry>Retry</button>
         </div>
       </div>
     </section>

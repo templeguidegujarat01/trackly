@@ -25,7 +25,7 @@ const STATIC_PAGES = [
   { title: "Disclaimer", url: "disclaimer.html", meta: "Page" },
 ];
 
-let DATA = { institutes: [], trackers: [] };
+let DATA = { institutes: [], trackers: [], results: [], notifications: [], dates: [] };
 let activeIndex = -1;
 let currentResults = [];
 
@@ -39,17 +39,27 @@ function resolveUrl(path) {
 
 async function loadData() {
   const base = resolveUrl("");
-  const [institutesData, trackersData] = await Promise.all([
+  const [institutesData, trackersData, resultsData, notificationsData, datesData] = await Promise.all([
     loadJSON(`${base}data/institutes.json`),
     loadJSON(`${base}data/trackers.json`),
+    loadJSON(`${base}data/results.json`),
+    loadJSON(`${base}data/notifications.json`),
+    loadJSON(`${base}data/important-dates.json`),
   ]);
   DATA.institutes = institutesData?.institutes || [];
   DATA.trackers = trackersData?.trackerTypes || [];
+  DATA.results = resultsData?.results || [];
+  DATA.notifications = notificationsData?.notifications || [];
+  DATA.dates = datesData?.dates || [];
+}
+
+function instituteName(id) {
+  return DATA.institutes.find((i) => i.id === id)?.name || id;
 }
 
 function search(query) {
   const q = query.trim().toLowerCase();
-  if (!q) return { institutes: [], trackers: [], pages: [] };
+  if (!q) return { institutes: [], trackers: [], pages: [], results: [], notifications: [], dates: [] };
 
   const institutes = DATA.institutes
     .filter((i) => i.name.toLowerCase().includes(q) || i.fullName.toLowerCase().includes(q))
@@ -63,7 +73,34 @@ function search(query) {
     .filter((p) => p.title.toLowerCase().includes(q))
     .map((p) => ({ title: p.title, meta: p.meta, url: resolveUrl(p.url), icon: "icon-layout" }));
 
-  return { institutes, trackers, pages };
+  const results = DATA.results
+    .filter((r) => r.title.toLowerCase().includes(q))
+    .slice(0, 5)
+    .map((r) => ({
+      title: r.title, meta: `Result · ${instituteName(r.instituteId)}`,
+      url: resolveUrl(`results.html?org=${r.instituteId}&tracker=${r.trackerId}&year=${r.year}`),
+      icon: "icon-clipboard-check",
+    }));
+
+  const notifications = DATA.notifications
+    .filter((n) => `${n.title} ${n.summary}`.toLowerCase().includes(q))
+    .slice(0, 5)
+    .map((n) => ({
+      title: n.title, meta: `Notification · ${instituteName(n.instituteId)}`,
+      url: resolveUrl(`notifications.html?org=${n.instituteId}&q=${encodeURIComponent(n.title)}`),
+      icon: "icon-bell",
+    }));
+
+  const dates = DATA.dates
+    .filter((d) => d.title.toLowerCase().includes(q))
+    .slice(0, 5)
+    .map((d) => ({
+      title: d.title, meta: `Important Date · ${instituteName(d.instituteId)} · ${d.date}`,
+      url: resolveUrl(`important-dates.html?org=${d.instituteId}&tracker=${d.trackerId}`),
+      icon: "icon-calendar",
+    }));
+
+  return { institutes, trackers, pages, results, notifications, dates };
 }
 
 function renderResults(query) {
@@ -71,14 +108,14 @@ function renderResults(query) {
   if (!container) return;
 
   if (!query.trim()) {
-    container.innerHTML = `<p class="search-modal__empty">Search institutes, tracker types, or pages.</p>`;
+    container.innerHTML = `<p class="search-modal__empty">Search institutes, trackers, results, notifications, dates, or pages.</p>`;
     currentResults = [];
     activeIndex = -1;
     return;
   }
 
-  const { institutes, trackers, pages } = search(query);
-  currentResults = [...institutes, ...trackers, ...pages];
+  const { institutes, trackers, pages, results, notifications, dates } = search(query);
+  currentResults = [...institutes, ...results, ...notifications, ...dates, ...trackers, ...pages];
 
   if (currentResults.length === 0) {
     container.innerHTML = `<p class="search-modal__empty">No matches for "${escapeHtml(query)}".</p>`;
@@ -90,7 +127,7 @@ function renderResults(query) {
     if (items.length === 0) return "";
     const rows = items
       .map(
-        (item, i) => `
+        (item) => `
         <a class="search-modal__item" href="${item.url}" data-result-index="${currentResults.indexOf(item)}">
           <span class="search-modal__item-icon" aria-hidden="true">
             <svg class="icon"><use href="${resolveUrl("assets/icons/icons.svg")}#${item.icon}"></use></svg>
@@ -106,7 +143,12 @@ function renderResults(query) {
   };
 
   container.innerHTML =
-    group("Institutes", institutes) + group("Tracker Types", trackers) + group("Pages", pages);
+    group("Institutes", institutes) +
+    group("Results", results) +
+    group("Notifications", notifications) +
+    group("Important Dates", dates) +
+    group("Tracker Types", trackers) +
+    group("Pages", pages);
 
   activeIndex = -1;
 }

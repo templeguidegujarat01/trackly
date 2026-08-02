@@ -277,6 +277,99 @@ a.card:hover,
   }
 }
 
+/* ==========================================================================
+   CARD ACTIONS (Phase 11/12: bookmark, share, copy link)
+   A small icon-button row attached to any card. Reuses .btn-icon sizing
+   logic at a smaller scale rather than inventing a new button system.
+   ========================================================================== */
+
+.card-actions {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+.card-actions__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: none;
+  border: none;
+  color: var(--color-slate-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.card-actions__btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.card-actions__btn:hover {
+  background-color: var(--color-mist);
+  color: var(--color-ink);
+}
+
+.card-actions__btn[data-active="true"] {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.pagination__page {
+  min-width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-line);
+  background-color: var(--color-paper);
+  color: var(--color-slate);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pagination__page:hover {
+  background-color: var(--color-mist);
+}
+
+.pagination__page[aria-current="page"] {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-paper);
+}
+
+/* ==========================================================================
+   MONTH GROUP HEADER (Important Dates monthly view)
+   ========================================================================== */
+
+.month-group-heading {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-slate);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: var(--space-8) 0 var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.month-group-heading:first-child {
+  margin-top: 0;
+}
+
 /* ---- Feature card ---- */
 .card-feature {
   text-align: left;

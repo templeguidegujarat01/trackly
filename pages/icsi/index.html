@@ -150,6 +150,9 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-search"></use></svg>
         </button>
+        <a class="btn-icon" href="../../bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+          <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-bookmark"></use></svg>
+        </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="../../institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -218,6 +221,11 @@
             <a class="btn btn-secondary" href="../../results.html?org=icsi">Results</a>
             <a class="btn btn-secondary" href="../../notifications.html?org=icsi">Notifications</a>
             <a class="btn btn-secondary" href="../../important-dates.html?org=icsi">Important Dates</a>
+            <button class="btn-icon" type="button" data-bookmark-institute="icsi"
+                    data-bookmark-title="ICSI" data-bookmark-meta="Institute of Company Secretaries of India" data-bookmark-url="pages/icsi/"
+                    aria-label="Bookmark ICSI" aria-pressed="false">
+              <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-bookmark"></use></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -505,5 +513,6 @@
 
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/search.js"></script>
+  <script type="module" src="../../js/institute-bookmarks.js"></script>
 </body>
 </html>

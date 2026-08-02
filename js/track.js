@@ -14,6 +14,7 @@
  */
 
 import { qs, qsa, onReady, loadJSON } from "./utils.js";
+import { actionButtonsHtml, bindItemActions } from "./item-actions.js";
 
 async function initTrackPage() {
   const params = new URLSearchParams(window.location.search);
@@ -66,11 +67,38 @@ function populatePage(institute, tracker) {
   updateSummaryCard(institute, tracker);
   updateCta(institute);
   updateCrossLinks(institute, tracker);
+  updateActions(institute, tracker);
+  rememberLastViewed(institute, tracker);
 
   qs("[data-loading]")?.setAttribute("hidden", "");
   qsa("[data-track-content]").forEach((el) => {
     el.hidden = false;
   });
+}
+
+function updateActions(institute, tracker) {
+  const container = qs("[data-track-actions]");
+  if (!container) return;
+  const item = {
+    id: `tracker:${institute.id}:${tracker.id}`,
+    type: "tracker",
+    title: `${institute.name} — ${tracker.label}`,
+    meta: institute.fullName,
+    url: `track.html?org=${institute.id}&tracker=${tracker.id}`,
+  };
+  container.innerHTML = actionButtonsHtml(item);
+  bindItemActions(container);
+}
+
+/** Remembers the last institute/tracker viewed, so a future "continue
+ *  where you left off" feature has real data to read from. */
+function rememberLastViewed(institute, tracker) {
+  try {
+    localStorage.setItem("trackly:last-viewed-institute", institute.id);
+    localStorage.setItem("trackly:last-viewed-tracker", tracker.id);
+  } catch {
+    /* ignore */
+  }
 }
 
 /** Self-referencing canonical + Open Graph URL for this exact org/tracker

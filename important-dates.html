@@ -61,6 +61,9 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
         </button>
+        <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+        </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -138,6 +141,7 @@
             <button class="btn btn-primary" type="button" data-tab="upcoming" role="tab" aria-selected="true">Upcoming</button>
             <button class="btn btn-secondary" type="button" data-tab="today" role="tab" aria-selected="false">Today</button>
             <button class="btn btn-secondary" type="button" data-tab="completed" role="tab" aria-selected="false">Completed</button>
+            <button class="btn btn-secondary" type="button" data-tab="monthly" role="tab" aria-selected="false">Monthly</button>
           </div>
 
           <div class="card card-info mb-8">
@@ -170,6 +174,7 @@
         <div class="card card-info text-center" data-load-error hidden role="alert">
           <p class="card-title">Something went wrong loading important dates</p>
           <p class="text-small text-muted mt-2">Please refresh the page. If this keeps happening, the data file may be temporarily unavailable.</p>
+          <button class="btn btn-secondary mt-4" type="button" data-retry>Retry</button>
         </div>
       </div>
     </section>

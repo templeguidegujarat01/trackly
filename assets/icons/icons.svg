@@ -149,4 +149,20 @@
     <circle cx="10.5" cy="10.5" r="6.5"/>
     <line x1="15.3" y1="15.3" x2="20.5" y2="20.5"/>
   </symbol>
+
+  <symbol id="icon-bookmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.5L5 21V4.5a1 1 0 0 1 1-1z"/>
+  </symbol>
+
+  <symbol id="icon-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 15V3"/>
+    <path d="M7.5 7.5L12 3l4.5 4.5"/>
+    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>
+  </symbol>
+
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.5 14.5l5-5"/>
+    <path d="M11 6.5l1.5-1.5a3.5 3.5 0 0 1 5 5L16 11.5"/>
+    <path d="M13 17.5L11.5 19a3.5 3.5 0 0 1-5-5L8 12.5"/>
+  </symbol>
 </svg>

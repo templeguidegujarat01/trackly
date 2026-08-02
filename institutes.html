@@ -138,6 +138,9 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
         </button>
+        <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+        </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
         <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
@@ -208,7 +211,14 @@
           <div class="card card-institute card-institute--directory card--interactive">
             <div class="card-header">
               <div class="card-institute__mark" aria-hidden="true">CA</div>
-              <span class="badge badge-tracked">Tracking Ready</span>
+              <div class="flex gap-2" style="align-items:center;">
+                <span class="badge badge-tracked">Tracking Ready</span>
+                <button class="btn-icon" type="button" data-bookmark-institute="icai"
+                        data-bookmark-title="ICAI" data-bookmark-meta="Institute of Chartered Accountants of India" data-bookmark-url="pages/icai/"
+                        aria-label="Bookmark ICAI" aria-pressed="false" style="width:32px;height:32px;">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+                </button>
+              </div>
             </div>
             <h3 class="card-title">ICAI</h3>
             <p class="text-caption">Institute of Chartered Accountants of India</p>
@@ -228,7 +238,14 @@
           <div class="card card-institute card-institute--directory card--interactive">
             <div class="card-header">
               <div class="card-institute__mark" aria-hidden="true">CS</div>
-              <span class="badge badge-tracked">Tracking Ready</span>
+              <div class="flex gap-2" style="align-items:center;">
+                <span class="badge badge-tracked">Tracking Ready</span>
+                <button class="btn-icon" type="button" data-bookmark-institute="icsi"
+                        data-bookmark-title="ICSI" data-bookmark-meta="Institute of Company Secretaries of India" data-bookmark-url="pages/icsi/"
+                        aria-label="Bookmark ICSI" aria-pressed="false" style="width:32px;height:32px;">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+                </button>
+              </div>
             </div>
             <h3 class="card-title">ICSI</h3>
             <p class="text-caption">Institute of Company Secretaries of India</p>
@@ -247,7 +264,14 @@
           <div class="card card-institute card-institute--directory card--interactive">
             <div class="card-header">
               <div class="card-institute__mark" aria-hidden="true">UP</div>
-              <span class="badge badge-tracked">Tracking Ready</span>
+              <div class="flex gap-2" style="align-items:center;">
+                <span class="badge badge-tracked">Tracking Ready</span>
+                <button class="btn-icon" type="button" data-bookmark-institute="upsc"
+                        data-bookmark-title="UPSC" data-bookmark-meta="Union Public Service Commission" data-bookmark-url="pages/upsc/"
+                        aria-label="Bookmark UPSC" aria-pressed="false" style="width:32px;height:32px;">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+                </button>
+              </div>
             </div>
             <h3 class="card-title">UPSC</h3>
             <p class="text-caption">Union Public Service Commission</p>
@@ -266,7 +290,14 @@
           <div class="card card-institute card-institute--directory card--interactive">
             <div class="card-header">
               <div class="card-institute__mark" aria-hidden="true">SS</div>
-              <span class="badge badge-tracked">Tracking Ready</span>
+              <div class="flex gap-2" style="align-items:center;">
+                <span class="badge badge-tracked">Tracking Ready</span>
+                <button class="btn-icon" type="button" data-bookmark-institute="ssc"
+                        data-bookmark-title="SSC" data-bookmark-meta="Staff Selection Commission" data-bookmark-url="pages/ssc/"
+                        aria-label="Bookmark SSC" aria-pressed="false" style="width:32px;height:32px;">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+                </button>
+              </div>
             </div>
             <h3 class="card-title">SSC</h3>
             <p class="text-caption">Staff Selection Commission</p>
@@ -285,7 +316,14 @@
           <div class="card card-institute card-institute--directory card--interactive">
             <div class="card-header">
               <div class="card-institute__mark" aria-hidden="true">IB</div>
-              <span class="badge badge-tracked">Tracking Ready</span>
+              <div class="flex gap-2" style="align-items:center;">
+                <span class="badge badge-tracked">Tracking Ready</span>
+                <button class="btn-icon" type="button" data-bookmark-institute="ibps"
+                        data-bookmark-title="IBPS" data-bookmark-meta="Institute of Banking Personnel Selection" data-bookmark-url="pages/ibps/"
+                        aria-label="Bookmark IBPS" aria-pressed="false" style="width:32px;height:32px;">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
+                </button>
+              </div>
             </div>
             <h3 class="card-title">IBPS</h3>
             <p class="text-caption">Institute of Banking Personnel Selection</p>
@@ -562,5 +600,6 @@
 
   <script type="module" src="js/app.js"></script>
   <script type="module" src="js/search.js"></script>
+  <script type="module" src="js/institute-bookmarks.js"></script>
 </body>
 </html>
