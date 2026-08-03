@@ -165,4 +165,20 @@
     <path d="M11 6.5l1.5-1.5a3.5 3.5 0 0 1 5 5L16 11.5"/>
     <path d="M13 17.5L11.5 19a3.5 3.5 0 0 1-5-5L8 12.5"/>
   </symbol>
+
+  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4.5"/>
+    <line x1="12" y1="2.5" x2="12" y2="5"/>
+    <line x1="12" y1="19" x2="12" y2="21.5"/>
+    <line x1="4.2" y1="4.2" x2="6" y2="6"/>
+    <line x1="18" y1="18" x2="19.8" y2="19.8"/>
+    <line x1="2.5" y1="12" x2="5" y2="12"/>
+    <line x1="19" y1="12" x2="21.5" y2="12"/>
+    <line x1="4.2" y1="19.8" x2="6" y2="18"/>
+    <line x1="18" y1="6" x2="19.8" y2="4.2"/>
+  </symbol>
+
+  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>
+  </symbol>
 </svg>

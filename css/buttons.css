@@ -68,8 +68,8 @@
 }
 
 .btn-danger:hover {
-  background-color: #b91c1c;
-  border-color: #b91c1c;
+  background-color: var(--color-error-hover);
+  border-color: var(--color-error-hover);
 }
 
 /* ---- Sizes ---- */

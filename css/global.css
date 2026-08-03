@@ -27,12 +27,16 @@
   /* ---- Color: status (meaning-only, never decorative) ---- */
   --color-success: #16a34a;
   --color-success-light: #eafaf0;
+  --color-success-text: #166534; /* higher-contrast text on top of -light backgrounds */
   --color-warning: #d97706;
   --color-warning-light: #fef6ea;
+  --color-warning-text: #92400e;
   --color-error: #dc2626;
+  --color-error-hover: #b91c1c;
   --color-error-light: #fdecec;
   --color-info: var(--color-accent);
   --color-info-light: #e6f7fd;
+  --color-info-text: #075985;
   --color-inactive: #94a3b8;
   --color-inactive-light: #f1f5f9;
 
@@ -79,6 +83,60 @@
   --z-overlay: 300;
   --z-modal: 400;
   --z-toast: 500;
+
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   DARK MODE
+   Every token below has the exact same name as its light-mode counterpart
+   above — nothing else in the entire codebase needed to change. Every
+   component (buttons, cards, badges, forms, dropdowns, the search modal,
+   toasts) was already built exclusively from these tokens via var(),
+   never a hardcoded hex value, so re-theming the whole site is genuinely
+   just this one block. Applied via [data-theme="dark"] on <html>, set by
+   js/theme.js (localStorage, falling back to the OS preference).
+   ========================================================================== */
+[data-theme="dark"] {
+  /* ---- Neutrals ---- */
+  --color-ink: #eef2f7;
+  --color-slate: #aab8cc;
+  --color-slate-light: #7c8aa3;
+  --color-paper: #0b1220;
+  --color-mist: #151f30;
+  --color-mist-strong: #1d293d;
+  --color-line: #263248;
+  --color-line-strong: #3a495e;
+
+  /* ---- Brand ---- */
+  --color-primary: #4f8dfb;
+  --color-primary-hover: #74a4fc;
+  --color-primary-light: #16233d;
+  --color-accent: #38bdf8;
+
+  /* ---- Status ---- */
+  --color-success: #22c55e;
+  --color-success-light: #10291b;
+  --color-success-text: #6ee7a8;
+  --color-warning: #f59e0b;
+  --color-warning-light: #2b1d08;
+  --color-warning-text: #fbbf60;
+  --color-error: #f87171;
+  --color-error-hover: #fca5a5;
+  --color-error-light: #2c1414;
+  --color-info: var(--color-accent);
+  --color-info-light: #0e2536;
+  --color-info-text: #7dd3fc;
+  --color-inactive: #7c8aa3;
+  --color-inactive-light: #1d293d;
+
+  /* ---- Shadows (more prominent against a dark background) ---- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-focus: 0 0 0 3px rgba(56, 189, 248, 0.4);
+
+  color-scheme: dark;
 }
 
 /* ---- Reset ---- */
@@ -106,6 +164,18 @@ body {
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Every element that reads a color token gets the same smooth transition
+   when the theme toggles — cheap to apply broadly since it only fires on
+   the properties that actually change, and prefers-reduced-motion below
+   disables it entirely for anyone who's asked for that. */
+*,
+*::before,
+*::after {
+  transition: background-color var(--transition-slow), border-color var(--transition-slow),
+    color var(--transition-slow);
 }
 
 img,

@@ -181,31 +181,6 @@ a.card:hover,
 }
 
 /* ==========================================================================
-   CODE BLOCK (Phase 8: data-architecture.html JSON examples)
-   The one CSS addition this phase — no page before this needed to show
-   literal code. Reuses existing color tokens only (mist/line/ink); the
-   only new value is the monospace font stack added in typography.css.
-   ========================================================================== */
-
-.code-block {
-  background-color: var(--color-mist);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  overflow-x: auto;
-  margin-top: var(--space-4);
-}
-
-.code-block code {
-  display: block;
-  font-family: var(--font-family-mono);
-  font-size: var(--text-xs);
-  line-height: 1.7;
-  color: var(--color-ink);
-  white-space: pre;
-}
-
-/* ==========================================================================
    DEMO DATA NOTICE (Phase 9/10: Results, Notifications, Important Dates)
    No live monitoring engine exists yet — these pages are genuinely
    functional (real search, real filtering) but run on illustrative data.
@@ -225,19 +200,19 @@ a.card:hover,
 }
 
 .demo-notice .icon {
-  color: #92400e;
+  color: var(--color-warning-text);
   flex-shrink: 0;
   margin-top: 2px;
 }
 
 .demo-notice p {
-  color: #92400e;
+  color: var(--color-warning-text);
   font-size: var(--text-sm);
   margin: 0;
 }
 
 .demo-notice strong {
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 /* ==========================================================================
@@ -435,7 +410,7 @@ a.card:hover,
 
 .badge-new {
   background-color: var(--color-info-light);
-  color: #075985;
+  color: var(--color-info-text);
 }
 
 .badge-coming-soon {
@@ -450,17 +425,17 @@ a.card:hover,
 
 .badge-released {
   background-color: var(--color-success-light);
-  color: #166534;
+  color: var(--color-success-text);
 }
 
 .badge-pending {
   background-color: var(--color-warning-light);
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 .badge-updated {
   background-color: var(--color-info-light);
-  color: #075985;
+  color: var(--color-info-text);
 }
 
 .badge-archived {

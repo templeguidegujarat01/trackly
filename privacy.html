@@ -3,9 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("trackly:theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
   <title>Privacy Policy | Trackly</title>
   <meta name="description" content="Read Trackly's privacy policy, including what information is collected and how it's used.">
-  <link rel="canonical" href="https://www.tracklyapp.com/privacy.html">
+  <link rel="canonical" href="https://templeguidegujarat01.github.io/trackly/privacy.html">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#1D4ED8">
 
@@ -13,12 +24,16 @@
   <meta property="og:site_name" content="Trackly">
   <meta property="og:title" content="Privacy Policy | Trackly">
   <meta property="og:description" content="Read Trackly's privacy policy, including what information is collected and how it's used.">
-  <meta property="og:url" content="https://www.tracklyapp.com/privacy.html">
+  <meta property="og:url" content="https://templeguidegujarat01.github.io/trackly/privacy.html">
   <meta property="og:locale" content="en_IN">
+  <meta property="og:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Privacy Policy | Trackly">
   <meta name="twitter:description" content="Read Trackly's privacy policy, including what information is collected and how it's used.">
+  <meta name="twitter:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
 
   <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
@@ -60,6 +75,10 @@
       <div class="nav-actions">
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
+        </button>
+        <button class="btn-icon" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+          <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="assets/icons/icons.svg#icon-sun"></use></svg>
+          <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-moon"></use></svg>
         </button>
         <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
@@ -212,14 +231,18 @@
 
       <div class="footer-bottom">
         <div class="footer-bottom__row">
-          <p>&copy; <span data-current-year>2026</span> Trackly. All rights reserved.</p>
-          <div class="footer-social" data-footer-social aria-hidden="true"><!-- Reserved for future social links --></div>
+          <p>&copy; <span data-current-year>2026</span> Trackly. All rights reserved. <span class="text-caption">v1.0</span></p>
+          <div class="flex gap-4" style="align-items: center;">
+            <a class="link text-small" href="https://github.com/templeguidegujarat01/trackly" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <div class="footer-social" data-footer-social aria-hidden="true"><!-- Reserved for future social links --></div>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/search.js"></script>
 </body>
 </html>

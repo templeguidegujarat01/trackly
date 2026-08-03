@@ -2,17 +2,19 @@
   "site": {
     "name": "Trackly",
     "tagline": "Track official updates. We'll notify you.",
-    "url": "https://www.tracklyapp.com",
+    "url": "https://templeguidegujarat01.github.io/trackly/",
+    "githubUrl": "https://github.com/templeguidegujarat01/trackly",
     "language": "en",
     "themeColor": "#1d4ed8"
   },
   "features": {
-    "search": false,
+    "search": true,
+    "bookmarks": true,
+    "darkMode": true,
     "login": false,
     "dashboard": false,
-    "notifications": false,
-    "darkMode": false
+    "liveNotifications": false
   },
   "supportedInstitutes": ["icai", "icsi", "upsc", "ssc", "ibps"],
-  "_notes": "Feature flags are all false in Phase 1 by design — they exist so future phases toggle capabilities on without touching HTML/CSS. site.url is a placeholder domain; replace it with the real production domain before go-live, since it feeds canonical URLs and Open Graph tags."
+  "_notes": "Feature flags reflect what's actually built: search, bookmarks, and darkMode are real (Phases 11-12); login, dashboard, and liveNotifications remain false because no backend exists — 'liveNotifications' refers to the future automated delivery engine, not the Notifications page itself, which is real and lists demo data today."
 }
