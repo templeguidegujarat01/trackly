@@ -14,32 +14,15 @@
       }
     })();
   </script>
-  <title>Latest Official Notifications | Trackly</title>
-  <meta name="description" content="Search and filter official notifications across ICAI, ICSI, UPSC, SSC, and IBPS.">
-  <link rel="canonical" href="https://templeguidegujarat01.github.io/trackly/notifications.html">
-  <meta name="robots" content="index, follow">
+  <title>My Dashboard | Trackly</title>
+  <meta name="description" content="Your Trackly dashboard — trackers, notifications, and settings.">
+  <link rel="canonical" href="https://templeguidegujarat01.github.io/trackly/dashboard.html">
+  <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#1D4ED8">
-
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Trackly">
-  <meta property="og:title" content="Latest Official Notifications | Trackly">
-  <meta property="og:description" content="Search and filter official notifications across ICAI, ICSI, UPSC, SSC, and IBPS.">
-  <meta property="og:url" content="https://templeguidegujarat01.github.io/trackly/notifications.html">
-  <meta property="og:locale" content="en_IN">
-  <meta property="og:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Latest Official Notifications | Trackly">
-  <meta name="twitter:description" content="Search and filter official notifications across ICAI, ICSI, UPSC, SSC, and IBPS.">
-  <meta name="twitter:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
-
   <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicons/favicon.ico" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/typography.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -52,16 +35,14 @@
   <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
-<body class="page">
+<body class="page" data-requires-auth="true">
   <a class="skip-link" href="#main">Skip to main content</a>
-
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="brand" href="index.html">
         <img class="brand__mark" src="assets/logos/logo.svg" alt="" width="32" height="32">
         Trackly
       </a>
-
       <nav class="nav-primary" aria-label="Primary">
         <ul class="nav-primary__list">
           <li><a class="nav-primary__link" data-nav-link href="index.html">Home</a></li>
@@ -71,7 +52,6 @@
           <li><a class="nav-primary__link" data-nav-link href="contact.html">Contact</a></li>
         </ul>
       </nav>
-
       <div class="nav-actions">
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
@@ -83,8 +63,6 @@
         <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
         </a>
-        <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
-        <!-- Reserved for future Login control (Phase: Authentication) -->
         <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
@@ -92,7 +70,6 @@
         </button>
       </div>
     </div>
-
     <nav class="nav-mobile" id="nav-mobile" data-nav-mobile aria-label="Mobile" hidden>
       <ul class="nav-mobile__list">
         <li><a class="nav-mobile__link" data-nav-link href="index.html">Home</a></li>
@@ -149,7 +126,6 @@
       </p>
     </div>
   </div>
-
   <main id="main" class="page-main">
     <section class="section-tight">
       <div class="container">
@@ -158,72 +134,89 @@
             <li><a href="index.html">Home</a></li>
             <li aria-current="page">
               <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-right"></use></svg>
-              Notifications
+              Dashboard
             </li>
           </ol>
         </nav>
         <div class="section-header">
-          <p class="text-eyebrow">Notifications</p>
-          <h1>Latest Official Notifications</h1>
-          <p class="text-lead mt-4">Search and filter official notifications across every supported institute.</p>
-        </div>
-        <div class="demo-notice" role="status">
-          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
-          <p><strong>Live monitoring.</strong> This list is populated automatically by a scheduled check of each institute's official source — always verify anything time-sensitive on the linked page directly.</p>
+          <p class="text-eyebrow">My Dashboard</p>
+          <h1 data-dashboard-greeting>My Dashboard</h1>
+          <p class="text-lead mt-4">Everything you're tracking, every notification you've received, and your settings.</p>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-      <div data-loading>
-        <div class="grid" style="gap: var(--space-4);">
-          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
-          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
-          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
-          <div class="card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:80%"></div></div>
-        </div>
+    <div data-signed-out-notice class="section container-prose" hidden>
+      <div class="card card-info text-center">
+        <svg class="icon icon-lg" style="margin-inline:auto;color:var(--color-slate-light);" aria-hidden="true"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
+        <p class="card-title mt-4">Log in to see your dashboard</p>
+        <p class="text-small text-muted mt-2">My Trackers, notifications, and settings are tied to your account.</p>
+        <button class="btn btn-primary mt-4" type="button" data-login-trigger-secondary>Log In</button>
       </div>
-        <div data-notifications-content hidden>
-          <div class="card card-info mb-8">
-            <div class="flex flex-wrap gap-4" style="align-items: flex-end;">
-              <div class="field" style="margin-bottom: 0; flex: 2; min-width: 220px;">
-                <label class="field-label" for="search-input">Search</label>
-                <input class="input" id="search-input" type="text" data-search-input placeholder="Search notifications…">
-              </div>
-              <div class="field" style="margin-bottom: 0; flex: 1; min-width: 160px;">
-                <label class="field-label" for="filter-institute">Institute</label>
-                <select class="select" id="filter-institute" data-filter-institute>
-                  <option value="">All institutes</option>
-                </select>
-              </div>
-              <div class="check-field" style="margin-bottom: 0;">
-                <input type="checkbox" id="filter-unread" data-filter-unread>
-                <label for="filter-unread">Unread only</label>
-              </div>
-              <button class="btn btn-secondary" type="button" data-filter-reset>Reset</button>
-              <button class="btn btn-outline" type="button" data-mark-all-read>Mark all read</button>
-            </div>
-          </div>
+    </div>
 
+    <div data-dashboard-content hidden>
+      <section class="section" aria-labelledby="trackers-heading">
+        <div class="container">
+          <div class="flex flex-between mb-6" style="align-items:flex-end;">
+            <div>
+              <p class="text-eyebrow">My Trackers</p>
+              <h2 id="trackers-heading">What you're tracking</h2>
+            </div>
+            <a class="btn btn-secondary hide-mobile" href="institutes.html">+ Track Something New</a>
+          </div>
+          <p class="text-small text-muted mb-4" data-trackers-count>0 trackers</p>
+          <div class="grid" style="gap: var(--space-4);" data-trackers-list></div>
+          <div class="card card-info text-center" data-trackers-empty hidden>
+            <p class="card-title mt-2">You're not tracking anything yet</p>
+            <p class="text-small text-muted mt-2">Choose an institute to get started.</p>
+            <a class="btn btn-primary mt-4" href="institutes.html">Browse Institutes</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" aria-labelledby="notifications-heading">
+        <div class="container">
+          <div class="flex flex-between mb-6" style="align-items:flex-end;">
+            <div>
+              <p class="text-eyebrow">Activity</p>
+              <h2 id="notifications-heading">Your notification history</h2>
+            </div>
+            <button class="btn btn-secondary hide-mobile" type="button" data-mark-all-read>Mark all read</button>
+          </div>
           <p class="text-small text-muted mb-4" data-notifications-count>0 notifications</p>
           <div class="grid" style="gap: var(--space-4);" data-notifications-list></div>
-
           <div class="card card-info text-center" data-notifications-empty hidden>
-            <p class="card-title mt-2">Nothing to show yet</p>
-            <p class="text-small text-muted mt-2">No detected changes match this view yet — try clearing a filter, or check back after the next scheduled check.</p>
+            <p class="card-title mt-2">No notifications yet</p>
+            <p class="text-small text-muted mt-2">You'll see a history here once something you track changes.</p>
           </div>
         </div>
+      </section>
 
-        <div class="card card-info text-center" data-load-error hidden role="alert">
-          <p class="card-title">Something went wrong loading notifications</p>
-          <p class="text-small text-muted mt-2">Please refresh the page. If this keeps happening, the data file may be temporarily unavailable.</p>
-          <button class="btn btn-secondary mt-4" type="button" data-retry>Retry</button>
+      <section class="section" aria-labelledby="settings-heading">
+        <div class="container-prose">
+          <div class="section-header text-center">
+            <p class="text-eyebrow">Settings</p>
+            <h2 id="settings-heading">Notification preferences</h2>
+          </div>
+          <div class="card card-info">
+            <div class="check-field mb-4">
+              <input type="checkbox" id="pref-push" data-pref-push checked>
+              <label for="pref-push">Browser push notifications</label>
+            </div>
+            <div class="check-field">
+              <input type="checkbox" id="pref-email" data-pref-email>
+              <label for="pref-email">Email notifications <span class="text-caption">(if configured — see setup notes)</span></label>
+            </div>
+            <button class="btn btn-outline mt-4" type="button" data-enable-push>Enable Browser Notifications on This Device</button>
+            <p class="text-caption mt-2" data-push-status></p>
+            <div class="divider"></div>
+            <button class="btn btn-danger" type="button" data-sign-out>Log Out</button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
-
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -234,7 +227,6 @@
           </a>
           <p class="footer-tagline">Track official updates. We'll notify you.</p>
         </div>
-
         <div>
           <h2 class="footer-heading">Platform</h2>
           <ul class="footer-links">
@@ -246,7 +238,6 @@
             <li><a href="about.html">About</a></li>
           </ul>
         </div>
-
         <div>
           <h2 class="footer-heading">Legal</h2>
           <ul class="footer-links">
@@ -255,7 +246,6 @@
             <li><a href="disclaimer.html">Disclaimer</a></li>
           </ul>
         </div>
-
         <div>
           <h2 class="footer-heading">Contact</h2>
           <ul class="footer-links">
@@ -263,23 +253,22 @@
           </ul>
         </div>
       </div>
-
       <div class="footer-bottom">
         <div class="footer-bottom__row">
           <p>&copy; <span data-current-year>2026</span> Trackly. All rights reserved. <span class="text-caption">v1.0</span></p>
           <div class="flex gap-4" style="align-items: center;">
             <a class="link text-small" href="https://github.com/templeguidegujarat01/trackly" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <div class="footer-social" data-footer-social aria-hidden="true"><!-- Reserved for future social links --></div>
+            <div class="footer-social" data-footer-social aria-hidden="true"></div>
           </div>
         </div>
       </div>
     </div>
   </footer>
-
   <script type="module" src="js/app.js"></script>
-  <script type="module" src="js/theme.js"></script>
-  <script type="module" src="js/auth-ui.js"></script>
   <script type="module" src="js/search.js"></script>
-  <script type="module" src="js/notifications.js"></script>
+  <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/institute-bookmarks.js"></script>
+  <script type="module" src="js/auth-ui.js"></script>
+  <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>

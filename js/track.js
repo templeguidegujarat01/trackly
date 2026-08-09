@@ -15,6 +15,12 @@
 
 import { qs, qsa, onReady, loadJSON } from "./utils.js";
 import { actionButtonsHtml, bindItemActions } from "./item-actions.js";
+import { isSignedIn, onAuthChange } from "./auth.js";
+import { createSubscription, deleteSubscription, findExistingSubscription } from "./firestore.js";
+import { showToast } from "./toast.js";
+
+let CURRENT_INSTITUTE = null;
+let CURRENT_TRACKER = null;
 
 async function initTrackPage() {
   const params = new URLSearchParams(window.location.search);
@@ -37,7 +43,10 @@ async function initTrackPage() {
     return;
   }
 
+  CURRENT_INSTITUTE = institute;
+  CURRENT_TRACKER = tracker;
   populatePage(institute, tracker);
+  initTrackForm(institute, tracker);
 }
 
 /** Shown when the URL doesn't resolve to a real institute + tracker pair.
@@ -181,6 +190,154 @@ function updateCrossLinks(institute, tracker) {
     <a class="btn btn-secondary btn-sm" href="notifications.html?org=${institute.id}">See notifications</a>
     <a class="btn btn-secondary btn-sm" href="important-dates.html?org=${institute.id}&tracker=${tracker.id}">See important dates</a>
   `;
+}
+
+/**
+ * Generates a rolling set of upcoming exam-session options (e.g. "May
+ * 2027"). These are just selection labels for the user's own filter —
+ * not a claim that any institute has announced these specific dates.
+ */
+function upcomingSessionOptions(count = 4) {
+  const months = [0, 4, 8]; // Jan, May, Sept — a generic 3-per-year cadence
+  const now = new Date();
+  const options = [];
+  let year = now.getFullYear();
+  let monthIndex = months.findIndex((m) => m > now.getMonth());
+  if (monthIndex === -1) {
+    monthIndex = 0;
+    year += 1;
+  }
+  while (options.length < count) {
+    const label = new Date(year, months[monthIndex], 1).toLocaleDateString("en-US", {
+      month: "long", year: "numeric",
+    });
+    options.push(label);
+    monthIndex += 1;
+    if (monthIndex >= months.length) {
+      monthIndex = 0;
+      year += 1;
+    }
+  }
+  return options;
+}
+
+function initTrackForm(institute, tracker) {
+  const courseField = qs("[data-track-course-field]");
+  const courseSelect = qs("[data-track-course]");
+  const sessionSelect = qs("[data-track-session]");
+
+  if (institute.courses?.length && courseSelect) {
+    institute.courses.forEach((course) => {
+      const opt = document.createElement("option");
+      opt.value = course;
+      opt.textContent = course;
+      courseSelect.appendChild(opt);
+    });
+    courseField.hidden = false;
+  }
+
+  upcomingSessionOptions().forEach((session) => {
+    const opt = document.createElement("option");
+    opt.value = session;
+    opt.textContent = session;
+    sessionSelect.appendChild(opt);
+  });
+
+  onAuthChange(() => refreshTrackState(institute, tracker));
+
+  qs("[data-track-form]")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await handleTrackSubmit(institute, tracker);
+  });
+
+  qs("[data-track-untrack]")?.addEventListener("click", async () => {
+    await handleUntrack(institute, tracker);
+  });
+}
+
+async function refreshTrackState(institute, tracker) {
+  const form = qs("[data-track-form]");
+  const already = qs("[data-track-already]");
+  const signinNote = qs("[data-track-signin-note]");
+  const prefsSection = qs("[data-track-prefs-section]");
+  if (!form) return;
+
+  if (!isSignedIn()) {
+    form.hidden = false;
+    already.hidden = true;
+    signinNote.hidden = false;
+    prefsSection.hidden = true;
+    return;
+  }
+
+  signinNote.hidden = true;
+  const courseSelect = qs("[data-track-course]");
+  const sessionSelect = qs("[data-track-session]");
+  const existing = await findExistingSubscription({
+    instituteId: institute.id,
+    trackerId: tracker.id,
+    courseId: courseSelect?.value || null,
+    examSession: sessionSelect?.value || null,
+  });
+
+  if (existing) {
+    form.hidden = true;
+    already.hidden = false;
+    already.dataset.subscriptionId = existing.id;
+    prefsSection.hidden = false;
+  } else {
+    form.hidden = false;
+    already.hidden = true;
+    prefsSection.hidden = true;
+  }
+}
+
+async function handleTrackSubmit(institute, tracker) {
+  if (!isSignedIn()) {
+    showToast("Log in to track this update");
+    qs("[data-login-trigger]")?.click();
+    return;
+  }
+
+  const submitBtn = qs("[data-track-submit]");
+  submitBtn.setAttribute("data-loading", "true");
+  submitBtn.disabled = true;
+
+  try {
+    const courseSelect = qs("[data-track-course]");
+    const sessionSelect = qs("[data-track-session]");
+    await createSubscription({
+      instituteId: institute.id,
+      instituteName: institute.name,
+      courseId: courseSelect?.value || null,
+      trackerId: tracker.id,
+      trackerLabel: tracker.label,
+      examSession: sessionSelect?.value || null,
+    });
+    showToast("You're now tracking this");
+    await refreshTrackState(institute, tracker);
+  } catch (err) {
+    console.error("Failed to create subscription:", err);
+    showToast("Couldn't save that — please try again");
+  } finally {
+    submitBtn.removeAttribute("data-loading");
+    submitBtn.disabled = false;
+  }
+}
+
+async function handleUntrack(institute, tracker) {
+  const already = qs("[data-track-already]");
+  const subscriptionId = already?.dataset.subscriptionId;
+  if (!subscriptionId) return;
+
+  try {
+    await deleteSubscription(subscriptionId);
+    showToast("Untracked");
+    await refreshTrackState(institute, tracker);
+  } catch (err) {
+    console.error("Failed to remove subscription:", err);
+    showToast("Couldn't untrack — please try again");
+  }
 }
 
 onReady(() => {

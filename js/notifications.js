@@ -8,6 +8,7 @@
 import { qs, qsa, onReady, loadJSON, debounce } from "./utils.js";
 import { makeLookup } from "./data-helpers.js";
 import { actionButtonsHtml, bindItemActions } from "./item-actions.js";
+import { getRecentChanges } from "./firestore.js";
 
 const STORAGE_KEY = "trackly:filters:notifications";
 const READ_KEY = "trackly:notifications:read";
@@ -36,6 +37,24 @@ function markRead(id) {
   setReadIds(ids);
 }
 
+/** Real detected changes come from Firestore (written by the monitoring
+ *  Action) with a different shape (excerpt instead of title/summary) —
+ *  normalized here into the same shape the rest of this file expects,
+ *  so nothing downstream needs to know which source it came from. */
+function normalizeChange(change) {
+  return {
+    id: change.id,
+    instituteId: change.instituteId,
+    trackerId: change.trackerId,
+    title: `${change.instituteName || change.instituteId}: new ${change.trackerId} update`,
+    summary: change.excerpt || "Official content changed on this source.",
+    publishedDate: change.detectedAt?.toDate
+      ? change.detectedAt.toDate().toISOString().slice(0, 10)
+      : new Date().toISOString().slice(0, 10),
+    officialUrl: change.sourceUrl,
+  };
+}
+
 async function init() {
   bindRetry();
   await loadAndRender();
@@ -46,20 +65,29 @@ async function loadAndRender() {
   qs("[data-loading]")?.removeAttribute("hidden");
   qs("[data-notifications-content]")?.setAttribute("hidden", "");
 
-  const [notificationsData, institutesData, trackersData] = await Promise.all([
-    loadJSON("data/notifications.json"),
+  const [institutesData, trackersData] = await Promise.all([
     loadJSON("data/institutes.json"),
     loadJSON("data/trackers.json"),
   ]);
 
-  if (!notificationsData || !institutesData || !trackersData) {
+  if (!institutesData || !trackersData) {
     qs("[data-loading]")?.setAttribute("hidden", "");
     qs("[data-load-error]")?.removeAttribute("hidden");
     return;
   }
 
-  STATE.notifications = notificationsData.notifications;
   STATE.lookup = makeLookup(institutesData.institutes, trackersData.trackerTypes);
+
+  try {
+    const changes = await getRecentChanges();
+    STATE.notifications = changes.map(normalizeChange);
+  } catch (err) {
+    // Firestore not configured yet (placeholder keys in firebase-config.js)
+    // or genuinely no changes detected yet — either way, show a real
+    // empty state rather than fabricated content.
+    console.warn("Live notifications unavailable:", err.message);
+    STATE.notifications = [];
+  }
 
   populateInstituteFilter(institutesData.institutes);
   restoreFilters();

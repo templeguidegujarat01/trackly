@@ -15,7 +15,7 @@
     })();
   </script>
   <title>Track an Official Update | Trackly</title>
-  <meta name="description" content="See exactly what Trackly will track for your chosen institute and update type, and how the future notification system will work.">
+  <meta name="description" content="Subscribe to official updates from ICAI, ICSI, UPSC, SSC, or IBPS and get notified automatically when something changes.">
   <link rel="canonical" href="https://templeguidegujarat01.github.io/trackly/track.html">
   <!-- noindex: this page renders the same template for many org/tracker combinations
        via URL parameters. Indexing every parameter combination would create thin,
@@ -29,7 +29,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Trackly">
   <meta property="og:title" content="Track an Official Update | Trackly">
-  <meta property="og:description" content="See exactly what Trackly will track for your chosen institute and update type.">
+  <meta property="og:description" content="Subscribe to an official update and get notified automatically when it changes.">
   <meta property="og:url" content="https://templeguidegujarat01.github.io/trackly/track.html">
   <meta property="og:locale" content="en_IN">
   <meta property="og:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
@@ -38,7 +38,7 @@
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Track an Official Update | Trackly">
-  <meta name="twitter:description" content="See exactly what Trackly will track for your chosen institute and update type.">
+  <meta name="twitter:description" content="Subscribe to an official update and get notified automatically when it changes.">
   <meta name="twitter:image" content="https://templeguidegujarat01.github.io/trackly/assets/og-image.png">
 
   <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml">
@@ -90,7 +90,7 @@
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
         </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
-        <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
+        <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
           <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
@@ -126,6 +126,35 @@
     </div>
   </div>
 
+  <div class="search-overlay" data-auth-overlay hidden>
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <div class="flex flex-between mb-4">
+        <h2 id="auth-modal-title" class="card-title" data-auth-title style="margin:0;">Log in to Trackly</h2>
+        <button class="btn-icon" type="button" data-auth-close aria-label="Close">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
+        </button>
+      </div>
+      <div class="auth-modal__error" data-auth-error hidden role="alert"></div>
+      <button class="btn btn-secondary btn-block" type="button" data-auth-google>Continue with Google</button>
+      <div class="auth-modal__divider">or</div>
+      <form data-auth-form>
+        <div class="field">
+          <label class="field-label" for="auth-email">Email</label>
+          <input class="input" type="email" id="auth-email" data-auth-email required autocomplete="email">
+        </div>
+        <div class="field">
+          <label class="field-label" for="auth-password">Password</label>
+          <input class="input" type="password" id="auth-password" data-auth-password required minlength="6" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" data-auth-submit>Log in</button>
+      </form>
+      <p class="auth-modal__switch">
+        <span data-auth-switch-text>New to Trackly?</span>
+        <button class="link" type="button" data-auth-switch-btn style="background:none;border:none;cursor:pointer;">Create an account</button>
+      </p>
+    </div>
+  </div>
+
   <main id="main" class="page-main">
     <!-- 1. Hero + Breadcrumb -->
     <section class="section-tight">
@@ -150,7 +179,7 @@
           <p class="text-caption mt-2" data-track-subtitle></p>
           <p class="text-lead mt-4" data-track-description></p>
           <div class="flex gap-3 flex-wrap mt-4" style="align-items: center;">
-            <span class="badge badge-pending">Coming Soon</span>
+            <span class="badge badge-tracked" data-track-live-badge>Live Monitoring</span>
             <a class="link text-small" data-track-official-link href="institutes.html" target="_blank" rel="noopener noreferrer">
               View official source
               <svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons/icons.svg#icon-external-link"></use></svg>
@@ -204,12 +233,12 @@
       </div>
     </section>
 
-    <!-- 3. Selection Summary Card -->
+    <!-- 3. Track This Update — real subscription flow -->
     <section class="section" aria-labelledby="summary-heading" data-track-content hidden>
       <div class="container-prose">
         <div class="section-header text-center">
-          <p class="text-eyebrow">Your Selection</p>
-          <h2 id="summary-heading">What you'd be tracking</h2>
+          <p class="text-eyebrow">Track This Update</p>
+          <h2 id="summary-heading">Get notified the moment this changes</h2>
         </div>
         <div class="card card-info">
           <div class="info-list">
@@ -227,13 +256,55 @@
                 <a class="link" data-summary-source href="institutes.html" target="_blank" rel="noopener noreferrer"></a>
               </dd>
             </div>
-            <div class="info-row">
-              <dt>Frequency</dt>
-              <dd class="text-muted">Not yet configurable</dd>
+          </div>
+
+          <div class="divider" data-track-form-divider></div>
+
+          <form data-track-form>
+            <div class="field" data-track-course-field hidden>
+              <label class="field-label" for="track-course">Course</label>
+              <select class="select" id="track-course" data-track-course></select>
             </div>
-            <div class="info-row">
-              <dt>Status</dt>
-              <dd><span class="badge badge-pending">Coming Soon</span></dd>
+            <div class="field">
+              <label class="field-label" for="track-session">Exam session <span class="text-caption">(optional)</span></label>
+              <select class="select" id="track-session" data-track-session>
+                <option value="">Any upcoming session</option>
+              </select>
+              <p class="field-hint">Pick a specific session if you only care about one — otherwise Trackly notifies you for any.</p>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-block mt-2" type="submit" data-track-submit>
+              Track This Update
+            </button>
+            <p class="text-caption text-center mt-3" data-track-signin-note>
+              You'll be asked to log in — this is what makes it possible to notify you after you close the site.
+            </p>
+          </form>
+
+          <div data-track-already hidden>
+            <div class="flex flex-between mt-4" style="align-items: center;">
+              <span class="badge badge-tracked">
+                <svg class="icon icon-sm" aria-hidden="true" style="margin-right:4px;"><use href="assets/icons/icons.svg#icon-check-circle"></use></svg>
+                You're tracking this
+              </span>
+              <button class="btn btn-secondary btn-sm" type="button" data-track-untrack>Untrack</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3b. Notification preferences reminder (only shown once tracking) -->
+    <section class="section section-alt" data-track-prefs-section hidden aria-labelledby="prefs-heading">
+      <div class="container-prose">
+        <div class="card card-info">
+          <div class="flex gap-4" style="align-items:flex-start;">
+            <svg class="icon icon-lg" style="color: var(--color-primary); flex-shrink:0;" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bell"></use></svg>
+            <div>
+              <p class="card-title" id="prefs-heading">One more thing — turn on notifications</p>
+              <p class="text-small text-muted mt-2">Tracking saves your subscription, but you still need to allow browser notifications so Trackly can actually reach you.</p>
+              <button class="btn btn-outline mt-3" type="button" data-enable-push>Enable Browser Notifications</button>
+              <p class="text-caption mt-2" data-push-status></p>
             </div>
           </div>
         </div>
@@ -244,22 +315,22 @@
     <section class="section section-alt" aria-labelledby="architecture-heading">
       <div class="container-prose">
         <div class="section-header text-center">
-          <p class="text-eyebrow">Future Architecture</p>
-          <h2 id="architecture-heading">How this will run once it's live</h2>
-          <p class="mt-4">This system doesn't exist yet — it's the architecture Trackly is building toward.</p>
+          <p class="text-eyebrow">How It Runs</p>
+          <h2 id="architecture-heading">The pipeline behind every notification</h2>
+          <p class="mt-4">This is real, running infrastructure — a scheduled GitHub Action checks official sources, detects real changes, and delivers a notification through Firebase.</p>
         </div>
 
         <ol class="sr-only">
           <li>Official Source — the institute's real website.</li>
-          <li>Scheduler — checks on a regular schedule. Part of the future backend.</li>
-          <li>Change Detection — compares against the last known version. Part of the future backend.</li>
-          <li>Notification Engine — prepares your notification. Part of the future backend.</li>
+          <li>Scheduler — a GitHub Action, running on a fixed schedule.</li>
+          <li>Change Detection — compares against the last known version, stored in Firestore.</li>
+          <li>Notification Engine — matches the change to subscriptions and sends a push notification via Firebase Cloud Messaging.</li>
           <li>You — get notified the moment it's official.</li>
         </ol>
 
       <svg viewBox="0 0 380 592" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width:100%;max-width:380px;height:auto;margin-inline:auto;display:block;">
-  <rect x="40" y="102" width="300" height="368" rx="20" fill="none" stroke="var(--color-line-strong)" stroke-width="1.5" stroke-dasharray="6 6"/>
-  <text x="190" y="120" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1" fill="var(--color-slate-light)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">FUTURE BACKEND</text>
+  <rect x="40" y="102" width="300" height="368" rx="20" fill="none" stroke="var(--color-line-strong)" stroke-width="1.5"/>
+  <text x="190" y="120" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1" fill="var(--color-slate-light)" font-family="-apple-system, BlinkMacSystemFont, sans-serif">GITHUB ACTIONS + FIREBASE</text>
 
   <g transform="translate(60,24)">
     <rect width="260" height="72" rx="16" fill="var(--color-mist)" stroke="var(--color-line)" stroke-width="1.5"/>
@@ -331,7 +402,7 @@
             <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
           </summary>
           <div class="accordion-item__content">
-            <p>Not yet. The tracking engine hasn't launched — this page shows exactly what will happen once it does.</p>
+            <p>Yes, once your Trackly deployment is fully set up. A scheduled GitHub Action checks the official source and compares it against the last known version stored in the database.</p>
           </div>
         </details>
         <details class="accordion-item" id="faq-how">
@@ -358,7 +429,7 @@
             <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
           </summary>
           <div class="accordion-item__content">
-            <p>Notification delivery is being designed as part of the notification engine shown below — details will be added once it's built.</p>
+            <p>Through a browser push notification, via Firebase Cloud Messaging — turn it on from this page once you're tracking something, or any time from your dashboard.</p>
           </div>
         </details>
         <details class="accordion-item" id="faq-multiple">
@@ -367,7 +438,7 @@
             <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
           </summary>
           <div class="accordion-item__content">
-            <p>Yes. Each tracker you choose, for any institute, will appear in your own list once accounts and subscriptions launch.</p>
+            <p>Yes. Every tracker you subscribe to, for any institute, appears in your dashboard under My Trackers.</p>
           </div>
         </details>
         <details class="accordion-item" id="faq-cost">
@@ -385,7 +456,7 @@
             <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-chevron-down"></use></svg>
           </summary>
           <div class="accordion-item__content">
-            <p>You'll see this page, which explains exactly what will be tracked and how. Actual subscription isn't available until the tracking engine ships.</p>
+            <p>You'll be asked to log in (if you aren't already), and your subscription is saved immediately. From then on, the monitoring Action checks this source on schedule — no need to keep the site open.</p>
           </div>
         </details>
         </div>
@@ -461,6 +532,7 @@
 
   <script type="module" src="js/app.js"></script>
   <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/auth-ui.js"></script>
   <script type="module" src="js/search.js"></script>
   <script type="module" src="js/track.js"></script>
 </body>

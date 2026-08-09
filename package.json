@@ -1,0 +1,9 @@
+{
+  "name": "trackly-monitor",
+  "private": true,
+  "description": "Dependency manifest for the monitoring Action only (scripts/monitor.mjs). The frontend itself has zero dependencies and no build step — this file has no effect on GitHub Pages.",
+  "type": "module",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

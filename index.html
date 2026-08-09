@@ -173,7 +173,7 @@
         </a>
         <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
         <!-- Reserved for future Login control (Phase: Authentication) -->
-        <button class="btn btn-secondary btn-sm nav-actions__login" type="button">Log In</button>
+        <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
           <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
@@ -206,6 +206,35 @@
         <span><span class="search-modal__kbd">&uarr;</span> <span class="search-modal__kbd">&darr;</span> to navigate, <span class="search-modal__kbd">&crarr;</span> to select</span>
         <span><span class="search-modal__kbd">esc</span> to close</span>
       </div>
+    </div>
+  </div>
+
+  <div class="search-overlay" data-auth-overlay hidden>
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <div class="flex flex-between mb-4">
+        <h2 id="auth-modal-title" class="card-title" data-auth-title style="margin:0;">Log in to Trackly</h2>
+        <button class="btn-icon" type="button" data-auth-close aria-label="Close">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
+        </button>
+      </div>
+      <div class="auth-modal__error" data-auth-error hidden role="alert"></div>
+      <button class="btn btn-secondary btn-block" type="button" data-auth-google>Continue with Google</button>
+      <div class="auth-modal__divider">or</div>
+      <form data-auth-form>
+        <div class="field">
+          <label class="field-label" for="auth-email">Email</label>
+          <input class="input" type="email" id="auth-email" data-auth-email required autocomplete="email">
+        </div>
+        <div class="field">
+          <label class="field-label" for="auth-password">Password</label>
+          <input class="input" type="password" id="auth-password" data-auth-password required minlength="6" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" data-auth-submit>Log in</button>
+      </form>
+      <p class="auth-modal__switch">
+        <span data-auth-switch-text>New to Trackly?</span>
+        <button class="link" type="button" data-auth-switch-btn style="background:none;border:none;cursor:pointer;">Create an account</button>
+      </p>
     </div>
   </div>
 
@@ -704,6 +733,7 @@
 
   <script type="module" src="js/app.js"></script>
   <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/auth-ui.js"></script>
   <script type="module" src="js/search.js"></script>
   <script type="module" src="js/home.js"></script>
 </body>
