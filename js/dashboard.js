@@ -2,14 +2,13 @@
  * dashboard.js
  * Everything on dashboard.html is real: subscriptions and notifications
  * are read live from Firestore (watchUserSubscriptions uses onSnapshot,
- * so untracking something elsewhere — e.g. from an institute page —
- * updates this view without a reload).
+ * so pausing/untracking something updates this view without a reload).
  */
 
 import { qs, qsa, onReady } from "./utils.js";
 import { onAuthChange } from "./auth.js";
 import {
-  watchUserSubscriptions, deleteSubscription, getUserNotifications,
+  watchUserSubscriptions, deleteSubscription, setSubscriptionActive, getUserNotifications,
   markNotificationRead, updateNotificationPreferences,
 } from "./firestore.js";
 import { showToast } from "./toast.js";
@@ -65,16 +64,23 @@ function subscriptionCard(sub) {
   if (sub.courseId) parts.push(sub.courseId);
   if (sub.examSession) parts.push(sub.examSession);
 
+  const isActive = sub.active !== false;
+  const badge = isActive
+    ? '<span class="badge badge-tracked">Monitoring</span>'
+    : '<span class="badge badge-archived">Paused</span>';
+  const pauseLabel = isActive ? "Pause" : "Resume";
+
   return `
     <div class="card card-status" data-sub-id="${sub.id}">
       <div>
         <h3 class="card-title">${sub.instituteName || sub.instituteId}</h3>
         <p class="text-caption mt-1">${parts.join(" · ")}</p>
       </div>
-      <div class="flex gap-3" style="align-items:center;">
-        <span class="badge badge-tracked">Tracking</span>
+      <div class="flex gap-3 flex-wrap" style="align-items:center;">
+        ${badge}
         <a class="link text-small" href="track.html?org=${sub.instituteId}&tracker=${sub.trackerId}">View</a>
-        <button class="btn btn-secondary btn-sm" type="button" data-untrack="${sub.id}">Untrack</button>
+        <button class="btn btn-secondary btn-sm" type="button" data-toggle-active="${sub.id}" data-active="${isActive}">${pauseLabel}</button>
+        <button class="btn btn-secondary btn-sm" type="button" data-untrack="${sub.id}">Stop Tracking</button>
       </div>
     </div>`;
 }
@@ -95,14 +101,28 @@ function renderSubscriptions(subs) {
   empty.setAttribute("hidden", "");
   list.innerHTML = subs.map(subscriptionCard).join("");
 
+  qsa("[data-toggle-active]", list).forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const nowActive = btn.dataset.active !== "true";
+      btn.disabled = true;
+      try {
+        await setSubscriptionActive(btn.dataset.toggleActive, nowActive);
+        showToast(nowActive ? "Resumed" : "Paused");
+      } catch {
+        showToast("Couldn't update — try again");
+        btn.disabled = false;
+      }
+    });
+  });
+
   qsa("[data-untrack]", list).forEach((btn) => {
     btn.addEventListener("click", async () => {
       btn.disabled = true;
       try {
         await deleteSubscription(btn.dataset.untrack);
-        showToast("Untracked");
+        showToast("Stopped tracking");
       } catch {
-        showToast("Couldn't untrack — try again");
+        showToast("Couldn't stop tracking — try again");
         btn.disabled = false;
       }
     });

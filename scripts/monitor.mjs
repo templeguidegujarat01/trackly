@@ -7,63 +7,67 @@
 // and github.com, so this script's fetch step cannot be exercised
 // here — it's written correctly for where it actually runs).
 //
-// What it does, for every supported institute:
-//   1. Fetch the institute's official notification page.
-//   2. Normalize + hash the text content.
-//   3. Compare against the last known hash (monitoring_state/{instituteId}).
-//   4. If different: classify which tracker type the new content
-//      relates to (keyword matching — the same "page comparison"
-//      method documented as the only viable option for these five
-//      sites, none of which have RSS or a public API).
-//   5. Find active subscriptions for that institute + tracker.
-//   6. Send a push notification (Firebase Cloud Messaging) to each
-//      matching subscriber, and record it in `notifications` so the
-//      dashboard and Notifications page can show it.
-//
 // Requires a GitHub secret named FIREBASE_SERVICE_ACCOUNT containing
-// the full JSON of a Firebase service account key (Firebase Console →
-// Project settings → Service accounts → Generate new private key).
-// This uses the Admin SDK, which authenticates with that key and
-// bypasses Firestore Security Rules by design — this script IS the
-// trusted server-side actor those rules are written to keep everyone
+// the full JSON of a Firebase service account key. This uses the
+// Admin SDK, which bypasses Firestore Security Rules by design — this
+// script IS the trusted server-side actor those rules keep everyone
 // else out of.
 
 import admin from "firebase-admin";
 import crypto from "node:crypto";
 
-// ---------------------------------------------------------------------------
-// Setup
-// ---------------------------------------------------------------------------
-
 const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
 if (!serviceAccountJson) {
-  console.error("Missing FIREBASE_SERVICE_ACCOUNT environment variable. See README setup steps.");
+  console.error("Missing FIREBASE_SERVICE_ACCOUNT environment variable. See SETUP.md.");
   process.exit(1);
 }
 
-admin.initializeApp({
-  credential: admin.credential.cert(JSON.parse(serviceAccountJson)),
-});
+admin.initializeApp({ credential: admin.credential.cert(JSON.parse(serviceAccountJson)) });
 const db = admin.firestore();
 const messaging = admin.messaging();
 
 // ---------------------------------------------------------------------------
-// Config: which page to check per institute, and how to classify a
-// change into a tracker type. Mirrors data/institutes.json and
-// data/trackers.json — kept here (not re-fetched from the live site)
-// so this script has zero runtime dependency on GitHub Pages being up.
+// Config
+//
+// Each institute has one or more `checks` — a named source URL to
+// fetch. Most institutes have exactly one (their general notifications
+// page). ICAI has two: its notifications page, AND a separate results
+// portal (icai.nic.in), because ICAI results are genuinely published
+// on a different domain — verified via search across multiple
+// 2022-2026 sources, not assumed. A change detected on the results
+// portal is classified directly as "results" (forceTrackerId) rather
+// than via keyword matching, since anything changing there is
+// unambiguously a result by definition of what that domain is for.
 // ---------------------------------------------------------------------------
 
 const INSTITUTES = [
-  { id: "icai", name: "ICAI", checkUrl: "https://www.icai.org/category/notifications" },
-  { id: "icsi", name: "ICSI", checkUrl: "https://www.icsi.edu/student_rpn/" },
-  { id: "upsc", name: "UPSC", checkUrl: "https://upsc.gov.in/examinations/active-exams" },
-  { id: "ssc", name: "SSC", checkUrl: "https://ssc.gov.in" },
-  { id: "ibps", name: "IBPS", checkUrl: "https://www.ibps.in" },
+  {
+    id: "icai", name: "ICAI",
+    checks: [
+      { key: "notifications", checkUrl: "https://www.icai.org/category/notifications" },
+      { key: "results-portal", checkUrl: "https://icai.nic.in", forceTrackerId: "results" },
+    ],
+  },
+  { id: "icsi", name: "ICSI", checks: [{ key: "notifications", checkUrl: "https://www.icsi.edu/student_rpn/" }] },
+  { id: "upsc", name: "UPSC", checks: [{ key: "notifications", checkUrl: "https://upsc.gov.in/examinations/active-exams" }] },
+  { id: "ssc", name: "SSC", checks: [{ key: "notifications", checkUrl: "https://ssc.gov.in" }] },
+  { id: "ibps", name: "IBPS", checks: [{ key: "notifications", checkUrl: "https://www.ibps.in" }] },
 ];
 
-// Ordered by specificity — first match wins, so "admit card" is
-// checked before the more generic "result".
+// One real, verified limitation still open: a May-2026 source
+// referenced "caresults.icai.org" as an alternative ICAI results
+// subdomain instead of icai.nic.in. Worth re-checking periodically in
+// case ICAI has migrated since — not re-verified as part of this pass.
+
+// Directly motivated by a verified real failure mode: UPSC's site has
+// been directly observed returning a "Website is too busy, please try
+// again later" page instead of real content. If that page returns
+// HTTP 200 (not a clean error status), a naive hash comparison would
+// treat it as a legitimate content change. An error/loading page is
+// reliably much shorter than a real one, so an implausibly short
+// fetch is treated as a failure below, not a change.
+const MIN_CONTENT_LENGTH = 500; // characters, after normalization
+
 const TRACKER_KEYWORDS = [
   { trackerId: "admit-cards", keywords: ["admit card", "hall ticket"] },
   { trackerId: "answer-keys", keywords: ["answer key"] },
@@ -78,7 +82,7 @@ const TRACKER_KEYWORDS = [
   { trackerId: "important-circulars", keywords: ["important circular"] },
   { trackerId: "circulars", keywords: ["circular"] },
   { trackerId: "results", keywords: ["result"] },
-  { trackerId: "notifications", keywords: [] }, // fallback: matches any change
+  { trackerId: "notifications", keywords: [] },
 ];
 
 // ---------------------------------------------------------------------------
@@ -100,25 +104,24 @@ function hashOf(text) {
   return crypto.createHash("sha256").update(text).digest("hex");
 }
 
-/** Very small, deliberately conservative diff: returns the words that
- *  appear in `next` but not `prev`, joined back into a rough excerpt.
- *  Good enough to classify a change's topic; not meant to be a precise
- *  diff algorithm. */
 function newContentExcerpt(prevText, nextText) {
   const prevWords = new Set(prevText.split(" "));
   const nextWords = nextText.split(" ");
-  const added = nextWords.filter((w) => !prevWords.has(w));
-  return added.join(" ").slice(0, 2000);
+  return nextWords.filter((w) => !prevWords.has(w)).join(" ").slice(0, 2000);
 }
 
-function classifyTracker(excerptLower) {
-  for (const entry of TRACKER_KEYWORDS) {
-    if (entry.keywords.length === 0) continue;
-    if (entry.keywords.some((kw) => excerptLower.includes(kw))) {
-      return entry.trackerId;
-    }
-  }
-  return "notifications"; // fallback bucket — a real change, unclassified
+/** Returns every tracker category whose keywords appear in the excerpt,
+ *  not just the first match — a single diff can legitimately span more
+ *  than one real update (e.g. a circular AND a result posted between
+ *  checks). Falls back to "notifications" only if nothing more
+ *  specific matched, so an unclassifiable-but-real change still
+ *  reaches subscribers instead of being silently dropped. */
+function classifyTrackers(excerptLower) {
+  const matched = TRACKER_KEYWORDS
+    .filter((entry) => entry.keywords.length > 0)
+    .filter((entry) => entry.keywords.some((kw) => excerptLower.includes(kw)))
+    .map((entry) => entry.trackerId);
+  return matched.length > 0 ? [...new Set(matched)] : ["notifications"];
 }
 
 async function fetchPage(url) {
@@ -131,18 +134,21 @@ async function fetchPage(url) {
 }
 
 // ---------------------------------------------------------------------------
-// Core per-institute check
+// Core per-check logic. Runs once per entry in an institute's `checks`
+// array. State is stored per check (instituteId__checkKey), not per
+// institute, so ICAI's two independent sources never clobber each other.
 // ---------------------------------------------------------------------------
 
-async function checkInstitute(institute) {
-  console.log(`Checking ${institute.name} (${institute.checkUrl})...`);
+async function runCheck(institute, check) {
+  const stateId = `${institute.id}__${check.key}`;
+  console.log(`Checking ${institute.name} / ${check.key} (${check.checkUrl})...`);
 
   let html;
   try {
-    html = await fetchPage(institute.checkUrl);
+    html = await fetchPage(check.checkUrl);
   } catch (err) {
     console.error(`  fetch error: ${err.message}`);
-    await db.collection("monitoring_state").doc(institute.id).set(
+    await db.collection("monitoring_state").doc(stateId).set(
       { lastCheckedAt: admin.firestore.FieldValue.serverTimestamp(), lastError: err.message },
       { merge: true }
     );
@@ -150,14 +156,26 @@ async function checkInstitute(institute) {
   }
 
   const text = normalizeText(html);
-  const newHash = hashOf(text);
 
-  const stateRef = db.collection("monitoring_state").doc(institute.id);
+  if (text.length < MIN_CONTENT_LENGTH) {
+    console.warn(`  suspiciously short content (${text.length} chars) — likely an error/loading page. Skipping.`);
+    await db.collection("monitoring_state").doc(stateId).set(
+      {
+        lastCheckedAt: admin.firestore.FieldValue.serverTimestamp(),
+        lastError: `Content too short (${text.length} chars) — probably a temporary error page, not real content.`,
+      },
+      { merge: true }
+    );
+    return;
+  }
+
+  const newHash = hashOf(text);
+  const stateRef = db.collection("monitoring_state").doc(stateId);
   const stateSnap = await stateRef.get();
   const prevState = stateSnap.exists ? stateSnap.data() : null;
 
   if (!prevState) {
-    // First run for this institute: record a baseline, don't notify —
+    // First run for this check: record a baseline, don't notify —
     // there's nothing to compare against yet, so "changed" would be
     // meaningless noise on day one.
     await stateRef.set({
@@ -177,17 +195,8 @@ async function checkInstitute(institute) {
 
   console.log(`  CHANGE DETECTED`);
   const excerpt = newContentExcerpt(prevState.lastText || "", text);
-  const trackerId = classifyTracker(excerpt || text);
-
-  const changeRef = await db.collection("changes").add({
-    instituteId: institute.id,
-    instituteName: institute.name,
-    trackerId,
-    detectedAt: admin.firestore.FieldValue.serverTimestamp(),
-    sourceUrl: institute.checkUrl,
-    excerpt: excerpt.slice(0, 500),
-    contentHash: newHash,
-  });
+  const trackerIds = check.forceTrackerId ? [check.forceTrackerId] : classifyTrackers(excerpt || text);
+  console.log(`  classified as: ${trackerIds.join(", ")}`);
 
   await stateRef.set(
     {
@@ -199,7 +208,18 @@ async function checkInstitute(institute) {
     { merge: true }
   );
 
-  await notifySubscribers(institute, trackerId, changeRef.id);
+  for (const trackerId of trackerIds) {
+    const changeRef = await db.collection("changes").add({
+      instituteId: institute.id,
+      instituteName: institute.name,
+      trackerId,
+      detectedAt: admin.firestore.FieldValue.serverTimestamp(),
+      sourceUrl: check.checkUrl,
+      excerpt: excerpt.slice(0, 500),
+      contentHash: newHash,
+    });
+    await notifySubscribers(institute, trackerId, changeRef.id);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -229,8 +249,12 @@ async function notifySubscribers(institute, trackerId, changeId) {
     const title = `${institute.name}: new ${sub.trackerLabel || trackerId} update`;
     const body = "Tap to see what changed on the official source.";
 
-    // Write the notification record regardless of whether push succeeds —
-    // the dashboard/Notifications page should show it either way.
+    // Written regardless of push success — the dashboard/Notifications
+    // page should show it either way. Notification deduplication is
+    // structural, not a separate check: a change record is only ever
+    // created once per genuine content change (see runCheck above), so
+    // this loop only runs once per real event, never repeatedly for
+    // the same detected change.
     await db.collection("notifications").add({
       userId: sub.userId,
       subscriptionId: subDoc.id,
@@ -265,7 +289,9 @@ async function notifySubscribers(institute, trackerId, changeId) {
 
 async function main() {
   for (const institute of INSTITUTES) {
-    await checkInstitute(institute);
+    for (const check of institute.checks) {
+      await runCheck(institute, check);
+    }
   }
   console.log("Monitoring run complete.");
 }

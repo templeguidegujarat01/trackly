@@ -76,16 +76,15 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
         </button>
-        <button class="btn-icon" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+        <button class="btn-icon nav-actions__lg-only" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
           <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="assets/icons/icons.svg#icon-sun"></use></svg>
           <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-moon"></use></svg>
         </button>
-        <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+        <a class="btn-icon nav-actions__lg-only" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
         </a>
-        <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
-        <!-- Reserved for future Login control (Phase: Authentication) -->
-        <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="dashboard.html">Log In</a>
+        <a class="btn btn-primary btn-sm nav-actions__lg-only" href="institutes.html">Start Tracking</a>
+        <a class="btn btn-secondary btn-sm" data-login-trigger href="dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
           <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
@@ -100,6 +99,14 @@
         <li><a class="nav-mobile__link" data-nav-link href="how-it-works.html">How It Works</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="about.html">About</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="contact.html">Contact</a></li>
+        <li>
+          <button class="nav-mobile__link" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+            <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="assets/icons/icons.svg#icon-sun"></use></svg>
+            <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-moon"></use></svg>
+            <span data-theme-toggle-label>Dark Mode</span>
+          </button>
+        </li>
+        <li><a class="nav-mobile__link" href="bookmarks.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>My Bookmarks</a></li>
       </ul>
       <div class="nav-mobile__footer">
         <a class="btn btn-primary btn-block" href="institutes.html">Start Tracking</a>
@@ -164,12 +171,12 @@
         </nav>
         <div class="section-header">
           <p class="text-eyebrow">Important Dates</p>
-          <h1>Important Dates</h1>
-          <p class="text-lead mt-4">See what's upcoming, happening today, or already completed across every supported institute.</p>
+          <h1>Schedule & Date Updates</h1>
+          <p class="text-lead mt-4">Recently detected exam timetable, calendar, and admit card updates across every supported institute.</p>
         </div>
         <div class="demo-notice" role="status">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-shield-check"></use></svg>
-          <p><strong>Demo data.</strong> These entries illustrate how this page will work once real monitoring launches — always verify any date on the official source linked with each entry.</p>
+          <p><strong>Live monitoring.</strong> This shows when Trackly detected a schedule-related update, not an extracted date — Trackly never guesses or parses a specific date from a page. Always check the linked official source for the actual date.</p>
         </div>
       </div>
     </section>
@@ -185,13 +192,6 @@
         </div>
       </div>
         <div data-dates-content hidden>
-          <div class="flex gap-2 flex-wrap mb-6" role="tablist" aria-label="Date status">
-            <button class="btn btn-primary" type="button" data-tab="upcoming" role="tab" aria-selected="true">Upcoming</button>
-            <button class="btn btn-secondary" type="button" data-tab="today" role="tab" aria-selected="false">Today</button>
-            <button class="btn btn-secondary" type="button" data-tab="completed" role="tab" aria-selected="false">Completed</button>
-            <button class="btn btn-secondary" type="button" data-tab="monthly" role="tab" aria-selected="false">Monthly</button>
-          </div>
-
           <div class="card card-info mb-8">
             <div class="flex flex-wrap gap-4" style="align-items: flex-end;">
               <div class="field" style="margin-bottom: 0; flex: 1; min-width: 160px;">
@@ -210,17 +210,17 @@
             </div>
           </div>
 
-          <p class="text-small text-muted mb-4" data-dates-count>0 dates</p>
+          <p class="text-small text-muted mb-4" data-dates-count>0 updates</p>
           <div class="grid" style="gap: var(--space-4);" data-dates-list></div>
 
           <div class="card card-info text-center" data-dates-empty hidden>
-            <p class="card-title mt-2">Nothing here yet</p>
-            <p class="text-small text-muted mt-2">Try a different tab, or clear a filter.</p>
+            <p class="card-title mt-2">Nothing detected yet</p>
+            <p class="text-small text-muted mt-2">Try clearing a filter, or check back after the next scheduled check.</p>
           </div>
         </div>
 
         <div class="card card-info text-center" data-load-error hidden role="alert">
-          <p class="card-title">Something went wrong loading important dates</p>
+          <p class="card-title">Something went wrong loading updates</p>
           <p class="text-small text-muted mt-2">Please refresh the page. If this keeps happening, the data file may be temporarily unavailable.</p>
           <button class="btn btn-secondary mt-4" type="button" data-retry>Retry</button>
         </div>

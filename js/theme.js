@@ -3,12 +3,12 @@
  * The theme itself is already applied before this file even loads — a
  * small inline script in every page's <head> sets [data-theme] on
  * <html> synchronously, before first paint, to avoid a flash of the
- * wrong theme. This module only wires up the toggle button: flipping
- * the attribute, persisting the choice, and keeping the sun/moon icon
- * in sync.
+ * wrong theme. This module wires up every toggle button on the page
+ * (the header has one, the mobile menu has another) via qsa/forEach so
+ * both instances stay in sync, not just whichever one loads first.
  */
 
-import { qs, onReady } from "./utils.js";
+import { qs, qsa, onReady } from "./utils.js";
 
 const STORAGE_KEY = "trackly:theme";
 
@@ -18,32 +18,33 @@ function currentTheme() {
 
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
-  syncToggleButton(theme);
+  syncToggleButtons(theme);
 }
 
-function syncToggleButton(theme) {
-  const btn = qs("[data-theme-toggle]");
-  if (!btn) return;
-  btn.setAttribute("aria-pressed", String(theme === "dark"));
-  btn.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
-  btn.title = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+function syncToggleButtons(theme) {
+  qsa("[data-theme-toggle]").forEach((btn) => {
+    btn.setAttribute("aria-pressed", String(theme === "dark"));
+    const label = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    btn.setAttribute("aria-label", label);
+    btn.title = label;
+  });
 }
 
 function initThemeToggle() {
-  syncToggleButton(currentTheme());
+  syncToggleButtons(currentTheme());
 
-  qs("[data-theme-toggle]")?.addEventListener("click", () => {
-    const next = currentTheme() === "dark" ? "light" : "dark";
-    applyTheme(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      /* ignore */
-    }
+  qsa("[data-theme-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = currentTheme() === "dark" ? "light" : "dark";
+      applyTheme(next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        /* ignore */
+      }
+    });
   });
 
-  // If the person never explicitly chose a theme, keep following the OS
-  // preference live (e.g. their system switches to dark mode at sunset).
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   media.addEventListener("change", (event) => {
     let hasExplicitChoice = false;

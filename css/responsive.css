@@ -43,19 +43,6 @@
     grid-template-columns: 1.4fr repeat(3, 1fr);
   }
 
-  /* Swap hamburger nav for the horizontal desktop nav */
-  .nav-primary {
-    display: flex;
-  }
-
-  .nav-toggle {
-    display: none;
-  }
-
-  .nav-mobile {
-    display: none !important;
-  }
-
   /* Homepage timeline becomes a connected 3-column row */
   .timeline {
     grid-template-columns: repeat(3, 1fr);
@@ -86,6 +73,31 @@
 
   .grid-4 {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Swap hamburger nav for the horizontal desktop nav. Deliberately at
+     lg (1024px), not md (768px): brand + 5 nav links + 5 header action
+     items doesn't actually fit in a tablet-width row — it was wrapping
+     or crowding between 768-1023px. Tablets now correctly get the same
+     compact header + hamburger menu as phones. */
+  .nav-primary {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-mobile {
+    display: none !important;
+  }
+
+  /* Theme toggle, bookmarks, and Start Tracking only appear in the
+     compact header row once there's room for them (same breakpoint as
+     the nav links above) — below lg they live in the mobile menu panel
+     instead, not crammed into an already-tight icon row. */
+  .nav-actions__lg-only {
+    display: inline-flex;
   }
 
   .section {

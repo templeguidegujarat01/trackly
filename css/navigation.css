@@ -27,6 +27,7 @@
 .site-header__inner {
   width: 100%;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
@@ -91,9 +92,9 @@
   gap: var(--space-2);
 }
 
-/* Placeholder for future Login control — hidden until auth ships (Phase-ready,
-   not built now, per the permanent rules) */
-.nav-actions__login {
+/* Hidden by default; revealed at lg (1024px) in responsive.css once
+   there's genuinely room for the full row. */
+.nav-actions__lg-only {
   display: none;
 }
 
@@ -138,9 +139,15 @@
 .nav-mobile__link {
   display: flex;
   align-items: center;
+  gap: var(--space-3);
   min-height: 52px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
   text-decoration: none;
   font-size: var(--text-base);
   font-weight: 600;

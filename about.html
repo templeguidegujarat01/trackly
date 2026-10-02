@@ -76,16 +76,15 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-search"></use></svg>
         </button>
-        <button class="btn-icon" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+        <button class="btn-icon nav-actions__lg-only" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
           <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="assets/icons/icons.svg#icon-sun"></use></svg>
           <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-moon"></use></svg>
         </button>
-        <a class="btn-icon" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+        <a class="btn-icon nav-actions__lg-only" href="bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>
         </a>
-        <a class="btn btn-primary btn-sm hide-mobile" href="institutes.html">Start Tracking</a>
-        <!-- Reserved for future Login control (Phase: Authentication) -->
-        <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="dashboard.html">Log In</a>
+        <a class="btn btn-primary btn-sm nav-actions__lg-only" href="institutes.html">Start Tracking</a>
+        <a class="btn btn-secondary btn-sm" data-login-trigger href="dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
           <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="assets/icons/icons.svg#icon-close"></use></svg>
@@ -100,6 +99,14 @@
         <li><a class="nav-mobile__link" data-nav-link href="how-it-works.html">How It Works</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="about.html">About</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="contact.html">Contact</a></li>
+        <li>
+          <button class="nav-mobile__link" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+            <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="assets/icons/icons.svg#icon-sun"></use></svg>
+            <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-moon"></use></svg>
+            <span data-theme-toggle-label>Dark Mode</span>
+          </button>
+        </li>
+        <li><a class="nav-mobile__link" href="bookmarks.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#icon-bookmark"></use></svg>My Bookmarks</a></li>
       </ul>
       <div class="nav-mobile__footer">
         <a class="btn btn-primary btn-block" href="institutes.html">Start Tracking</a>

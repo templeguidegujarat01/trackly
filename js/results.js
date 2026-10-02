@@ -1,19 +1,42 @@
 /**
  * results.js
- * Loaded only on results.html. Fetches results.json + config, renders a
- * filterable/searchable/sortable/paginated list. Filters persist to
- * localStorage and sync to the URL, so both reloading and sharing a
- * link reproduce the same view.
+ * Loaded only on results.html. Fetches real detected changes from
+ * Firestore (written by scripts/monitor.mjs) filtered to results-type
+ * entries, renders a filterable/searchable/sortable/paginated list.
+ * Filters persist to localStorage and sync to the URL, so both
+ * reloading and sharing a link reproduce the same view.
  */
 
 import { qs, qsa, onReady, loadJSON } from "./utils.js";
 import { makeLookup } from "./data-helpers.js";
 import { actionButtonsHtml, bindItemActions } from "./item-actions.js";
+import { getRecentChanges } from "./firestore.js";
 
 const STORAGE_KEY = "trackly:filters:results";
 const PAGE_SIZE = 6;
+const RESULT_TRACKER_IDS = new Set(["results"]);
 
 let STATE = { results: [], lookup: null, page: 1 };
+
+/** A detected "results" change from Firestore has no separate
+ *  pending/released distinction — its existence in `changes` IS the
+ *  "released" event (the monitor only writes a record once content
+ *  has actually changed). Normalized into the shape this file renders. */
+function normalizeChange(change) {
+  const detectedDate = change.detectedAt?.toDate
+    ? change.detectedAt.toDate().toISOString().slice(0, 10)
+    : null;
+  return {
+    id: change.id,
+    instituteId: change.instituteId,
+    trackerId: change.trackerId,
+    title: `${change.instituteName || change.instituteId} — ${change.excerpt ? change.excerpt.slice(0, 60) : "Result update"}`,
+    year: detectedDate ? Number(detectedDate.slice(0, 4)) : new Date().getFullYear(),
+    status: "released",
+    releasedDate: detectedDate,
+    officialUrl: change.sourceUrl,
+  };
+}
 
 async function init() {
   bindRetry();
@@ -25,20 +48,26 @@ async function loadAndRender() {
   qs("[data-loading]")?.removeAttribute("hidden");
   qs("[data-results-content]")?.setAttribute("hidden", "");
 
-  const [resultsData, institutesData, trackersData] = await Promise.all([
-    loadJSON("data/results.json"),
+  const [institutesData, trackersData] = await Promise.all([
     loadJSON("data/institutes.json"),
     loadJSON("data/trackers.json"),
   ]);
 
-  if (!resultsData || !institutesData || !trackersData) {
+  if (!institutesData || !trackersData) {
     qs("[data-loading]")?.setAttribute("hidden", "");
     qs("[data-load-error]")?.removeAttribute("hidden");
     return;
   }
 
-  STATE.results = resultsData.results;
   STATE.lookup = makeLookup(institutesData.institutes, trackersData.trackerTypes);
+
+  try {
+    const changes = await getRecentChanges();
+    STATE.results = changes.filter((c) => RESULT_TRACKER_IDS.has(c.trackerId)).map(normalizeChange);
+  } catch (err) {
+    console.warn("Live results unavailable:", err.message);
+    STATE.results = [];
+  }
 
   populateInstituteFilter(institutesData.institutes);
   populateYearFilter();

@@ -132,7 +132,7 @@
           "name": "When can I actually start tracking UPSC updates?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Tracking itself is coming in a future phase. This page shows what will be available once it launches."
+            "text": "Yes — sign in and subscribe from any tracker above. A scheduled GitHub Action checks the official source automatically and notifies you when it changes."
           }
         }
       ]
@@ -165,16 +165,15 @@
         <button class="btn-icon search-trigger" type="button" data-search-trigger aria-label="Search (press / to open)" title="Search (press / to open)">
           <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-search"></use></svg>
         </button>
-        <button class="btn-icon" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+        <button class="btn-icon nav-actions__lg-only" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
           <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-sun"></use></svg>
           <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-moon"></use></svg>
         </button>
-        <a class="btn-icon" href="../../bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
+        <a class="btn-icon nav-actions__lg-only" href="../../bookmarks.html" aria-label="My Bookmarks" title="My Bookmarks">
           <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-bookmark"></use></svg>
         </a>
-        <a class="btn btn-primary btn-sm hide-mobile" href="../../institutes.html">Start Tracking</a>
-        <!-- Reserved for future Login control (Phase: Authentication) -->
-        <a class="btn btn-secondary btn-sm nav-actions__login" data-login-trigger href="../../dashboard.html">Log In</a>
+        <a class="btn btn-primary btn-sm nav-actions__lg-only" href="../../institutes.html">Start Tracking</a>
+        <a class="btn btn-secondary btn-sm" data-login-trigger href="../../dashboard.html">Log In</a>
         <button class="btn-icon nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
           <svg class="icon" data-icon-open aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-menu"></use></svg>
           <svg class="icon hidden" data-icon-close aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-close"></use></svg>
@@ -189,6 +188,14 @@
         <li><a class="nav-mobile__link" data-nav-link href="../../how-it-works.html">How It Works</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="../../about.html">About</a></li>
         <li><a class="nav-mobile__link" data-nav-link href="../../contact.html">Contact</a></li>
+        <li>
+          <button class="nav-mobile__link" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+            <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-sun"></use></svg>
+            <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-moon"></use></svg>
+            <span data-theme-toggle-label>Dark Mode</span>
+          </button>
+        </li>
+        <li><a class="nav-mobile__link" href="../../bookmarks.html"><svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-bookmark"></use></svg>My Bookmarks</a></li>
       </ul>
       <div class="nav-mobile__footer">
         <a class="btn btn-primary btn-block" href="../../institutes.html">Start Tracking</a>
@@ -284,7 +291,7 @@
       <div class="container">
         <div class="section-header text-center">
           <p class="text-eyebrow">Available Trackers</p>
-          <h2 id="trackers-heading">What you'll be able to track for UPSC</h2>
+          <h2 id="trackers-heading">What you can track for UPSC</h2>
         </div>
         <div class="grid grid-3">
           <a class="card card-feature card--interactive" href="../../track.html?org=upsc&tracker=notifications">
@@ -294,7 +301,7 @@
             <h3 class="card-title">Notifications</h3>
             <p class="text-small text-muted">General official notifications as soon as they're posted.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Available</span>
             </div>
           </a>
           <a class="card card-feature card--interactive" href="../../track.html?org=upsc&tracker=exam-calendar">
@@ -304,7 +311,7 @@
             <h3 class="card-title">Exam Calendar</h3>
             <p class="text-small text-muted">The full official calendar for the year's exams.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Available</span>
             </div>
           </a>
           <a class="card card-feature card--interactive" href="../../track.html?org=upsc&tracker=admit-cards">
@@ -314,7 +321,7 @@
             <h3 class="card-title">Admit Cards</h3>
             <p class="text-small text-muted">When your admit card or hall ticket becomes available.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Available</span>
             </div>
           </a>
           <a class="card card-feature card--interactive" href="../../track.html?org=upsc&tracker=results">
@@ -324,7 +331,7 @@
             <h3 class="card-title">Results</h3>
             <p class="text-small text-muted">The moment your result is officially declared.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Available</span>
             </div>
           </a>
           <a class="card card-feature card--interactive" href="../../track.html?org=upsc&tracker=recruitments">
@@ -334,7 +341,7 @@
             <h3 class="card-title">Recruitments</h3>
             <p class="text-small text-muted">New recruitment notifications as they're released.</p>
             <div class="card-footer">
-              <span class="badge badge-coming-soon">Coming Soon</span>
+              <span class="badge badge-tracked">Available</span>
             </div>
           </a>
         </div>
@@ -480,7 +487,7 @@
             <svg class="icon" aria-hidden="true"><use href="../../assets/icons/icons.svg#icon-chevron-down"></use></svg>
           </summary>
           <div class="accordion-item__content">
-            <p>Tracking itself is coming in a future phase. This page shows what will be available once it launches.</p>
+            <p>Yes — sign in and subscribe from any tracker above. A scheduled GitHub Action checks the official source automatically and notifies you when it changes.</p>
           </div>
         </details>
         </div>
@@ -492,11 +499,9 @@
       <div class="container">
         <h2>Choose What You Want To Track</h2>
         <p class="text-lead mt-4" style="max-width: 480px; margin-inline: auto;">
-          Tracker selection for UPSC is being built next.
+          Pick a tracker above and subscribe — Trackly will notify you automatically.
         </p>
-        <button class="btn btn-primary btn-lg mt-8" type="button" disabled aria-disabled="true">
-          Coming in Next Phase
-        </button>
+        <a class="btn btn-primary btn-lg mt-8" href="#trackers-heading">View UPSC Trackers</a>
       </div>
     </section>
   </main>
